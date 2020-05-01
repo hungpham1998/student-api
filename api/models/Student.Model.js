@@ -1,6 +1,6 @@
-var Sequelize = require('sequelize')
-
-var sequelize = require('../until/db')
+var Sequelize = require('sequelize');
+var Class = require('./Class.Model');
+var sequelize = require('../common/connect');
 
 var Student = sequelize.define('student',
     {

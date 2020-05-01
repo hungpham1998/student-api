@@ -1,5 +1,6 @@
-var configdb = require('../unitl/configdb');
 var Sequelize = require('sequelize');
+var configdb = require('../unitl/configdb');
+
 
 var sequelize = new Sequelize(
 	configdb.mysql.database,

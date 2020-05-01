@@ -1,5 +1,7 @@
 var Sequelize = require('Sequelize');
-var sequelize = require('../unitl/configdb');
+var sequelize = require('../common/connect');
+var Student = require('./Student.Model');
+
 
 var PointPractise = sequelize.define('pointpractise', {
     year_id: {

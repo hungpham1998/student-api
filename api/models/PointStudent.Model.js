@@ -1,6 +1,8 @@
-var Sequelize = require('sequelize')
-
-var sequelize = require('../until/db')
+var Sequelize = require('sequelize');
+var sequelize = require('../common/connect');
+var Student = require('./Student.Model');
+var Subject = require('../models/Subject.Model');
+var Year = require('../models/Year.Model');
 
 var PointStudent = sequelize.define('pointstudent',
     {

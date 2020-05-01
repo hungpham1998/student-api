@@ -1,5 +1,5 @@
 var Sequelize = require('Sequelize');
-var sequelize = require('../unitl/configdb');
+var sequelize = require('../common/connect');
 
 var User = sequelize.define('user', {
     id: {
