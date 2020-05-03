@@ -1,7 +1,7 @@
 var Sequelize = require('Sequelize');
 var sequelize = require('../common/connect');
 var Student = require('./Student.Model');
-
+var Year = require('./Year.Model');
 
 var PointPractise = sequelize.define('pointpractise', {
     year_id: {

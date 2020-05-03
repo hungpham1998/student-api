@@ -1,5 +1,8 @@
 var Sequelize = require('Sequelize');
 var sequelize = require('../common/connect');
+var Specialized = require('./Specialized.Model');
+
+
 
 var Class = sequelize.define('class', {
     id: {
