@@ -1,10 +1,10 @@
-const path = require('path')
-const express = require('express')
+// const path = require('path')
+// const express = require('express')
 
-const router = express.Router();
+// const router = express.Router();
 
-const errorControler = require('../controllers/error')
+// const errorControler = require('../controllers/error')
 
-router.use(errorControler.get404)
+// router.use(errorControler.get404)
 
-module.exports = router
+// module.exports = router
