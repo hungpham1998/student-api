@@ -13,12 +13,7 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.String,
             allowNull: false,
         }
-    }, {
-        underscored: true,
-        timestamps: false,
-        createAt: false,
-            paranoid: true
-        }
+    }
     );
     return Role;
 }

@@ -1,6 +1,3 @@
-import Year from './LearnYear.Model';
-
-
 
 module.exports = (sequelize, Sequelize) => {
     const Subject = sequelize.define('subject',
@@ -27,20 +24,15 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.String,
             allowNull: false,
             },
-        Id_Year: {
-            type: Sequelize.BIGINT,
-            references: {
-                model: Year,
-                key: 'Id'
-            },
-        }
+        // Id_Year: {
+        //     type: Sequelize.BIGINT,
+        //     references: {
+        //         model: Year,
+        //         key: 'Id'
+        //     },
+        // }
         
-    }, {
-        underscored: true,
-        timestamps: false,
-        createAt: false,
-            paranoid: true
-        }
+    }
     );
     return Subject;
 }

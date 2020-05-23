@@ -3,7 +3,7 @@ module.exports = (sequelize, Sequelize) => {
     const Class = sequelize.define('class',
         {
         Id: {
-            type: Sequelize.INTEGER,
+            type: Sequelize.BIGINT,
             autoIncrement: true,
             allowNull: false,
             primaryKey: true
@@ -11,20 +11,15 @@ module.exports = (sequelize, Sequelize) => {
         class_name: {
             type: Sequelize.STRING,
             allowNull: false,
-        },
-        specialized_id: {
-            type: Sequelize.BIGINT,
-            references: {
-                model: Specialized,
-                key: 'id'
-            },
         }
-    }, {
-        underscored: true,
-        timestamps: false,
-        createAt: false,
-            paranoid: true
-        }
+        // specialized_id: {
+        //     type: Sequelize.BIGINT,
+        //     references: {
+        //         model: Specialized,
+        //         key: 'id'
+        //     },
+        // }
+    }
     );
     return Class;
 }

@@ -1,10 +1,10 @@
 
-import Class from './Class.Model';
+//import Class from './Class.Model';
 
 module.exports = (sequelize, Sequelize) => {
     const Student = sequelize.define('student',
         {
-            id: {
+            Id: {
                 type: Sequelize.INTEGER,
                 autoIncrement: true,
                 allowNull: false,
@@ -18,7 +18,7 @@ module.exports = (sequelize, Sequelize) => {
                 type: Sequelize.STRING,
                 allowNull: false,
             },
-            student_photo: {
+            Image: {
                 type: Sequelize.STRING,
             },
             address: {
@@ -27,14 +27,14 @@ module.exports = (sequelize, Sequelize) => {
             },
             brithday: {
                 type: Sequelize.DATE
-            },
-            Id_Class: {
-                type: Sequelize.BIGINT,
-                references: {
-                    model: Class,
-                    key: 'Id'
-                },
             }
+            // Id_Class: {
+            //     type: Sequelize.BIGINT,
+            //     references: {
+            //         model: Class,
+            //         key: 'Id'
+            //     },
+            // }
         },
         {
             underscored: true,

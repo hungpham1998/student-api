@@ -1,8 +1,7 @@
 
 
-import Department from './Department.Model';
-import Position from './Position.Model';
-
+// import Department from './Department.Model';
+// import Position from './Position.Model';
 module.exports = (sequelize, Sequelize) => {
     const Acount = sequelize.define('acount',
         {
@@ -36,26 +35,20 @@ module.exports = (sequelize, Sequelize) => {
                 type: Sequelize.STRING,
                 allowNull: false,
             },
-            Id_Department: {
-                type: Sequelize.BIGINT,
-                references: {
-                    model: Department,
-                    key: 'Id'
-                },
-            },
-            Id_Position : {
-                type: Sequelize.BIGINT,
-                references: {
-                    model: Position,
-                    key: 'Id'
-                },
-            },
-        },
-        {
-            underscored: true,
-            timestamps: false,
-            createAt: false,
-            paranoid: true
+            // Id_Department: {
+            //     type: Sequelize.BIGINT,
+            //     references: {
+            //         model: Department,
+            //         key: 'Id'
+            //     },
+            // },
+            // Id_Position : {
+            //     type: Sequelize.BIGINT,
+            //     references: {
+            //         model: Position,
+            //         key: 'Id'
+            //     },
+            // },
         }
     );
     return Acount;

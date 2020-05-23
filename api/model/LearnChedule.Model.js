@@ -1,6 +1,4 @@
-import Account from './Account.Model';
-import Class from './Class.Model';
-import Subject from './Subject.Model';
+
 
 module.exports = (sequelize, Sequelize) => {
     const LearnChedule = sequelize.define('learnchedule',
@@ -35,27 +33,22 @@ module.exports = (sequelize, Sequelize) => {
                 model: Class,
                 key: 'Id'
             },
-        },
-        Id_Subject: {
-            type: Sequelize.BIGINT,
-            references: {
-                model: Subject,
-                key: 'Id'
-            },
-        },
-        Id_Account : {
-            type: Sequelize.BIGINT,
-            references: {
-                model: Account,
-                key: 'Id'
-            },
         }
-    }, {
-        underscored: true,
-        timestamps: false,
-        createAt: false,
-            paranoid: true
-        }
+        // Id_Subject: {
+        //     type: Sequelize.BIGINT,
+        //     references: {
+        //         model: Subject,
+        //         key: 'Id'
+        //     },
+        // },
+        // Id_Account : {
+        //     type: Sequelize.BIGINT,
+        //     references: {
+        //         model: Account,
+        //         key: 'Id'
+        //     },
+        // }
+    }
     );
     return LearnChedule;
 }

@@ -1,5 +1,3 @@
-import Subject from './Subject.Model';
-import Student from './Student.Model';
 
 
 module.exports = (sequelize, Sequelize) => {
@@ -33,20 +31,20 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.INTEGER,
             allowNull: false,
             },
-        Id_Student: {
-            type: Sequelize.BIGINT,
-            references: {
-                model: Student,
-                key: 'Id'
-            },
-        },
-        Id_Subject: {
-            type: Sequelize.BIGINT,
-            references: {
-                model: Subject,
-                key: 'Id'
-            },
-        }
+        // Id_Student: {
+        //     type: Sequelize.BIGINT,
+        //     references: {
+        //         model: Student,
+        //         key: 'Id'
+        //     },
+        // },
+        // Id_Subject: {
+        //     type: Sequelize.BIGINT,
+        //     references: {
+        //         model: Subject,
+        //         key: 'Id'
+        //     },
+        // }
            
     }, {
         underscored: true,

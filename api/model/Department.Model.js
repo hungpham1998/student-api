@@ -1,6 +1,6 @@
 
 module.exports = (sequelize, Sequelize) => {
-    const Department = sequelize.define('department',
+    const Department = sequelize.define('Department',
         {
         Id: {
             type: Sequelize.BIGINT,
@@ -8,7 +8,7 @@ module.exports = (sequelize, Sequelize) => {
             allowNull: false,
             primaryKey: true
         },
-        Id_Department: {
+        IdPartment: {
             type: Sequelize.BIGINT,
             allowNull: false,
         },
@@ -16,12 +16,6 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.String,
             allowNull: false,
         }
-    }, {
-        underscored: true,
-        timestamps: false,
-        createAt: false,
-            paranoid: true
-        }
-    );
-    return Department;
+    })
+    return Department1;
 }
