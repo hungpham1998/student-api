@@ -3,4 +3,4 @@
 Run `npm install`
 
 # Run api
-Run `npm run start`
+Run `npm start`
