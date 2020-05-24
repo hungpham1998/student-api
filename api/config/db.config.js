@@ -48,16 +48,16 @@ db.Role.belongsToMany(db.Account, { through: 'account_role', foreignKey: 'Id_Rol
 db.Account.belongsToMany(db.Role, { through: 'account_role', foreignKey: 'Id_Accout', otherKey: 'Id_Role' });
 
 // 1 lớp học sinh có nhiều môn học và 1 môn học có nhiều học sinh
-db.Subject.belongToMany(db.Student, {through:'LearnChedule', foreignKey: 'Id_Student', otherKey: 'Id_Subject' });
-db.Student.belongToMany(db.Subject, { through: 'LearnChedule', foreignKey: 'Id_Subject', otherKey: 'Id_Student' });
+db.Subject.belongsToMany(db.Student, {through:'LearnChedule', foreignKey: 'Id_Student', otherKey: 'Id_Subject' });
+db.Student.belongsToMany(db.Subject, { through: 'LearnChedule', foreignKey: 'Id_Subject', otherKey: 'Id_Student' });
 
 // 1 giáo viên dạy nhiều môn, 1 môn nhiều giáo viên
 db.Account.belongsToMany(db.Subject, { through:'LearnChedule',foreignKey: 'Id_AccountAccount', otherKey: 'Id_Subject' });
-db.Subject.belongToMony(db.Account, { through: 'LearnChedule', foreignKey: 'Id_Subject', otherKey: 'Id_AccountAccount' });
+db.Subject.belongsToMany(db.Account, { through: 'LearnChedule', foreignKey: 'Id_Subject', otherKey: 'Id_AccountAccount' });
 
 // 1 lớp có nhiều môn học , nhiều lớp học 1 môn học 
-db.Subject.belongToMany(db.Class, {through:'LearnChedule', foreignKey: 'Id_Class', otherKey: 'Id_Subject' });
-db.Class.belongToMany(db.Subject, { through: 'LearnChedule', foreignKey: 'Id_Subject', otherKey: 'Id_Class' });
+db.Subject.belongsToMany(db.Class, {through:'LearnChedule', foreignKey: 'Id_Class', otherKey: 'Id_Subject' });
+db.Class.belongsToMany(db.Subject, { through: 'LearnChedule', foreignKey: 'Id_Subject', otherKey: 'Id_Class' });
 
 // 1 môn học có 1 bảng điểm, 1 bảng điểm 1 môn học
 db.Subject.belongsTo(db.PointStudent, {foreignKey: 'Id_Subject', targetKey: 'Id'});

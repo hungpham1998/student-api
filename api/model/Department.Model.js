@@ -13,9 +13,9 @@ module.exports = (sequelize, Sequelize) => {
             allowNull: false,
         },
         Title: {
-            type: Sequelize.String,
+            type: Sequelize.STRING,
             allowNull: false,
         }
     })
-    return Department1;
+    return Department; // 1
 }
