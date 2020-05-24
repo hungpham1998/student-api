@@ -11,14 +11,14 @@ module.exports = (sequelize, Sequelize) => {
         class_name: {
             type: Sequelize.STRING,
             allowNull: false,
+        },
+        specialized_id: {
+            type: Sequelize.BIGINT,
+            references: {
+                model: Specialized,
+                key: 'id'
+            },
         }
-        // specialized_id: {
-        //     type: Sequelize.BIGINT,
-        //     references: {
-        //         model: Specialized,
-        //         key: 'id'
-        //     },
-        // }
     }
     );
     return Class;

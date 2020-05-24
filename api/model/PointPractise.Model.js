@@ -13,20 +13,20 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.INTEGER,
             allowNull: false,
         },
-        // Id_Student: {
-        //     type: Sequelize.BIGINT,
-        //     references: {
-        //         model: Student,
-        //         key: 'Id'
-        //     },
-        // },
-        // Id_Year : {
-        //     type: Sequelize.BIGINT,
-        //     references: {
-        //         model: LearnYear,
-        //         key: 'Id'
-        //     },
-        // }
+        Id_Student: {
+            type: Sequelize.BIGINT,
+            references: {
+                model: Student,
+                key: 'Id'
+            },
+        },
+        Id_Year : {
+            type: Sequelize.BIGINT,
+            references: {
+                model: LearnYear,
+                key: 'Id'
+            },
+        }
         
     }, {
         underscored: true,

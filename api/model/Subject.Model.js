@@ -9,28 +9,28 @@ module.exports = (sequelize, Sequelize) => {
             primaryKey: true
         },
         Title: {
-            type: Sequelize.String,
+            type: Sequelize.STRING,
             allowNull: false,
         },
         Code: {
-            type: Sequelize.String,
+            type: Sequelize.STRING,
             allowNull: false,
         },
         CreditNumber: {
-            type: Sequelize.String,
+            type: Sequelize.STRING,
             allowNull: false,
         },
         Note: {
-            type: Sequelize.String,
+            type: Sequelize.STRING,
             allowNull: false,
             },
-        // Id_Year: {
-        //     type: Sequelize.BIGINT,
-        //     references: {
-        //         model: Year,
-        //         key: 'Id'
-        //     },
-        // }
+        Id_Year: {
+            type: Sequelize.BIGINT,
+            references: {
+                model: Year,
+                key: 'Id'
+            },
+        }
         
     }
     );

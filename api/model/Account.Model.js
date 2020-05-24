@@ -6,7 +6,7 @@ module.exports = (sequelize, Sequelize) => {
     const Acount = sequelize.define('acount',
         {
             id: {
-                type: Sequelize.INTEGER,
+                type: Sequelize.BIGINT,
                 autoIncrement: true,
                 allowNull: false,
                 primaryKey: true
@@ -35,20 +35,20 @@ module.exports = (sequelize, Sequelize) => {
                 type: Sequelize.STRING,
                 allowNull: false,
             },
-            // Id_Department: {
-            //     type: Sequelize.BIGINT,
-            //     references: {
-            //         model: Department,
-            //         key: 'Id'
-            //     },
-            // },
-            // Id_Position : {
-            //     type: Sequelize.BIGINT,
-            //     references: {
-            //         model: Position,
-            //         key: 'Id'
-            //     },
-            // },
+            Id_Department: {
+                type: Sequelize.BIGINT,
+                references: {
+                    model: Department,
+                    key: 'Id'
+                },
+            },
+            Id_Position : {
+                type: Sequelize.BIGINT,
+                references: {
+                    model: Position,
+                    key: 'Id'
+                },
+            },
         }
     );
     return Acount;

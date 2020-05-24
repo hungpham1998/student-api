@@ -1,5 +1,5 @@
 
-//import Class from './Class.Model';
+import Class from './Class.Model';
 
 module.exports = (sequelize, Sequelize) => {
     const Student = sequelize.define('student',
@@ -27,14 +27,14 @@ module.exports = (sequelize, Sequelize) => {
             },
             brithday: {
                 type: Sequelize.DATE
+            },
+            Id_Class: {
+                type: Sequelize.BIGINT,
+                references: {
+                    model: Class,
+                    key: 'Id'
+                },
             }
-            // Id_Class: {
-            //     type: Sequelize.BIGINT,
-            //     references: {
-            //         model: Class,
-            //         key: 'Id'
-            //     },
-            // }
         },
         {
             underscored: true,

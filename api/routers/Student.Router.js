@@ -1,14 +1,14 @@
 "use strict";
 module.exports = function(router) {
-    const student = require('../controllers/Student.Controller');
-    router 
-        .route("/student")
-        .get(student.getAll)
-    //.post(subject.store);
+let student = require('../controllers/Student.Controller');
+ router 
+    .route("/student")
+    .get(student.getAll)
+    .post(student.create);
 
-//   router
-//     .route("/subject/:Id")
-//     .get(subject.detail)
-//     .put(subject.update)
-//     .delete(subject.delete);
+  router
+    .route("/student/:Id")
+    .get(student.getById)
+    .put(student.update)
+    .delete(student.delete);
 };

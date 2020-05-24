@@ -18,7 +18,7 @@ module.exports = (sequelize, Sequelize) => {
             allowNull: false,
         },
         ClassRoom:  {
-            type: Sequelize.String,
+            type: Sequelize.STRING,
             allowNull: false,
         },
         StartTime: {
@@ -33,21 +33,21 @@ module.exports = (sequelize, Sequelize) => {
                 model: Class,
                 key: 'Id'
             },
+        },
+        Id_Subject: {
+            type: Sequelize.BIGINT,
+            references: {
+                model: Subject,
+                key: 'Id'
+            },
+        },
+        Id_Account : {
+            type: Sequelize.BIGINT,
+            references: {
+                model: Account,
+                key: 'Id'
+            },
         }
-        // Id_Subject: {
-        //     type: Sequelize.BIGINT,
-        //     references: {
-        //         model: Subject,
-        //         key: 'Id'
-        //     },
-        // },
-        // Id_Account : {
-        //     type: Sequelize.BIGINT,
-        //     references: {
-        //         model: Account,
-        //         key: 'Id'
-        //     },
-        // }
     }
     );
     return LearnChedule;

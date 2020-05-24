@@ -2,7 +2,7 @@
 
 module.exports = (sequelize, Sequelize) => {
     const LearnYear = sequelize.define('learnyear',
-        {
+    {
         Id: {
             type: Sequelize.BIGINT,
             autoIncrement: true,
