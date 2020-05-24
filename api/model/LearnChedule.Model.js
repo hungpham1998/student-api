@@ -1,4 +1,5 @@
-
+const  db =require('../config/db.config');
+const Class = db.Class;
 
 module.exports = (sequelize, Sequelize) => {
     const LearnChedule = sequelize.define('learnchedule',
@@ -10,7 +11,7 @@ module.exports = (sequelize, Sequelize) => {
             primaryKey: true
         },
         Title: {
-            type: Sequelize.String,
+            type: Sequelize.STRING,
             allowNull: false,
         },
         NumberPeriods: {
@@ -22,10 +23,10 @@ module.exports = (sequelize, Sequelize) => {
             allowNull: false,
         },
         StartTime: {
-            type: Sequelize.DATETIME,
+            type: Sequelize.DATE,
         },
         DuaDate:{
-            type: Sequelize.DATETIME,
+            type: Sequelize.DATE,
         },
         Id_Class: {
             type: Sequelize.BIGINT,
