@@ -1,6 +1,6 @@
 
 // const student = require('../models/student');
-const db = require('../config/db.config');
+const db = require('../config/db.config.js');
 const student = db.student;
 const { Op } = require("sequelize");
 module.exports = {
@@ -26,15 +26,15 @@ module.exports = {
     },
 
     getAll: (req, res) => {
-        student.findAll({
-            attributes: ['first_name', 'last_name', 'Image', 'address', 'brithday'],
-            // include: [{
-            //     model: learnclass,
-            //     where: { Id_Class: db.Sequelize.col('learnclass.Id') },
-            //     attributes: ['Id','Code','Title','Note']
-            // }]
-       })
-       
+    //     student.findAll({
+    //         attributes: ['first_name', 'last_name', 'Image', 'address', 'brithday'],
+    //         // include: [{
+    //         //     model: learnclass,
+    //         //     where: { Id_Class: db.Sequelize.col('learnclass.Id') },
+    //         //     attributes: ['Id','Code','Title','Note']
+    //         // }]
+    //    })
+       student.findAndCountAll()
         .then(student => {
             // Send created book to client
             res.json({
