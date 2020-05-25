@@ -1,7 +1,6 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   const student = sequelize.define('student', {
-    Id: DataTypes.BIGINT,
     Note: DataTypes.STRING,
     Last_Name: DataTypes.STRING,
     Frist_Name: DataTypes.STRING,
@@ -12,7 +11,8 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
   student.associate = function(models) {
     // associations can be defined here
-    student.belongsToMany(models.subject, {as:'subjectlearnstudent', through: 'learnchedule', foreignKey: 'Subject_Id', otherKey: 'Student_Id' });
+    student.hasMany(models.pointpracice, {as:'pointpracices', foreignKey: 'Student_Id', targetKey: 'id' });
+    student.belongsToMany(models.subject, { as: 'subject_learns', through: 'learnchedule', foreignKey: 'Subject_Id', otherKey: 'Student_Id' });
   };
   return student;
 };

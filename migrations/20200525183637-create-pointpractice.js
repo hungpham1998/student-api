@@ -1,24 +1,31 @@
 'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('learnclasses', {
+    return queryInterface.createTable('pointpractices', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      Id: {
-        type: Sequelize.BIGINT
-      },
-      Title: {
+      Peactice: {
         type: Sequelize.STRING
       },
-      Note: {
-        type: Sequelize.STRING
+      Student_Id: {
+        type: Sequelize.BIGINT,
+        allowNull: false,
+        references: {
+          model: 'students',
+          key: 'id'
+        }
       },
-      Specailize_Id: {
-        type: Sequelize.INTEGER
+      Year_Id: {
+        type: Sequelize.BIGINT,
+        allowNull: false,
+        references: {
+          model: 'learnyears',
+          key: 'id'
+        }
       },
       createdAt: {
         allowNull: false,
@@ -31,6 +38,6 @@ module.exports = {
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('learnclasses');
+    return queryInterface.dropTable('pointpractices');
   }
 };

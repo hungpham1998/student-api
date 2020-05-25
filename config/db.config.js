@@ -1,37 +1,39 @@
 'use strict';
 
-const fs = require('fs');
-const path = require('path');
+const env = require('./env.js');
+ 
 const Sequelize = require('sequelize');
-const basename = path.basename('../models'+ __filename);
-const env = process.env.NODE_ENV || 'development';
-const config = require(__dirname + './config.json')[env];
-const db = {};
-
-let sequelize;
-if (config.use_env_variable) {
-  sequelize = new Sequelize(process.env[config.use_env_variable], config);
-} else {
-  sequelize = new Sequelize(config.database, config.username, config.password, config);
-}
-
-fs
-  .readdirSync(__dirname)
-  .filter(file => {
-    return (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.js');
-  })
-  .forEach(file => {
-    const model = sequelize['import'](path.join(__dirname, file));
-    db[model.name] = model;
-  });
-
-Object.keys(db).forEach(modelName => {
-  if (db[modelName].associate) {
-    db[modelName].associate(db);
+const sequelize = new Sequelize(env.database, env.username, env.password, {
+  host: env.host,
+  dialect: env.dialect,
+  operatorsAliases: false,
+ 
+  pool: {
+    max: env.max,
+    min: env.pool.min,
+    acquire: env.pool.acquire,
+    idle: env.pool.idle
   }
 });
+ 
+const db = {};
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
+
+
+db.student = require('../models/student.js')(sequelize, Sequelize);
+db.learnclass = require('../models/learnclass.js')(sequelize, Sequelize);
+db.account = require('../models/account.js')(sequelize, Sequelize);
+db.department = require('../models/department')(sequelize, Sequelize);
+db.position = require('../models/position')(sequelize, Sequelize);
+db.role = require('../models/role')(sequelize, Sequelize);
+db.subject = require('../models/subject')(sequelize, Sequelize);
+db.specailize = require('../models/specailize')(sequelize, Sequelize);
+db.learnyear = require('../models/learnyear')(sequelize, Sequelize);
+db.learnchedule = require('../models/learnchedule')(sequelize, Sequelize);
+db.pointstudent = require('../models/pointstudent')(sequelize, Sequelize);
+db.pointpractice = require('../models/pointpractice')(sequelize, Sequelize);
+
 
 module.exports = db;

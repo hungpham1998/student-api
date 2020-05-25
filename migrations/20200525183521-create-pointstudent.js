@@ -8,10 +8,7 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      Id: {
-        type: Sequelize.BIGINT
-      },
-      PointCC: {
+      PontCC: {
         type: Sequelize.INTEGER
       },
       PointKT1: {
@@ -27,10 +24,20 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       Subject_Id: {
-        type: Sequelize.BIGINT
+        type: Sequelize.BIGINT,
+        allowNull: false,
+        references: {
+          model: 'subjects',
+          key: 'id'
+        }
       },
       Student_Id: {
-        type: Sequelize.BIGINT
+        type: Sequelize.BIGINT,
+        allowNull: false,
+        references: {
+          model: 'students',
+          key: 'id'
+        }
       },
       createdAt: {
         allowNull: false,

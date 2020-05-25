@@ -1,6 +1,7 @@
 
-const student = require('../models/student').student;
-const learnclass = require('../models/learnclass').learnclass;
+// const student = require('../models/student');
+const db = require('../config/db.config');
+const student = db.student;
 const { Op } = require("sequelize");
 module.exports = {
     create: (req, res) => {
@@ -11,7 +12,7 @@ module.exports = {
             address: req.body.address,
             brithday: req.body.brithday,
             Id_Class: req.body.learnclass.Id
-        },
+            },
             {
                 include: [learnclass]
               }).then(book => {
@@ -24,15 +25,17 @@ module.exports = {
             })
     },
 
-      getAll:  (req, res) => {
-        learnclass.findAll({
-            attributes: ['Id','Code','Title'],
-            include: [{
-                model: student,
-                where: { Id_Class: db.Sequelize.col('learnclass.Id') },
-                attributes: ['first_name', 'last_name', 'Image', 'address', 'brithday']
-            }]
-        }).then(student => {
+    getAll: (req, res) => {
+        student.findAll({
+            attributes: ['first_name', 'last_name', 'Image', 'address', 'brithday'],
+            // include: [{
+            //     model: learnclass,
+            //     where: { Id_Class: db.Sequelize.col('learnclass.Id') },
+            //     attributes: ['Id','Code','Title','Note']
+            // }]
+       })
+       
+        .then(student => {
             // Send created book to client
             res.json({
                 student,
@@ -46,7 +49,7 @@ module.exports = {
 
     getById: (req, res) => {
         if (req.params.Id) {
-            return Student.findById(req.parmas.Id).then((err, student) => {
+            return student.findById(req.parmas.Id).then((err, student) => {
                 if (err) throw err;
                 res.json(student);
             })

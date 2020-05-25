@@ -1,8 +1,7 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   const pointstudent = sequelize.define('pointstudent', {
-    Id: DataTypes.BIGINT,
-    PointCC: DataTypes.INTEGER,
+    PontCC: DataTypes.INTEGER,
     PointKT1: DataTypes.INTEGER,
     PointKT2: DataTypes.INTEGER,
     PointGK: DataTypes.INTEGER,
@@ -12,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
   pointstudent.associate = function(models) {
     // associations can be defined here
-    pointstudent.belongsTo(db.subject, {foreignKey: 'Subject_Id', targetKey: 'Id'});
+    pointstudent.belongsTo(models.subject, {as:'subjects', foreignKey: 'Subject_Id', targetKey: 'id'});
   };
   return pointstudent;
 };

@@ -1,39 +1,21 @@
 'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('learnchedules', {
+    return queryInterface.createTable('specailizes', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      Id: {
-        type: Sequelize.BIGINT
+      Note: {
+        type: Sequelize.STRING
       },
       Title: {
         type: Sequelize.STRING
       },
-      NumberPeriods: {
-        type: Sequelize.INTEGER
-      },
-      ClassRoom: {
+      Code: {
         type: Sequelize.STRING
-      },
-      StartTime: {
-        type: Sequelize.DATE
-      },
-      DuaDate: {
-        type: Sequelize.DATE
-      },
-      Class_Id: {
-        type: Sequelize.BIGINT
-      },
-      Subject_Id: {
-        type: Sequelize.BIGINT
-      },
-      Acount_Id: {
-        type: Sequelize.BIGINT
       },
       createdAt: {
         allowNull: false,
@@ -46,6 +28,6 @@ module.exports = {
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('learnchedules');
+    return queryInterface.dropTable('specailizes');
   }
 };

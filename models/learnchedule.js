@@ -1,7 +1,6 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   const learnchedule = sequelize.define('learnchedule', {
-    Id: DataTypes.BIGINT,
     Title: DataTypes.STRING,
     NumberPeriods: DataTypes.INTEGER,
     ClassRoom: DataTypes.STRING,
