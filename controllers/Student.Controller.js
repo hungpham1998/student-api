@@ -1,41 +1,47 @@
 
-const  Student = require('../config/db.config').Student;
-const Class = require('../config/db.config').Class;
-const get403 = require('./error');
+const student = require('../models/student').student;
+const learnclass = require('../models/learnclass').learnclass;
 const { Op } = require("sequelize");
 module.exports = {
     create: (req, res) => {
-        var Student;
-          Student.create({
+        student.create({
             firs_tname: req.body.firstname,
             last_name: req.body.lastname,
             Image: req.body.Image,
             address: req.body.address,
             brithday: req.body.brithday,
-            Id_Class: [req.body.Class.Id]
+            Id_Class: req.body.learnclass.Id
         },
             {
-                include: [Class]
-            }).then((err, res) => {
-                if (err) throw err;
+                include: [learnclass]
+              }).then(book => {
+                // Send created book to client
                 res.status(200)
                 res.send("create a Student Done !");
                 res.send(Student);
+            }).catch(err => {
+                res.status(500).send("Error -> " + err);
             })
     },
 
-     getAll:  (req, res) => {
-        return  Class.findAll({
-            attributes: [['Id', 'Id_Class'], 'Title'],
+      getAll:  (req, res) => {
+        learnclass.findAll({
+            attributes: ['Id','Code','Title'],
             include: [{
-                model: Student,
-                where: { Id_Class: db.Sequelize.col('Class.Id') },
+                model: student,
+                where: { Id_Class: db.Sequelize.col('learnclass.Id') },
                 attributes: ['first_name', 'last_name', 'Image', 'address', 'brithday']
             }]
-        }).then((err, student) => {
-            if (err) throw err;
-            res.json(student);
-        });
+        }).then(student => {
+            // Send created book to client
+            res.json({
+                student,
+                status: 200,
+            });
+        }).catch(err => {
+            res.status(500).send("Error -> " + err);
+        })
+            
     },
 
     getById: (req, res) => {
@@ -51,20 +57,19 @@ module.exports = {
     update: (req, res) => {
         let Id = req.params.Id;
         if (Id) {
-          return  Student.update({ first_name: req.body.firstname, last_name: req.body.lastname, brithday: req.body.brithday, Image: req.body.Image, address: req.body.address },
+          return  student.update({ first_name: req.body.firstname, last_name: req.body.lastname, brithday: req.body.brithday, Image: req.body.Image, address: req.body.address },
                 { where: { Id: Id } }
             ).then(() => {
                 res.status(200).send("updated successfully a customer with id = " + Id);
             });
         }
         return get403();
-       
     },
      
     delete: (req, res) => {
         const Id = req.body.Id;
         if (Id) {
-           return  Student.destroy({
+           return  student.destroy({
                 where: { Id: Id }
             }).then(() => {
                 res.status(200).send('deleted successfully a customer with id = ' + Id);

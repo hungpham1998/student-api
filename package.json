@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon server.js"
+    "start": "nodemon server.js",
+    "run": "nodemon ./bin/www"
   },
   "author": "",
   "license": "ISC",
@@ -20,7 +21,6 @@
     "jsonwebtoken": "^8.5.1",
     "license": "^1.0.3",
     "mysql2": "^2.1.0",
-    "return": "^1.0.0",
     "sequelize": "^5.21.7",
     "sequelize-cli": "^5.5.1"
   }

@@ -3,6 +3,6 @@
 // };
 
 
-// exports.get403 = (req, res, next) => {
-//   res.status(403).render('error 403');
-// } 
+exports.get403 = (req, res, next) => {
+  res.status(403).render('error 403');
+} 

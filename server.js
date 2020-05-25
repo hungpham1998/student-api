@@ -1,14 +1,16 @@
 const express = require("express");
 
+const fs = require('fs');
+const path = require('path');
+
 const app = express();
 const bodyParser = require("body-parser");
 require("dotenv").load();
 
-
 const port = process.env.PORT || 9000;
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-let router = require("./api/routes")();
+let router = require("./routes")();
 app.use("/api", router);
 app.use(function(req, res) {
   res.status(404).send({ url: req.originalUrl + " not found" });
