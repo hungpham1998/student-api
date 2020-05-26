@@ -1,9 +1,10 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   const learnclass = sequelize.define('learnclass', {
+    Id: DataTypes.BIGINT,
     Title: DataTypes.STRING,
     Note: DataTypes.STRING,
-    Department_Id: DataTypes.INTEGER
+    Specailize_Id: DataTypes.BIGINT
   }, {});
   learnclass.associate = function(models) {
     // associations can be defined here

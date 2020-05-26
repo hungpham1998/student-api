@@ -8,15 +8,18 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
+      Id: {
+        type: Sequelize.BIGINT
+      },
       Title: {
         type: Sequelize.STRING
       },
       Note: {
         type: Sequelize.STRING
       },
-      Department_Id: {
+      Specailize_Id: {
         type: Sequelize.INTEGER,
-        references: { model: 'departments', key: 'id' },
+        references: { model: 'speacilize', key: 'id' },
         onDelete: 'CASCADE',
         allowNull: false,
       },

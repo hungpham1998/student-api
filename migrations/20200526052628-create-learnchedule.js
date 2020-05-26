@@ -8,9 +8,6 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      Id: {
-        type: Sequelize.BIGINT
-      },
       Title: {
         type: Sequelize.STRING
       },
@@ -28,7 +25,7 @@ module.exports = {
       },
       Class_Id: {
         type: Sequelize.BIGINT,
-        references: { model: 'learnclasses', key: 'id' },
+        references: { model: 'learclasses', key: 'id' },
         onDelete: 'CASCADE',
         allowNull: false,
       },
