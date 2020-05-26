@@ -45,5 +45,6 @@ db.learnchedule = require('../models/learnchedule')(sequelize, Sequelize);
 db.pointstudent = require('../models/pointstudent')(sequelize, Sequelize);
 db.pointpractice = require('../models/pointpractice')(sequelize, Sequelize);
 
+sequelize.sync()
 
 module.exports = db;

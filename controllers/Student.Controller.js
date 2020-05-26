@@ -20,15 +20,13 @@ module.exports = {
             })
          .then((newstudent) => {
                 console.log(newstudent);
-                res.send({newstudent})
+             res.json({ newstudent })
             });
              
         }
-        catch {
-            (err) => {
+        catch (err){
                 res.status(500).send("Error -> " + err);
             }
-        }
     },
 
     getAll(req, res) {
@@ -60,9 +58,9 @@ module.exports = {
         }
     },
 
-    update (req, res) {
+    update(req, res) {
         const Id = req.params.Id;
-       
+        try {
             Student.update(
                 {
                     Frist_Name: req.body.Frist_Name,
@@ -71,21 +69,22 @@ module.exports = {
                     Adress: req.body.Adress,
                     Brithday: req.body.Brithday,
                     Note: req.body.Note,
-                    Code:  req.body.Code
+                    Code: req.body.Code
                 },
-                {returning: true, where: {id: id} }
+                { returning: true, where: { id: id } }
             )
-            .then((result)=>{
-                console.log("data was Updated");
-                res.status(200).send("updated successfully a Student with id = " + Id);
-            })
-            .catch((err)=>{
-                console.log("Error : ",err)
-            })
-       
+                .then((result) => {
+                    console.log("data was Updated");
+                    res.status(200).send("updated successfully a Student with id = " + Id).json(result)
+                })
+        }
+        catch (err) {
+            res.send("can not delete " + err);
+        }
+    
     },
      
-    delete: (req, res) => {
+    delete(req, res) {
         const Id = req.params.Id;
         try {
             if (Id) {

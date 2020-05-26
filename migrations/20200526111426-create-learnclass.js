@@ -8,9 +8,6 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      Id: {
-        type: Sequelize.BIGINT
-      },
       Title: {
         type: Sequelize.STRING
       },
@@ -22,7 +19,7 @@ module.exports = {
         references: { model: 'speacilize', key: 'id' },
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
-        allowNull: false,
+        allowNull: false
       },
       createdAt: {
         allowNull: false,

@@ -8,9 +8,6 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      Id: {
-        type: Sequelize.BIGINT
-      },
       UserName: {
         type: Sequelize.STRING
       },
@@ -34,14 +31,14 @@ module.exports = {
         references: { model: 'departments', key: 'id' },
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
-        allowNull: false,
+        allowNull: false
       },
-      Position_Id: {
+      Postion_Id: {
         type: Sequelize.BIGINT,
         references: { model: 'positions', key: 'id' },
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
-        allowNull: false,
+        allowNull: false
       },
       createdAt: {
         allowNull: false,
