@@ -25,19 +25,15 @@ module.exports = {
       },
       Subject_Id: {
         type: Sequelize.BIGINT,
+        references: { model: 'subjects', key: 'id' },
+        onDelete: 'CASCADE',
         allowNull: false,
-        references: {
-          model: 'subjects',
-          key: 'id'
-        }
       },
       Student_Id: {
         type: Sequelize.BIGINT,
+        references: { model: 'students', key: 'id' },
+        onDelete: 'CASCADE',
         allowNull: false,
-        references: {
-          model: 'students',
-          key: 'id'
-        }
       },
       createdAt: {
         allowNull: false,

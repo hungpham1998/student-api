@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
   department.associate = function(models) {
     // associations can be defined here
-    department.hasMany(models.account, {as:'accounts', foreignKey: 'Department_Id', targetKey: 'id'});
+    department.hasMany(models.account, {as:'accounts', foreignKey: 'Department_Id', sourceKey: 'id'});
   };
   return department;
 };

@@ -26,20 +26,15 @@ module.exports = {
       Brithday: {
         type: Sequelize.DATE
       },
-      Class_Id: {
-        type: Sequelize.BIGINT,
-        allowNull: false,
-        references: {
-          model: 'learnclasses',
-          key: 'id'
-        }
+      Code: {
+        type: Sequelize.STRING
       },
       createdAt: {
-        allowNull: false,
+        allowNull: true,
         type: Sequelize.DATE
       },
       updatedAt: {
-        allowNull: false,
+        allowNull: true,
         type: Sequelize.DATE
       }
     });

@@ -8,6 +8,9 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
+      Id: {
+        type: Sequelize.BIGINT
+      },
       Title: {
         type: Sequelize.STRING
       },
@@ -24,13 +27,34 @@ module.exports = {
         type: Sequelize.DATE
       },
       Class_Id: {
-        type: Sequelize.BIGINT
+        type: Sequelize.BIGINT,
+        references: { model: 'learnclasses', key: 'id' },
+        onDelete: 'CASCADE',
+        allowNull: false,
       },
       Subject_Id: {
-        type: Sequelize.BIGINT
+        type: Sequelize.BIGINT,
+        references: { model: 'subjects', key: 'id' },
+        onDelete: 'CASCADE',
+        allowNull: false,
       },
       Acount_Id: {
-        type: Sequelize.BIGINT
+        type: Sequelize.BIGINT,
+        references: { model: 'accounts', key: 'id' },
+        onDelete: 'CASCADE',
+        allowNull: false,
+      },
+      Student_Id: {
+        type: Sequelize.BIGINT,
+        references: { model: 'students', key: 'id' },
+        onDelete: 'CASCADE',
+        allowNull: false,
+      },
+      Year_Id: {
+        type: Sequelize.BIGINT,
+        references: { model: 'learnyears', key: 'id' },
+        onDelete: 'CASCADE',
+        allowNull: false,
       },
       createdAt: {
         allowNull: false,

@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
   position.associate = function(models) {
     // associations can be defined here
-    position.hasMany(models.account, { as:'accounts', foreignKey: 'Position_Id', targetKey: 'id' });
+    position.hasMany(models.account, { as:'accounts', foreignKey: 'Position_Id', sourceKey: 'id' });
   };
   return position;
 };

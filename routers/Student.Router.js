@@ -5,7 +5,6 @@ let student = require('../controllers/Student.Controller');
     .route("/student")
     .get(student.getAll)
     .post(student.create);
-
   router
     .route("/student/:Id")
     .get(student.getById)

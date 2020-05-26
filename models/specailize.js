@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
   specailize.associate = function(models) {
     // associations can be defined here
-    specailize.hasMany( models.learnclass, {as:'learnclasses', foreignKey: 'Specailize_Id', targetKey: 'id' });
+    specailize.hasMany( models.learnclass, {as:'learnclasses', foreignKey: 'Specailize_Id', sourceKey: 'id' });
   };
   return specailize;
 };

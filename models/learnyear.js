@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
   learnyear.associate = function(models) {
     // associations can be defined here
     learnyear.hasMany(models.subject, { as:'subjects',foreignKey: 'Year_Id', targetKey: 'id' });
-    learnyear.belongsToMany(models.pointpractice, {as:'year_rate' ,through: 'yearpractice', foreignKey: 'Year_Id', otherKey: 'Practice_Id' });
+    learnyear.belongsToMany(models.pointpractice, {as:'year_rate' ,through: 'yearpractices', foreignKey: 'Year_Id', otherKey: 'Practice_Id' });
   };
   return learnyear;
 };
