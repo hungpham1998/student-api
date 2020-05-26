@@ -1,22 +1,28 @@
 
-// const student = require('../models/student');
+// const Student = require('../models/student');
 const db = require('../config/db.config.js');
-const student = db.student;
-const learnclass = db.learnclass;
+const Student = db.student;
 const { Op } = require("sequelize");
+var moment = require('moment')
 module.exports = {
-    create: async (req, res) => {
-        try {                    
-            const student = await student.create({
-                Frist_Name: req.body.Fristname,
-                Last_Name: req.body.Lastname,
+    async store(req, res) {
+        console.log(req.body)
+        try {     
+            //let Code = `${req.body.Brithday.moment().format('YYYYMMDD')} + ${Last_Name}`
+            const newstudent = await Student.create({
+                Frist_Name: req.body.Frist_Name,
+                Last_Name: req.body.Last_Name,
                 Image: req.body.Image,
                 Adress: req.body.Adress,
                 Brithday: req.body.Brithday,
                 Note: req.body.Note,
+                Code:  req.body.Code
+            })
+         .then((newstudent) => {
+                console.log(newstudent);
+                res.send({newstudent})
             });
-
-            return res.status(200).send(student).redirect('/student');
+             
         }
         catch {
             (err) => {
@@ -25,53 +31,74 @@ module.exports = {
         }
     },
 
-    getAll: (req, res) => {
-        student.findAndCountAll()
-        .then(student => {
-            res.json({
-                student,
-                status: 200,
-            });
-        }).catch(err => {
+    getAll(req, res) {
+        try {
+            Student.findAndCountAll()
+                .then(Student => {
+                    res.json({
+                        Student,
+                        status: 200,
+                    });
+                })
+        }
+        catch(err) {
             res.status(500).send("Error -> " + err);
-        })
-            
+        }
     },
 
-    getById: (req, res) => {
-        if (req.params.Id) {
-            return student.findById(req.parmas.Id).then((err, student) => {
-                if (err) throw err;
-                res.json(student);
+    getById(req, res) {
+        try {
+            if (req.params.Id) {
+                Student.findById(req.parmas.Id).then((err, Student) => {
+                    if (err) throw err;
+                    res.json(Student);
+                })
+            }
+        }
+        catch (err) {
+            res.send('error  not data ' + req.params.Id + err);
+        }
+    },
+
+    update (req, res) {
+        const Id = req.params.Id;
+       
+            Student.update(
+                {
+                    Frist_Name: req.body.Frist_Name,
+                    Last_Name: req.body.Last_Name,
+                    Image: req.body.Image,
+                    Adress: req.body.Adress,
+                    Brithday: req.body.Brithday,
+                    Note: req.body.Note,
+                    Code:  req.body.Code
+                },
+                {returning: true, where: {id: id} }
+            )
+            .then((result)=>{
+                console.log("data was Updated");
+                res.status(200).send("updated successfully a Student with id = " + Id);
             })
-        }
-        return res.send('error  not data ' + req.params.Id);
-    },
-
-    update: (req, res) => {
-        let Id = req.params.Id;
-        let Class_Id = req.params.Class_Id;
-        if (Id) {
-          return  student.update({ Frist_Name: req.body.firstname, Last_Name: req.body.lastname, Brithday: req.body.brithday, Image: req.body.Image, Adress: req.body.adress,Class_Id:Class_Id },
-                { where: { Id: Id } }
-            ).then(() => {
-                res.status(200).send("updated successfully a student with id = " + Id);
-            });
-        }
-        res.status(500).send("can not update " + Id);
+            .catch((err)=>{
+                console.log("Error : ",err)
+            })
+       
     },
      
     delete: (req, res) => {
         const Id = req.params.Id;
-        if (Id) {
-           return  student.destroy({
-                where: { Id: Id }
-            }).then(() => {
-                res.status(200).send('deleted successfully a customer with id = ' + Id);
-            });
+        try {
+            if (Id) {
+                Student.destroy({
+                    where: { Id: Id }
+                }).then(() => {
+                    res.status(200).send('deleted successfully a customer with id = ' + Id);
+                });
+            }
         }
-        res.status(500).send("can not delete " + Id);
-
+        catch (err) {
+            res.status(500).send("can not delete " + err);
+        }
 
     }
 };

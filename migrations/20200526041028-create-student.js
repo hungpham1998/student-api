@@ -9,32 +9,41 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       Note: {
+        allowNull: false,
         type: Sequelize.STRING
+     
       },
       Last_Name: {
+        allowNull: false,
         type: Sequelize.STRING
+        
       },
       Frist_Name: {
+        allowNull: false,
         type: Sequelize.STRING
       },
       Image: {
+        allowNull: false,
         type: Sequelize.STRING
       },
       Adress: {
+        allowNull: false,
         type: Sequelize.STRING
       },
       Brithday: {
+        allowNull: false,
         type: Sequelize.DATE
       },
       Code: {
+        allowNull: false,
         type: Sequelize.STRING
       },
       createdAt: {
-        allowNull: true,
+        allowNull: false,
         type: Sequelize.DATE
       },
       updatedAt: {
-        allowNull: true,
+        allowNull: false,
         type: Sequelize.DATE
       }
     });
