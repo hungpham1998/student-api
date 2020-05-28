@@ -2,7 +2,7 @@
 module.exports = (sequelize, DataTypes) => {
   const learnchedule = sequelize.define('learnchedule', {
     Title: DataTypes.STRING,
-    NumberPeriods: DataTypes.INTEGER,
+    Semester: DataTypes.INTEGER,
     ClassRoom: DataTypes.STRING,
     StartTime: DataTypes.DATE,
     DuaDate: DataTypes.DATE,

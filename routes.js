@@ -3,7 +3,8 @@ const express = require("express");
 function eRoutes() {
   const router = express.Router();
   let student = require("./routers/Student.Router")(router);
-
+  let subject = require('./routers/Subject.Router')(router);
+  
   return router;
 }
 

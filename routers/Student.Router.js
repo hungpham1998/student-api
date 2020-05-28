@@ -6,7 +6,7 @@ const student = require('../controllers/Student.Controller');
     .get(student.getAll)
     .post(student.store)
   router
-    .route("/student/:Id")
+    .route("/student/:id")
     .get(student.getById)
     .put(student.update)
     .delete(student.delete)

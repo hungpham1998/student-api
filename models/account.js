@@ -15,7 +15,8 @@ module.exports = (sequelize, DataTypes) => {
     account.belongsTo(models.department, {as: 'departments', foreignKey: 'Department_Id', targetKey: 'id'});
     account.belongsTo(models.position, { as: 'positions' , foreignKey: 'Position_Id',targetKey: 'id' });
     account.belongsToMany(models.role, { as:'account', through: 'accountrole', foreignKey: 'Accout_Id', otherKey: 'Role_Id' });
-    account.belongsToMany(models.subject, {as:'learn_subject', through:'learnchedule',foreignKey: 'Account_Id', otherKey: 'Subject_Id' })
+    account.belongsToMany(models.subject, { as: 'teachers', through: 'learnchedule', foreignKey: 'Account_Id', otherKey: 'Subject_Id' });
+    //account.belongsToMany(models.subject, { as: 'rooms', through: 'learnchedule', foreignKey: 'Account_Id', otherKey: 'Class_Id' });
   };
   return account;
 };

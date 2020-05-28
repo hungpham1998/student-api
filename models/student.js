@@ -11,9 +11,9 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
   student.associate = function(models) {
     // associations can be defined here
-    student.hasMany(models.pointpracice, {as:'pointpracices', foreignKey: 'Student_Id', sourceKey: 'id' });
-    student.belongsToMany(model.learnclass, { as: 'learnchedule',through: 'learnchedule', foreignKey: 'Student_Id', otherKey: 'Class_Id' });
-    student.belongsToMany(models.subject, { as: 'learnchedule', through: 'learnchedule', otherKey: 'Subject_Id', foreignKey: 'Student_Id' });
+    //student.hasMany(models.pointpracice, {as:'pointpracices', foreignKey: 'Student_Id', sourceKey: 'id' });
+    student.belongsToMany(model.learnclass, { as: 'bookrooms',through: 'learnchedule', foreignKey: 'Student_Id', otherKey: 'Class_Id' });
+    student.belongsToMany(models.subject, { as: 'calendarlearns', through: 'learnchedule', otherKey: 'Subject_Id', foreignKey: 'Student_Id' });
   };
   return student;
 };

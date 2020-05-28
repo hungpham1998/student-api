@@ -16,7 +16,7 @@ module.exports = {
       },
       Specailize_Id: {
         type: Sequelize.INTEGER,
-        references: { model: 'speacilize', key: 'id' },
+        references: { model: 'speacilizes', key: 'id' },
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
         allowNull: false

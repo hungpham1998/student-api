@@ -17,7 +17,7 @@ module.exports = {
       Code: {
         type: Sequelize.STRING
       },
-      CreaditNuber: {
+      CreaditNumber: {
         type: Sequelize.INTEGER
       },
       createdAt: {

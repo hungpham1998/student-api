@@ -11,7 +11,7 @@ module.exports = {
       Title: {
         type: Sequelize.STRING
       },
-      NumberPeriods: {
+      Semester: {
         type: Sequelize.INTEGER
       },
       ClassRoom: {
