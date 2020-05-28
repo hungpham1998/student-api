@@ -7,7 +7,7 @@ const Op = db.Sequelize.Op;
 
 var jwt = require('jsonwebtoken');
 var bcrypt = require('bcryptjs');
-exports.module = {
+module.exports = {
 
     signup(req, res){
         account.create({
@@ -133,9 +133,9 @@ exports.module = {
         })
     },
 
-    update(req, res) {
+    async update(req, res) {
         const id = req.pramas.id;
-        account.update(
+       await account.update(
             {
                 Account: req.body.Account,
                 UserName: req.body.UserName,
@@ -144,8 +144,8 @@ exports.module = {
                 Image: req.body.Image,
                 Note: req.body.Note,
             },
-            { returning: true, where: { id: req.params.id } }
-        ).then(user => {
+            { returning: true, where: { id:id } }
+        ).then(account => {
             role.findAll({
             where: {
                 Title: {
@@ -153,7 +153,7 @@ exports.module = {
                 }
             }
             }).then(roles => {
-                user.setRoles(roles).then(() => {
+                account.setRoles(roles).then(() => {
                     res.send("account update successfully!");
                 });
             }).catch(err => {
@@ -164,10 +164,10 @@ exports.module = {
         })  
     },
 
-    getById(req, res) {
+  async  getById(req, res) {
         const id = req.params.id;
-        account.findById({
-            where: {id: req.params.id},
+       await account.findOne({
+            where: {id: id},
             attributes: ['Account', 'UserName', 'Mail','Image','Note'],
             include: [{
                 model: role,
@@ -176,10 +176,10 @@ exports.module = {
                     attributes: ['Account_Id', 'Role_Id'],
                 }
             }]
-        }).then(user => {
+        }).then(account => {
             res.status(200).json({
                 "description": "account",
-                "user": user
+                "account": account
             });
         }).catch(err => {
             res.status(500).json({
@@ -187,5 +187,43 @@ exports.module = {
                 "error": err
             });
         })
-    }
+    },
+ 
+    async getAll(req, res) {
+        await account.findAll({
+            attributes: ['Account', 'UserName', 'Mail','Image','Note'],
+            include: [{
+                model: role,
+                attributes: ['id', 'Title'],
+                through: {
+                    attributes: ['Account_Id', 'Role_Id'],
+                }
+            }]
+        }).then(account => {
+            res.status(200).json({
+                "description": "account",
+                "account": account
+            });
+        }).catch(err => {
+            res.status(500).json({
+                "description": "Can not access",
+                "error": err
+            });
+        })
+    },
+    
+    async delete(req, res) {
+        const Id = req.params.id;
+        try {
+             await Account.destroy({
+                where: {id: Id },
+                truncate: true
+            })
+            return res.send({  success: true,    stauts: 200,});
+        }
+        catch (err) {
+           return  res.status(500).send("can not delete " + err);
+        }
+
+    },
 };

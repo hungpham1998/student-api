@@ -56,13 +56,14 @@ module.exports = {
     },
 
     async getById(req, res) {
+        const Id = req.params.id;
         try {
             let student;
             if (req.params.id) {
-                 student = await Student.findAll(
+                 student = await Student.findOne(
                     {
                         where: {
-                            id: req.parmas.id
+                            id: Id
                         },
                         attributes: ['id','Title', 'Note', 'Department_Id'],
 		                include: [{
@@ -70,7 +71,7 @@ module.exports = {
                             duplicating: false,
                             required: true,
                             where: {
-                                Student_Id: req.parmas.id
+                                Student_Id: Id
                             },
                             attributes: ['Semester', 'Title', 'ClassRoom', 'StartTime', 'DuaDate'],
                             include: [
@@ -94,7 +95,7 @@ module.exports = {
                                     duplicating: false,
                                     required: true,
                                     where: {
-                                        Position_Id: db.Sequelize.col('departments.id')
+                                        Position_Id: db.Sequelize.col('positions.id')
                                     },
                                     attributes: ['Title','Note'],
                                     
@@ -141,13 +142,14 @@ module.exports = {
             return res.json({ student: student, status: 200, success: true });
         }
         catch (err) {
-            res.send('error  not data ' + req.params.id + err);
+            res.send('error  not data ' + Id + err);
         }
    
     },
 
     update(req, res) {
         try {
+            const Id = req.params.id;
             Student.update(
                 {
                     Frist_Name: req.body.Frist_Name,
@@ -158,7 +160,7 @@ module.exports = {
                     Note: req.body.Note,
                     Code: req.body.Code
                 },
-                { returning: true, where: { id: req.params.id } }
+                { returning: true, where: { id: Id } }
             )
             return res.json({status: 200,Student}); 
         }
@@ -169,19 +171,14 @@ module.exports = {
     },
      
    async  delete(req, res) {
-        const Id = req.params.Id;
-        try {
-            if (Id) {
-               await Student.destroy({
-                    where: { Id: req.params.id }
-                }).then(() => {
-                    res.send({ status: 200, 'deleted successfully a customer with id = ': Id });
-                });
-            }
-        }
-        catch (err) {
-            return res.send({ status: 500, "can not delete ": err });
-        }
+    try {
+            
+        await Student.destroy({ where: { id: req.params.id } })
+        return res.json({ message: "delete subject successfully!", status: 200 });
+    }
+    catch (err) {
+      return  res.send({ error, status: 400 })
+    }
 
     },
 

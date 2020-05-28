@@ -13,13 +13,12 @@ var moment = require('moment')
 module.exports = {
     async store(req, res) {
         try {
-            await Subject.create({
+            await Department.create({
                 Title: req.body.Title,
-                CreaditNumber: req.body.CreaditNumber,
-                Code: req.body.Code,
                 Note: req.body.Note,
-            }).then(subject => {
-                res.json({ subject, status: 200 })
+                IdParmanet: req.body.IdParmanet
+            }).then(Department => {
+                res.json({ Department, status: 200 })
             }).catch(err => {
                 res.send({ status: 500, "Error -> ": err });
             })
@@ -32,17 +31,17 @@ module.exports = {
 
     async getAll(req, res) {
         try {
-            let subject;
+            let department;
             if (req.body.page) {
-                subject = await Subject.findAll({
+                department = await Department.findAll({
                     offset: 15 * (req.body.page - 1),
                     limit: 15
                 });
             }
             else {
-                subject = await Subject.findAll();
+                department = await Department.findAll();
             }
-            return res.json({ subject: subject, status: 200, success: true });
+            return res.json({ department: department, status: 200, success: true });
             
         }
         catch (err) {
@@ -53,16 +52,15 @@ module.exports = {
    async update(req, res) {
        try {
            const Id = req.params.id;
-          await Subject.update(
+          await Department.update(
                 {
                     Title: req.body.Title,
-                    CreaditNumber: req.body.CreaditNumber,
                     Note: req.body.Note,
-                    Code: req.body.Code
+                    IdParmanet: req.body.IdParmanet
                 },
                 { returning: true, where: { id: Id } }
             )
-            return res.json({ Subject, staust: 200, "updated successfully a Student with id = ": Id } ); 
+            return res.json({ Department, staust: 200, "updated successfully a Student with id = ": Id } ); 
         }
         catch (err) {
             res.send({status: 500, "can not update " : Subject, "error": err });
@@ -73,7 +71,7 @@ module.exports = {
     async delete(req, res) {
         try {
             
-            await Subject.destroy({ where: { id: req.params.id } })
+            await Department.destroy({ where: { id: req.params.id } })
             return res.json({ message: "delete subject successfully!", status: 200 });
         }
         catch (err) {
@@ -83,7 +81,7 @@ module.exports = {
 
    async deleteAll(req, res) {
         try {
-             await Subject.destroy({
+             await Department.destroy({
                 where: {},
                 truncate: true
             })
@@ -96,13 +94,46 @@ module.exports = {
     },
 
     getById(req, res) {
-        Subject.findOne({
-            where: { id: req.params.id }
-        }).then(Subject => {
-            res.send(Subject);
+        const Id = req.params.id
+        Department.findOne({
+            where: { id: Id },
+            include: [{
+                model: Account, as: 'Employees',
+                duplicating: false,
+                required: true,
+                attributes: ['UserName', 'Maill', 'Image', 'Adress',],
+                where: { Department_Id: db.Sequelize.col('departments.id') },
+                include: [
+                    {
+                        model: Position, as: 'postions',
+                        duplicating: false,
+                        required: true,
+                        where: {
+                            Position_Id: db.Sequelize.col('positions.id')
+                        },
+                        attributes: ['Title', 'Note'], 
+                    }
+                ]
+            }]
+        }).then(Department => {
+            res.send(Department);
         }).catch(err => {
             res.status(500).send("Error -> " + err);
         })
+    },
 
-    }
+    async delete(req, res) {
+        const Id = req.params.id;
+        try {
+             await Department.destroy({
+                where: {id: Id },
+                truncate: true
+            })
+            return res.send({  success: true,    stauts: 200,});
+        }
+        catch (err) {
+           return  res.status(500).send("can not delete " + err);
+        }
+
+    },
 };

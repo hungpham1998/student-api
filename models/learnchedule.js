@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
     Year_Id: DataTypes.BIGINT
   }, {});
   learnchedule.associate = function(models) {
-    // associations can be defined here
+
   };
   return learnchedule;
 };
