@@ -6,7 +6,7 @@ const subject = require('../controllers/Subject.Controller');
     .get(subject.getAll)
     .post(subject.store)
   router
-    .route("/subject/:id")
+    .route('/subject/:id')
     .get(subject.getById)
     .put(subject.update)
     .delete(subject.delete)

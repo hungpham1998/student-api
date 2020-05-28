@@ -50,70 +50,58 @@ module.exports = {
         }
     },
    
-    update(req, res) {
+   async update(req, res) {
         try {
-            Subject.update(
+          await Subject.update(
                 {
-                    Title: req.body.Title,
-                    CreaditNumber: req.body.CreaditNumber,
-                    Code: req.body.Code,
+                    id: req.params.id,
+                    Frist_Name: req.body.Frist_Name,
+                    Last_Name: req.body.Last_Name,
+                    Image: req.body.Image,
+                    Adress: req.body.Adress,
+                    Brithday: req.body.Brithday,
                     Note: req.body.Note,
+                    Code: req.body.Code
                 },
                 { returning: true, where: { id: req.params.id } }
             )
-            return res.json({ Subject, success: true, stauts: 200 });
+            return res.json({ Subject, staust: 200, "updated successfully a Student with id = ": Id } ); 
         }
         catch (err) {
-            res.send("can not delete " + err);
+            res.send({status: 500, "can not update " : Subject, "error": err });
         }
     
     },
      
-    delete(req, res) {
-        const Id = req.params.Id;
+    async delete(req, res) {
         try {
-            if (Id) {
-                Subject.destroy({
-                    where: { id: req.params.id }
-                }).then(() => {
-                    res.json({
-                        success: true,
-                        stauts: 200,
-                    })
-                });
-            }
+            
+            await Subject.destroy({ where: { id: req.params.id } })
+            return res.json({ message: "delete subject successfully!", status: 200 });
         }
         catch (err) {
-            res.status(500).send("can not delete " + err);
+          return  res.send({ error, status: 400 })
         }
-
     },
 
-    deleteAll(req, res) {
+   async deleteAll(req, res) {
         try {
-             Subject.destroy({
+             await Subject.destroy({
                 where: {},
                 truncate: true
             })
-            .then(() => {
-                res.send({
-                    success: true,
-                    stauts: 200,
-                })
-            })
-            .catch((err)=>{
-                res.send(err);
-            })
-           
+            return res.send({  success: true,    stauts: 200,});
         }
         catch (err) {
-            res.status(500).send("can not delete " + err);
+           return  res.status(500).send("can not delete " + err);
         }
 
     },
 
     getById(req, res) {
-        Subject.findById(req.params.id).then(Subject => {
+        Subject.findAll({
+            where: { id: req.params.id }
+        }).then(Subject => {
             res.send(Subject);
         }).catch(err => {
             res.status(500).send("Error -> " + err);

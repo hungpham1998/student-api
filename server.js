@@ -14,11 +14,11 @@ app.use(function(req, res) {
   res.status(404).send({ url: req.originalUrl + " not found" });
 });
 
-const db = require('./config/db.config');
+// const db = require('./config/db.config');
 
-const role = db.role;
+// const role = db.role;
   
-// force: true will drop the table if it already exists
+
 // db.sequelize.sync({force: true}).then(() => {
 //   console.log('Drop and Resync with { force: true }');
 //   initial();

@@ -13,7 +13,6 @@ var moment = require('moment')
 module.exports = {
     async store(req, res) {
         try {     
-            //let Code = `${req.body.Brithday.moment().format('YYYYMMDD')} + ${Last_Name}`
             await Student.create({
                 Frist_Name: req.body.Frist_Name,
                 Last_Name: req.body.Last_Name,
@@ -57,114 +56,97 @@ module.exports = {
     },
 
     async getById(req, res) {
-    //     try {
-    //         let student;
-    //         if (req.params.id) {
-    //              student = await Student.findById(
-    //                 {
-    //                     where: {
-    //                         id: req.parmas.id
-    //                     },
-    //                     attributes: ['id','Title', 'Note', 'Department_Id'],
-	// 	                include: [{
-    //                         model: Learnchedule, as: 'learnchedule',
-    //                         duplicating: false,
-    //                         required: true,
-    //                         where: {
-    //                             Student_Id: req.parmas.id
-    //                         },
-    //                         attributes: ['Semester', 'Title', 'ClassRoom', 'StartTime', 'DuaDate'],
-    //                         include: [
-    //                             {
-    //                             model: Account,as: 'teachers',
-    //                             duplicating: false,
-    //                             required: true,
-    //                             attributes: ['UserName','Maill','Image'],
-    //                             include: [
-    //                             {
-    //                                 model: Department,as:'despartments',
-    //                                 duplicating: false,
-    //                                 required: true,
-    //                                 where: {
-    //                                     Department_Id: db.Sequelize.col('departments.id')
-    //                                 },
-    //                                 attributes: ['Title','Note'],
-    //                             },
-    //                             {
-    //                                 model: Position, as: 'postions',
-    //                                 duplicating: false,
-    //                                 required: true,
-    //                                 where: {
-    //                                     Position_Id: db.Sequelize.col('departments.id')
-    //                                 },
-    //                                 attributes: ['Title','Note'],
+        try {
+            let student;
+            if (req.params.id) {
+                 student = await Student.findAll(
+                    {
+                        where: {
+                            id: req.parmas.id
+                        },
+                        attributes: ['id','Title', 'Note', 'Department_Id'],
+		                include: [{
+                            model: Learnchedule, as: 'learnchedule',
+                            duplicating: false,
+                            required: true,
+                            where: {
+                                Student_Id: req.parmas.id
+                            },
+                            attributes: ['Semester', 'Title', 'ClassRoom', 'StartTime', 'DuaDate'],
+                            include: [
+                                {
+                                model: Account,as: 'teachers',
+                                duplicating: false,
+                                required: true,
+                                attributes: ['UserName','Maill','Image'],
+                                include: [
+                                {
+                                    model: Department,as:'despartments',
+                                    duplicating: false,
+                                    required: true,
+                                    where: {
+                                        Department_Id: db.Sequelize.col('departments.id')
+                                    },
+                                    attributes: ['Title','Note'],
+                                },
+                                {
+                                    model: Position, as: 'postions',
+                                    duplicating: false,
+                                    required: true,
+                                    where: {
+                                        Position_Id: db.Sequelize.col('departments.id')
+                                    },
+                                    attributes: ['Title','Note'],
                                     
-    //                                 }
-    //                             ]
-    //                             },
-    //                             {
-    //                                 model: Subject, as: 'trainings',
-    //                                 duplicating: false,
-    //                                 required: true,
-    //                                 where:{Subject_Id : db.Sequelize.col('subjects.id')},
-    //                                 attributes: ['Title','Note','Code','CreaditNumber'],
-    //                                 include: [{
-    //                                     model: Pointstudent, as: 'tablepoints',
-    //                                     duplicating: false,
-    //                                     required: true,
-    //                                     where: { Subject_Id: db.Sequelize.col('pointstudents.id') },
-    //                                     attributes: ['PontCC','PointKT1','PointKT2','PointGK','PointT']
-    //                                 }]
-    //                             },
-    //                             {
-    //                                 model: Learnclass, as: 'classlearns',
-    //                                 duplicating: false,
-    //                                 required: true,
-    //                                 where: {
-    //                                     Class_Id: db.Sequelize.col('learnclasses.id')
-    //                                 },
-    //                                 attributes: ['Code', 'Title', 'Note'],
-    //                                 include:[{
-    //                                     model: Specailize, as: 'specailizes',
-    //                                     duplicating: false,
-    //                                     required: true,
-    //                                     where: {
-    //                                         Specailize_Id: db.Sequelize.col('specailizes.id')
-    //                                     },
-    //                                     attributes: ['Code', 'Title', 'Note'],
-    //                                 }]
-                                    
-                            
-                                
-    //                         }]
-    //                     }
-    //                     ],
-    //                 }
-    //             )
-    //         }
-    //         return res.json({
-    //             student:student,
-    //             status: 200,
-    //             success:true
-    //             })
-    //     }
-    //     catch (err) {
-    //         res.send('error  not data ' + req.params.id + err);
-    //     }
-        await Student.findById({
-            where: {
-                id: req.pramas.id
+                                    }
+                                ]
+                                },
+                                {
+                                    model: Subject, as: 'trainings',
+                                    duplicating: false,
+                                    required: true,
+                                    where:{Subject_Id : db.Sequelize.col('subjects.id')},
+                                    attributes: ['Title','Note','Code','CreaditNumber'],
+                                    include: [{
+                                        model: Pointstudent, as: 'tablepoints',
+                                        duplicating: false,
+                                        required: true,
+                                        where: { Subject_Id: db.Sequelize.col('pointstudents.id') },
+                                        attributes: ['PontCC','PointKT1','PointKT2','PointGK','PointT']
+                                    }]
+                                },
+                                {
+                                    model: Learnclass, as: 'classlearns',
+                                    duplicating: false,
+                                    required: true,
+                                    where: {
+                                        Class_Id: db.Sequelize.col('learnclasses.id')
+                                    },
+                                    attributes: ['Code', 'Title', 'Note'],
+                                    include:[{
+                                        model: Specailize, as: 'specailizes',
+                                        duplicating: false,
+                                        required: true,
+                                        where: {
+                                            Specailize_Id: db.Sequelize.col('specailizes.id')
+                                        },
+                                        attributes: ['Code', 'Title', 'Note'],
+                                    }]
+                            }]
+                        }
+                        ],
+                    }
+                )
             }
+            return res.json({ student: student, status: 200, success: true });
         }
-     ).then(Student => {
-        res.send(Student);
-    }).catch(err => {
-        res.status(500).send("Error -> " + err);
-    })
+        catch (err) {
+            res.send('error  not data ' + req.params.id + err);
+        }
+   
     },
 
     update(req, res) {
-        const id = req.pramas.id;
         try {
             Student.update(
                 {
@@ -178,7 +160,7 @@ module.exports = {
                 },
                 { returning: true, where: { id: req.params.id } }
             )
-            return res.status(200).send("updated successfully a Student with id = " + Id).json(Student); 
+            return res.json({status: 200,Student}); 
         }
         catch (err) {
             res.send("can not delete " + err);
@@ -186,19 +168,19 @@ module.exports = {
     
     },
      
-    delete(req, res) {
+   async  delete(req, res) {
         const Id = req.params.Id;
         try {
             if (Id) {
-                Student.destroy({
-                    where: { Id: Id }
+               await Student.destroy({
+                    where: { Id: req.params.id }
                 }).then(() => {
-                    res.status(200).send('deleted successfully a customer with id = ' + Id);
+                    res.send({ status: 200, 'deleted successfully a customer with id = ': Id });
                 });
             }
         }
         catch (err) {
-            res.status(500).send("can not delete " + err);
+            return res.send({ status: 500, "can not delete ": err });
         }
 
     },
@@ -209,19 +191,10 @@ module.exports = {
                 where: {},
                 truncate: true
             })
-            .then(() => {
-                res.send({
-                    success: true,
-                    stauts: 200,
-                })
-            })
-            .catch((err)=>{
-                res.send(err);
-            })
-           
+           return  res.send({  success: true, stauts: 200});
         }
         catch (err) {
-            res.status(500).send("can not delete " + err);
+            return res.send({ status: 500, "can not delete ": err });
         }
 
     }
