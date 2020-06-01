@@ -3,11 +3,13 @@ const express = require("express");
 const bodyParser = require("body-parser");
 require("dotenv").load();
 const app = express();
+var cors = require('cors')
 const port = process.env.PORT || 9000;
 app.use(bodyParser.urlencoded({ extended: false  }));
 app.use(bodyParser.json());
 app.use(express.json());
 
+app.use(cors())
 let router = require('./routes')();
 app.use("/api", router);
 app.use(function(req, res) {

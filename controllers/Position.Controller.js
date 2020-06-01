@@ -13,13 +13,11 @@ var moment = require('moment')
 module.exports = {
     async store(req, res) {
         try {
-            await Subject.create({
+            await Position.create({
                 Title: req.body.Title,
-                CreaditNumber: req.body.CreaditNumber,
-                Code: req.body.Code,
-                Note: req.body.Note,
-            }).then(subject => {
-                res.json({ subject, status: 200 })
+                Note: req.body.Note
+            }).then(Position => {
+                res.json({ Position, status: 200 })
             }).catch(err => {
                 res.send({ status: 500, "Error -> ": err });
             })
@@ -32,17 +30,17 @@ module.exports = {
 
     async getAll(req, res) {
         try {
-            let subject;
+            let Position;
             if (req.body.page) {
-                subject = await Subject.findAll({
+                Position = await Position.findAll({
                     offset: 15 * (req.body.page - 1),
                     limit: 15
                 });
             }
             else {
-                subject = await Subject.findAll();
+                Position = await Position.findAll();
             }
-            return res.json({ subject: subject, status: 200, success: true });
+            return res.json({ Position: Position, status: 200, success: true });
             
         }
         catch (err) {
@@ -53,19 +51,17 @@ module.exports = {
    async update(req, res) {
        try {
            const Id = req.params.id;
-          await Subject.update(
+          await Position.update(
                 {
                     Title: req.body.Title,
-                    CreaditNumber: req.body.CreaditNumber,
-                    Note: req.body.Note,
-                    Code: req.body.Code
+                    Note: req.body.Note
                 },
                 { returning: true, where: { id: Id } }
             )
-            return res.json({ Subject, staust: 200, "updated successfully a Student with id = ": Id } ); 
+            return res.json({ Position, staust: 200, "updated successfully a Position with id = ": Id } ); 
         }
         catch (err) {
-            res.send({status: 500, "can not update " : Subject, "error": err });
+            res.send({status: 500, "can not update " : Position, "error": err });
         }
     
     },
@@ -73,8 +69,8 @@ module.exports = {
     async delete(req, res) {
         try {
             
-            await Subject.destroy({ where: { id: req.params.id } })
-            return res.json({ message: "delete subject successfully!", status: 200 });
+            await Position.destroy({ where: { id: req.params.id } })
+            return res.json({ message: "delete Position successfully!", status: 200 });
         }
         catch (err) {
           return  res.send({ error, status: 400 })
@@ -83,7 +79,7 @@ module.exports = {
 
    async deleteAll(req, res) {
         try {
-             await Subject.destroy({
+             await Position.destroy({
                 where: {},
                 truncate: true
             })
@@ -96,10 +92,10 @@ module.exports = {
     },
 
     getById(req, res) {
-        Subject.findOne({
+        Specailize.findOne({
             where: { id: req.params.id }
-        }).then(Subject => {
-            res.send(Subject);
+        }).then(Specailize => {
+            res.send(Specailize);
         }).catch(err => {
             res.status(500).send("Error -> " + err);
         })

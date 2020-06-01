@@ -16,4 +16,6 @@ const subject = require('../controllers/Subject.Controller');
     .delete(subject.delete)
     // .put([authJwt.verifyToken, authJwt.isTeacher], subject.update)
     // .delete([authJwt.verifyToken, authJwt.isPmOrAdmin], subject.delete)
+
+  
 };
