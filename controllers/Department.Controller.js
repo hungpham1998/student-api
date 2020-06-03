@@ -122,18 +122,4 @@ module.exports = {
         })
     },
 
-    async delete(req, res) {
-        const Id = req.params.id;
-        try {
-             await Department.destroy({
-                where: {id: Id },
-                truncate: true
-            })
-            return res.send({  success: true,    stauts: 200,});
-        }
-        catch (err) {
-           return  res.status(500).send("can not delete " + err);
-        }
-
-    },
 };

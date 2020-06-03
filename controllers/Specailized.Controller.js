@@ -7,18 +7,18 @@ const Learnclass = db.learnclass;
 const Pointstudent = db.pointstudent;
 const Department = db.department;
 const Position = db.position;
-const Specailize = db.specailize;
+const Specailized = db.specailized;
 const { Op } = require("sequelize");
 var moment = require('moment')
 module.exports = {
     async store(req, res) {
         try {
-            await Specailize.create({
+            await Specailized.create({
                 Title: req.body.Title,
                 Code: req.body.Code,
                 Note: req.body.Note,
-            }).then(subject => {
-                res.json({ subject, status: 200 })
+            }).then(Specailized => {
+                res.json({ Specailized, status: 200 })
             }).catch(err => {
                 res.send({ status: 500, "Error -> ": err });
             })
@@ -31,17 +31,17 @@ module.exports = {
 
     async getAll(req, res) {
         try {
-            let specailize;
+            let specailized;
             if (req.body.page) {
-                specailize = await Specailize.findAll({
+                specailized = await Specailized.findAll({
                     offset: 15 * (req.body.page - 1),
                     limit: 15
                 });
             }
             else {
-                specailize = await Specailize.findAll();
+                specailized = await Specailized.findAll();
             }
-            return res.json({ specailize: specailize, status: 200, success: true });
+            return res.json({ specailized: specailized, status: 200, success: true });
             
         }
         catch (err) {
@@ -52,7 +52,7 @@ module.exports = {
    async update(req, res) {
        try {
            const Id = req.params.id;
-          await Specailize.update(
+          await Specailized.update(
                 {
                     Title: req.body.Title,
                     Note: req.body.Note,
@@ -71,7 +71,7 @@ module.exports = {
     async delete(req, res) {
         try {
             
-            await Specailize.destroy({ where: { id: req.params.id } })
+            await Specailized.destroy({ where: { id: req.params.id } })
             return res.json({ message: "delete Specailize successfully!", status: 200 });
         }
         catch (err) {
@@ -81,7 +81,7 @@ module.exports = {
 
    async deleteAll(req, res) {
         try {
-             await Specailize.destroy({
+             await Specailized.destroy({
                 where: {},
                 truncate: true
             })
@@ -94,10 +94,10 @@ module.exports = {
     },
 
     getById(req, res) {
-        Specailize.findOne({
+        Specailized.findOne({
             where: { id: req.params.id }
-        }).then(Specailize => {
-            res.send(Specailize);
+        }).then(Specailized=> {
+            res.send(Specailized);
         }).catch(err => {
             res.status(500).send("Error -> " + err);
         })

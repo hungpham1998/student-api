@@ -23,7 +23,7 @@ module.exports = {
       Mail: {
         type: Sequelize.STRING
       },
-      Adrees: {
+      Address: {
         type: Sequelize.STRING
       },
       Department_Id: {
