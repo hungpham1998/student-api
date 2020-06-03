@@ -10,14 +10,24 @@ const Position = db.position;
 const Specailize = db.specailize;
 const { Op } = require("sequelize");
 var moment = require('moment')
+
 module.exports = {
     async store(req, res) {
         try {
-            await LearnYear.create({
+            await Learnchedule.create({
                 Title: req.body.Title,
+                Semester: req.body.Semester,
+                ClassRoom: req.body.ClassRoom,
+                StartTime: req.body.StartTime,
+                DuaDate: req.body.DuaDate,
+                Class_Id: req.body.Class_Id,
+                Subject_Id: req.body.Subject_Id,
+                Acount_Id: req.body.Acount_Id,
+                Student_Id: req.body.Student_Id,
+                Year_Id: req.body.Year_Id,
                 Note: req.body.Note
-            }).then(LearnYear => {
-                res.json({ LearnYear, status: 200 })
+            }).then(Learnchedule => {
+                res.json({ Learnchedule, status: 200 })
             }).catch(err => {
                 res.send({ status: 500, "Error -> ": err });
             })
@@ -30,17 +40,17 @@ module.exports = {
 
     async getAll(req, res) {
         try {
-            let LearnYear;
+            let learnchedule;
             if (req.body.page) {
-                LearnYear = await LearnYear.findAll({
+                learnchedule = await Learnchedule.findAll({
                     offset: 15 * (req.body.page - 1),
                     limit: 15
                 });
             }
             else {
-                LearnYear = await LearnYear.findAll();
+                learnchedule = await Learnchedule.findAll();
             }
-            return res.json({ LearnYear: LearnYear, status: 200, success: true });
+            return res.json({ learnchedule: Learnchedule, status: 200, success: true });
             
         }
         catch (err) {
@@ -51,17 +61,26 @@ module.exports = {
    async update(req, res) {
        try {
            const Id = req.params.id;
-          await LearnYear.update(
+          await Learnchedule.update(
                 {
                     Title: req.body.Title,
+                    Semester: req.body.Semester,
+                    ClassRoom: req.body.ClassRoom,
+                    StartTime: req.body.StartTime,
+                    DuaDate: req.body.DuaDate,
+                    Class_Id: req.body.Class_Id,
+                    Subject_Id: req.body.Subject_Id,
+                    Acount_Id: req.body.Acount_Id,
+                    Student_Id: req.body.Student_Id,
+                    Year_Id: req.body.Year_Id,
                     Note: req.body.Note
                 },
                 { returning: true, where: { id: Id } }
             )
-            return res.json({ LearnYear, staust: 200, "updated successfully a LearnYear with id = ": Id } ); 
+            return res.json({ Learnchedule, staust: 200, "updated successfully a LearnYear with id = ": Id } ); 
         }
         catch (err) {
-            res.send({status: 500, "can not update " : LearnYear, "error": err });
+            res.send({status: 500, "can not update " : Learnchedule, "error": err });
         }
     
     },
@@ -69,8 +88,8 @@ module.exports = {
     async delete(req, res) {
         try {
             
-            await LearnYear.destroy({ where: { id: req.params.id } })
-            return res.json({ message: "delete LearnYear successfully!", status: 200 });
+            await Learnchedule.destroy({ where: { id: req.params.id } })
+            return res.json({ message: "delete Learnchedule successfully!", status: 200 });
         }
         catch (err) {
           return  res.send({ error, status: 400 })
@@ -79,7 +98,7 @@ module.exports = {
 
    async deleteAll(req, res) {
         try {
-             await LearnYear.destroy({
+             await Learnchedule.destroy({
                 where: {},
                 truncate: true
             })
@@ -92,10 +111,10 @@ module.exports = {
     },
 
     getById(req, res) {
-        LearnYear.findOne({
+        Learnchedule.findOne({
             where: { id: req.params.id }
-        }).then(LearnYear => {
-            res.send(LearnYear);
+        }).then(Learnchedule => {
+            res.send(Learnchedule);
         }).catch(err => {
             res.status(500).send("Error -> " + err);
         })

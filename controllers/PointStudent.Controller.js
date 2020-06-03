@@ -13,11 +13,16 @@ var moment = require('moment')
 module.exports = {
     async store(req, res) {
         try {
-            await LearnYear.create({
-                Title: req.body.Title,
-                Note: req.body.Note
-            }).then(LearnYear => {
-                res.json({ LearnYear, status: 200 })
+            await Pointstudent.create({
+                PontCC: req.body.PontCC,
+                PointKT1: req.body.PointKT1,
+                PointKT2: req.body.PointKT2,
+                PointGK: req.body.PointGK,
+                PointT: req.body.PointT,
+                Subject_Id: req.body.Subject_Id,
+                Student_Id: req.body.Student_Id
+            }).then(Pointstudent => {
+                res.json({ Pointstudent, status: 200 })
             }).catch(err => {
                 res.send({ status: 500, "Error -> ": err });
             })
@@ -30,17 +35,17 @@ module.exports = {
 
     async getAll(req, res) {
         try {
-            let LearnYear;
+            let pointstudent;
             if (req.body.page) {
-                LearnYear = await LearnYear.findAll({
+                pointstudent = await Pointstudent.findAll({
                     offset: 15 * (req.body.page - 1),
                     limit: 15
                 });
             }
             else {
-                LearnYear = await LearnYear.findAll();
+                pointstudent = await Pointstudent.findAll();
             }
-            return res.json({ LearnYear: LearnYear, status: 200, success: true });
+            return res.json({ pointstudent: pointstudent, status: 200, success: true });
             
         }
         catch (err) {
@@ -51,14 +56,19 @@ module.exports = {
    async update(req, res) {
        try {
            const Id = req.params.id;
-          await LearnYear.update(
+          await Pointstudent.update(
                 {
-                    Title: req.body.Title,
-                    Note: req.body.Note
+                    PontCC: req.body.PontCC,
+                    PointKT1: req.body.PointKT1,
+                    PointKT2: req.body.PointKT2,
+                    PointGK: req.body.PointGK,
+                    PointT: req.body.PointT,
+                    Subject_Id: req.body.Subject_Id,
+                    Student_Id: req.body.Student_Id
                 },
                 { returning: true, where: { id: Id } }
             )
-            return res.json({ LearnYear, staust: 200, "updated successfully a LearnYear with id = ": Id } ); 
+            return res.json({ Pointstudent, staust: 200, "updated successfully a LearnYear with id = ": Id } ); 
         }
         catch (err) {
             res.send({status: 500, "can not update " : LearnYear, "error": err });
@@ -69,8 +79,8 @@ module.exports = {
     async delete(req, res) {
         try {
             
-            await LearnYear.destroy({ where: { id: req.params.id } })
-            return res.json({ message: "delete LearnYear successfully!", status: 200 });
+            await Pointstudent.destroy({ where: { id: req.params.id } })
+            return res.json({ message: "delete Pointstudent successfully!", status: 200 });
         }
         catch (err) {
           return  res.send({ error, status: 400 })
@@ -79,7 +89,7 @@ module.exports = {
 
    async deleteAll(req, res) {
         try {
-             await LearnYear.destroy({
+             await Pointstudent.destroy({
                 where: {},
                 truncate: true
             })
@@ -92,10 +102,10 @@ module.exports = {
     },
 
     getById(req, res) {
-        LearnYear.findOne({
+        Pointstudent.findOne({
             where: { id: req.params.id }
-        }).then(LearnYear => {
-            res.send(LearnYear);
+        }).then(Pointstudent => {
+            res.send(Pointstudent);
         }).catch(err => {
             res.status(500).send("Error -> " + err);
         })

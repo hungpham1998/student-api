@@ -9,6 +9,10 @@ function eRoutes() {
   const specailize = require('./routers/Specailize.Router')(router);
   const position = require('./routers/Position.Router')(router);
   const learnyear = require('./routers/LearnYear.Router')(router);
+  const learnclass = require('./routers/LearnClass.Router')(router);
+  const pointstudent = require('./routers/PointStudent.Router')(router);
+  const pointpractice = require('./routers/PointPractice.Router')(router);
+  const learnchudule = require('./routers/LearnChudule.Router')(router);
   return router;
 }
 
