@@ -5,15 +5,15 @@ module.exports = {
       Account_Id: {
         type: DataTypes.INTEGER,
         references: { model: 'accounts', key: 'id' },
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE',
+        // onUpdate: 'CASCADE',
+        // onDelete: 'CASCADE',
         allowNull: false,
       },
       Role_Id: {
         type: DataTypes.INTEGER,
         references: { model: 'roles', key: 'id' },
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE',
+        // onUpdate: 'CASCADE',
+        // onDelete: 'CASCADE',
         allowNull: false,
       },
       createdAt: {

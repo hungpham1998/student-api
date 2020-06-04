@@ -14,8 +14,8 @@ module.exports = {
       Student_Id: {
         type: Sequelize.BIGINT,
         references: { model: 'students', key: 'id' },
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE',
+        // onUpdate: 'CASCADE',
+        // onDelete: 'CASCADE',
         allowNull: false,
       },
       Note: {
@@ -24,8 +24,8 @@ module.exports = {
       Yearn_Id: {
         type: Sequelize.BIGINT,
         references: { model: 'learnyeares', key: 'id' },
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE',
+        // onUpdate: 'CASCADE',
+        // onDelete: 'CASCADE',
         allowNull: false,
       },
       createdAt: {

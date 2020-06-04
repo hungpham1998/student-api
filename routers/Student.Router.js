@@ -10,7 +10,7 @@ const student = require('../controllers/Student.Controller');
     // .delete([authJwt.verifyToken, authJwt.isAdmin], student.deleteAll)
   router
     .route("/student/:id")
-    .get(student.getById)
+    //.get(student.getById)
     .put(student.update)
     .delete(student.delete)
     // .put([authJwt.verifyToken], student.update)
