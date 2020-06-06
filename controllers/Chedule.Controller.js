@@ -1,6 +1,6 @@
 const db = require('../config/db.config.js');
 const Student = db.student;
-const Learnchedule = db.learnchedule;
+const Chedule = db.chedule;
 const Subject = db.subject;
 const Account = db.account;
 const LearnYear = db.learnyear;
@@ -14,17 +14,17 @@ var moment = require('moment')
 module.exports = {
     async store(req, res) {
         try {
-            await Learnchedule.create({
+            await Chedule.create({
                 Title: req.body.Title,
                 Semester: req.body.Semester,
                 ClassRoom: req.body.ClassRoom,
                 StartTime: req.body.StartTime,
                 DuaDate: req.body.DuaDate,
-                Class_Id: req.body.Class_Id,
-                Subject_Id: req.body.Subject_Id,
-                Acount_Id: req.body.Acount_Id,
-                Student_Id: req.body.Student_Id,
-                Year_Id: req.body.Year_Id,
+                ClassId: req.body.ClassId,
+                SubjectId: req.body.SubjectId,
+                AcountId: req.body.AcountId,
+                StudentId: req.body.StudentId,
+                YearId: req.body.YearId,
                 Note: req.body.Note
             }).then(Learnchedule => {
                 res.json({ Learnchedule, status: 200 })
@@ -40,17 +40,17 @@ module.exports = {
 
     async getAll(req, res) {
         try {
-            let learnchedule;
+            let Chedule;
             if (req.body.page) {
-                learnchedule = await Learnchedule.findAll({
+                Chedule = await Chedule.findAll({
                     offset: 15 * (req.body.page - 1),
                     limit: 15
                 });
             }
             else {
-                learnchedule = await Learnchedule.findAll();
+                Chedule = await Chedule.findAll();
             }
-            return res.json({ learnchedule: Learnchedule, status: 200, success: true });
+            return res.json({ Chedule: Chedule, status: 200, success: true });
             
         }
         catch (err) {
@@ -61,26 +61,26 @@ module.exports = {
    async update(req, res) {
        try {
            const Id = req.params.id;
-          await Learnchedule.update(
+          await Chedule.update(
                 {
                     Title: req.body.Title,
                     Semester: req.body.Semester,
                     ClassRoom: req.body.ClassRoom,
                     StartTime: req.body.StartTime,
                     DuaDate: req.body.DuaDate,
-                    Class_Id: req.body.Class_Id,
-                    Subject_Id: req.body.Subject_Id,
-                    Acount_Id: req.body.Acount_Id,
-                    Student_Id: req.body.Student_Id,
-                    Year_Id: req.body.Year_Id,
+                    ClassId: req.body.ClassId,
+                    SubjectId: req.body.SubjectId,
+                    AcountId: req.body.AcountId,
+                    StudentId: req.body.StudentId,
+                    YearId: req.body.YearId,
                     Note: req.body.Note
                 },
                 { returning: true, where: { id: Id } }
             )
-            return res.json({ Learnchedule, staust: 200, "updated successfully a LearnYear with id = ": Id } ); 
+            return res.json({ Chedule, staust: 200, "updated successfully a Chedule with id = ": Id } ); 
         }
         catch (err) {
-            res.send({status: 500, "can not update " : Learnchedule, "error": err });
+            res.send({status: 500, "can not update " : Chedule, "error": err });
         }
     
     },
@@ -88,8 +88,8 @@ module.exports = {
     async delete(req, res) {
         try {
             
-            await Learnchedule.destroy({ where: { id: req.params.id } })
-            return res.json({ message: "delete Learnchedule successfully!", status: 200 });
+            await Chedule.destroy({ where: { Id: req.params.Id } })
+            return res.json({ message: "delete Chedule successfully!", status: 200 });
         }
         catch (err) {
           return  res.send({ error, status: 400 })
@@ -98,7 +98,7 @@ module.exports = {
 
    async deleteAll(req, res) {
         try {
-             await Learnchedule.destroy({
+             await Chedule.destroy({
                 where: {},
                 truncate: true
             })
@@ -111,10 +111,10 @@ module.exports = {
     },
 
     getById(req, res) {
-        Learnchedule.findOne({
-            where: { id: req.params.id }
-        }).then(Learnchedule => {
-            res.send(Learnchedule);
+        Chedule.findOne({
+            where: { Id: req.params.Id }
+        }).then(Chedule => {
+            res.send(Chedule);
         }).catch(err => {
             res.status(500).send("Error -> " + err);
         })

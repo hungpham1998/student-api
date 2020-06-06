@@ -7,6 +7,6 @@ const account = require('../controllers/Account.Controller');
     .route("/auth/signin")
     .post(account.signin);
   router
-    .route("/api/auth/signup")
+    .route("/auth/signup")
     .post([verifySignUp.checkDuplicateUserNameOrEmail, verifySignUp.checkRolesExisted], account.signup);
 };

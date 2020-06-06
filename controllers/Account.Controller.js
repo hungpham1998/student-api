@@ -50,7 +50,7 @@ module.exports = {
                 return res.status(401).send({ auth: false, accessToken: null, reason: "Invalid Password!" });
             }
             
-            var token = jwt.sign({ id: account.id }, config.secret, {
+            var token = jwt.sign({ id: account.Id }, config.secret, {
                 expiresIn: 86400 // expires in 24 hours
             });
             
@@ -63,13 +63,13 @@ module.exports = {
 
     userContent(req, res){
         account.findOne({
-            where: {id: req.Account_Id},
+            where: {id: req.accountId},
             attributes: ['Account', 'UserName', 'Mail'],
             include: [{
                 model: role,
                 attributes: ['id', 'Title'],
                 through: {
-                    attributes: ['Account_Id', 'Role_Id'],
+                    attributes: ['accountId', 'roleId'],
                 }
             }]
         }).then(user => {
@@ -167,13 +167,13 @@ module.exports = {
   async  getById(req, res) {
         const id = req.params.id;
        await account.findOne({
-            where: {id: id},
+            where: {Id: id},
             attributes: ['Account', 'UserName', 'Mail','Image','Note'],
             include: [{
                 model: role,
-                attributes: ['id', 'Title'],
+                attributes: ['Id', 'Title'],
                 through: {
-                    attributes: ['Account_Id', 'Role_Id'],
+                    attributes: ['acountId', 'roleId'],
                 }
             }]
         }).then(account => {
@@ -191,12 +191,10 @@ module.exports = {
  
     async getAll(req, res) {
         await account.findAll({
-            attributes: ['Account', 'UserName', 'Mail','Image','Note'],
             include: [{
                 model: role,
-                attributes: ['id', 'Title'],
                 through: {
-                    attributes: ['Account_Id', 'Role_Id'],
+                    attributes: ['accountId', 'roleId'],
                 }
             }]
         }).then(account => {

@@ -12,7 +12,7 @@ function eRoutes() {
   const learnclass = require('./routers/LearnClass.Router')(router);
   const pointstudent = require('./routers/PointStudent.Router')(router);
   const pointpractice = require('./routers/PointPractice.Router')(router);
-  const learnchudule = require('./routers/LearnChudule.Router')(router);
+  const chedule = require('./routers/Chedule.Router')(router);
   return router;
 }
 

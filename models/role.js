@@ -1,6 +1,11 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   const role = sequelize.define('role', {
+    Id: {
+      type: DataTypes.UUID,
+      primaryKey: true,
+      defaultValue: DataTypes.UUIDV4
+    },
     Note: DataTypes.STRING,
     Title: DataTypes.STRING
   }, {
@@ -8,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
   });
   role.associate = function(models) {
     // associations can be defined here
-    role.belongsToMany(models.account, {as:'role', through: 'accountrole', foreignKey: 'Role_Id', otherKey: 'Accout_Id'});
+    //role.belongsToMany(models.account, {as:'role', through: 'accountrole', foreignKey: 'Role_Id', otherKey: 'Accout_Id'});
   };
   return role;
 };

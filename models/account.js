@@ -1,22 +1,35 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-  const account = sequelize.define('account', {
+  const account = sequelize.define('accounts', {
+    Id: {
+      type: DataTypes.UUID,
+      primaryKey: true,
+      defaultValue: DataTypes.UUIDV4,
+
+    },
     UserName: DataTypes.STRING,
     Account: DataTypes.STRING,
     PassWord: DataTypes.STRING,
     Image: DataTypes.STRING,
     Mail: DataTypes.STRING,
     Address: DataTypes.STRING,
-    Department_Id: DataTypes.BIGINT,
-    Postion_Id: DataTypes.BIGINT
+    departmentId: {
+      type: DataTypes.UUID,
+      references: {
+        model: 'departments',
+        key: 'Id',
+      },
+    },
+    positionId: {
+      type: DataTypes.UUID,
+      references: {
+        model: 'positions',
+        key: 'Id',
+      },
+    }
   }, {});
   account.associate = function(models) {
-    // associations can be defined here
-    account.belongsTo(models.department, {as: 'departments', foreignKey: 'Department_Id', targetKey: 'id'});
-    account.belongsTo(models.position, { as: 'positions' , foreignKey: 'Position_Id',targetKey: 'id' });
-    account.belongsToMany(models.role, { as:'account', through: 'accountrole', foreignKey: 'Accout_Id', otherKey: 'Role_Id' });
-    account.belongsToMany(models.subject, { as: 'teachers', through: 'learnchedule', foreignKey: 'Account_Id', otherKey: 'Subject_Id' });
-    account.belongsToMany(models.subject, { as: 'rooms', through: 'learnchedule', foreignKey: 'Account_Id', otherKey: 'Class_Id' });
+   
   };
   return account;
 };

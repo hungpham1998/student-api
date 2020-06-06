@@ -1,6 +1,11 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-  const subject = sequelize.define('subject', {
+  const subject = sequelize.define('subjects', {
+    Id: {
+      type: DataTypes.UUID,
+      primaryKey: true,
+      defaultValue: DataTypes.UUIDV4
+    },
     Note: DataTypes.STRING,
     Title: DataTypes.STRING,
     Code: DataTypes.STRING,
@@ -8,11 +13,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
   subject.associate = function(models) {
     // associations can be defined here
-    subject.belongsToMany(models.student, { as: 'trainnigs', through: 'learnchedule', otherKey: 'Student_Id', foreignKey: 'Subject_Id' });
-    subject.belongsToMany(models.account, { as:'learn_teachers',through: 'learnchedule', foreignKey: 'Subject_Id', otherKey: 'Account_Id' });
-    subject.belongsToMany(models.learnclass, { as: 'learnchedule',through: 'learnchedule', otherKey: 'Class_Id', foreignKey: 'Subject_Id' });
-    subject.belongsTo(models.learnyear, { foreignKey: 'Subject_Id', as: 'learnyears' });
-    subject.hasOne(models.pointstudent, {foreignKey: 'Subject_Id', as: 'pointstudents',targetKey: 'id'});
+
   };
   return subject;
 };

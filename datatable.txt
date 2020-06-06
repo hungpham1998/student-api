@@ -9,61 +9,61 @@ SET time_zone = "+00:00";
 CREATE DATABASE IF NOT EXISTS `student` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 USE student;
 
-DROP TABLE IF EXISTS `accounts`;
-CREATE TABLE `accounts` (
+DROP TABLE IF EXISTS `account`;
+CREATE TABLE `account` (
   `Id` bigint(20) NOT NULL,
   `UserName` varchar(250) DEFAULT NULL,
   `Account` varchar(250) DEFAULT NULL,
   `PassWord` varchar(250) DEFAULT NULL,
   `Image` varchar(250) DEFAULT NULL,
-  `Department_Id` bigint(20) DEFAULT NULL,
-  `Position_Id` bigint(20) DEFAULT NULL,
+  `DepartmentId` bigint(20) DEFAULT NULL,
+  `PositionId` bigint(20) DEFAULT NULL,
   `Mail` varchar(250) DEFAULT NULL,
   `Address` varchar(250) DEFAULT NULL
 ) ;
 
-DROP TABLE IF EXISTS `accountroles`;
-CREATE TABLE `accountroles` (
-  `Id_Acount` bigint(20) DEFAULT NULL,
-  `Id_Role` bigint(20) DEFAULT NULL,
+DROP TABLE IF EXISTS `accountrole`;
+CREATE TABLE `accountrole` (
+  `AccountId` bigint(20) DEFAULT NULL,
+  `RoleId` bigint(20) DEFAULT NULL,
   `Id` bigint(20) NOT NULL
 ) ;
 
-DROP TABLE IF EXISTS `depratments`;
-CREATE TABLE `depratments` (
+DROP TABLE IF EXISTS `depratment`;
+CREATE TABLE `depratment` (
   `Id` bigint(20) NOT NULL,
   `IdPrarent` bigint(20) DEFAULT NULL,
   `Title` varchar(250) DEFAULT NULL,
   `Note` varchar(250) NOT NULL
 ) ;
 
-DROP TABLE IF EXISTS `learnclasses`;
-CREATE TABLE `learnclasses` (
+DROP TABLE IF EXISTS `learnclass`;
+CREATE TABLE `learnclass` (
   `Id` bigint(20) NOT NULL,
   `Title` varchar(250) DEFAULT NULL,
   `Code` varchar(250) DEFAULT NULL,
-  `Specialize_Id` bigint(20) DEFAULT NULL,
+  `SpecializedId` bigint(20) DEFAULT NULL,
   `Note` varchar(250) NOT NULL
 ) ;
 
 
-DROP TABLE IF EXISTS `learnschedules`;
-CREATE TABLE `learnschedules` (
+DROP TABLE IF EXISTS `chedule`;
+CREATE TABLE `chedule` (
   `Id` bigint(20) NOT NULL,
   `NumberPeriods` int(11) DEFAULT NULL,
-  `Account_Id` bigint(20) DEFAULT NULL,
-  `Class_Id` bigint(20) DEFAULT NULL,
-  `Subject_Id` bigint(20) DEFAULT NULL,
+  `AccountId` bigint(20) DEFAULT NULL,
+  `ClassId` bigint(20) DEFAULT NULL,
+  `SubjectId` bigint(20) DEFAULT NULL,
   `ClassRoom` varchar(250) DEFAULT NULL,
   `StartTime` datetime DEFAULT NULL,
   `DuaDate` datetime DEFAULT NULL,
-  `Student_Id` bigint(20) NOT NULL,
-  `Year_Id` bigint(20) NOT NULL,
+  `StudentId` bigint(20) NOT NULL,
+  `YearId` bigint(20) NOT NULL,
   `Title` varchar(250) NOT NULL
 ) ;
 
-DROP TABLE IF EXISTS `learnyears`;
-CREATE TABLE `learnyears` (
+DROP TABLE IF EXISTS `learnyear`;
+CREATE TABLE `learnyear` (
   `Id` bigint(20) NOT NULL,
   `LearnYear` varchar(250) DEFAULT NULL,
   `Note` varchar(250) NOT NULL
@@ -72,17 +72,17 @@ CREATE TABLE `learnyears` (
 DROP TABLE IF EXISTS `pointpractices`;
 CREATE TABLE `pointpractices` (
   `Id` bigint(20) NOT NULL,
-  `Student_Id` bigint(20) DEFAULT NULL,
-  `Year_Id` bigint(20) DEFAULT NULL,
+  `StudentId` bigint(20) DEFAULT NULL,
+  `YearId` bigint(20) DEFAULT NULL,
   `practise` varchar(1) DEFAULT NULL,
   `Note` varchar(250) NOT NULL
 ) ;
 
-DROP TABLE IF EXISTS `pointstudents`;
-CREATE TABLE `pointstudents` (
+DROP TABLE IF EXISTS `pointstudent`;
+CREATE TABLE `pointstudent` (
   `Id` bigint(20) NOT NULL,
-  `Student_Id` bigint(20) DEFAULT NULL,
-  `Subject_Id` bigint(20) DEFAULT NULL,
+  `StudentId` bigint(20) DEFAULT NULL,
+  `SubjectId` bigint(20) DEFAULT NULL,
   `PointCC` int(11) DEFAULT NULL,
   `PointKT1` int(11) DEFAULT NULL,
   `PointKT2` int(11) DEFAULT NULL,
@@ -90,8 +90,8 @@ CREATE TABLE `pointstudents` (
   `PointT` int(11) DEFAULT NULL
 ) ;
 
-DROP TABLE IF EXISTS `positions`;
-CREATE TABLE `positions` (
+DROP TABLE IF EXISTS `position`;
+CREATE TABLE `position` (
   `Id` bigint(20) NOT NULL,
   `Title` varchar(250) DEFAULT NULL,
   `Note` varchar(250) NOT NULL
@@ -104,8 +104,8 @@ CREATE TABLE `roles` (
   `Note` varchar(250) NOT NULL
 ) ;
 
-DROP TABLE IF EXISTS `specializes`;
-CREATE TABLE `specializes` (
+DROP TABLE IF EXISTS `specialized`;
+CREATE TABLE `specialized` (
   `Id` bigint(20) NOT NULL,
   `Title` varchar(250) DEFAULT NULL,
   `Code` varchar(250) DEFAULT NULL,
@@ -113,8 +113,8 @@ CREATE TABLE `specializes` (
 ) ;
 
 
-DROP TABLE IF EXISTS `students`;
-CREATE TABLE `students` (
+DROP TABLE IF EXISTS `student`;
+CREATE TABLE `student` (
   `Id` bigint(20) NOT NULL,
   `Last_Name` varchar(250) DEFAULT NULL,
   `Frist_Name` varchar(250) DEFAULT NULL,
@@ -127,8 +127,8 @@ CREATE TABLE `students` (
   `Note` varchar(250) NOT NULL
 ) ;
 
-DROP TABLE IF EXISTS `subjects`;
-CREATE TABLE `subjects` (
+DROP TABLE IF EXISTS `subject`;
+CREATE TABLE `subject` (
   `Id` bigint(20) NOT NULL,
   `Code` varchar(250) DEFAULT NULL,
   `Title` varchar(250) DEFAULT NULL,
@@ -137,69 +137,69 @@ CREATE TABLE `subjects` (
 ) ;
 
 
-ALTER TABLE `accounts`
+ALTER TABLE `account`
   ADD PRIMARY KEY (`Id`),
-  ADD KEY `Department_Id` (`Department_Id`),
-  ADD KEY `Position_Id` (`Position_Id`);
+  ADD KEY `DepartmentId` (`DepartmentId`),
+  ADD KEY `PositionId` (`PositionId`);
 
-ALTER TABLE `accountroles`
+ALTER TABLE `accountrole`
   ADD PRIMARY KEY (`Id`),
-  ADD KEY `Id_Acount` (`Id_Acount`),
-  ADD KEY `Id_Role` (`Id_Role`);
+  ADD KEY `AccountId` (`AccountId`),
+  ADD KEY `RoleId` (`RoleId`);
 
-ALTER TABLE `depratments`
+ALTER TABLE `depratment`
   ADD PRIMARY KEY (`Id`);
 
-ALTER TABLE `learnclasses`
+ALTER TABLE `learnclass`
   ADD PRIMARY KEY (`Id`),
-  ADD KEY `Specialize_Id` (`Specialize_Id`);
+  ADD KEY `SpecializedId` (`SpecializedId`);
 
-ALTER TABLE `learnschedules`
+ALTER TABLE `chedule`
   ADD PRIMARY KEY (`Id`),
-  ADD KEY `Account_Id` (`Account_Id`),
-  ADD KEY `Class_Id` (`Class_Id`),
-  ADD KEY `Subject_Id` (`Subject_Id`),
-  ADD KEY `Student_Id` (`Student_Id`);
+  ADD KEY `AccountId` (`AccountId`),
+  ADD KEY `ClassId` (`ClassId`),
+  ADD KEY `SubjectId` (`SubjectId`),
+  ADD KEY `StudentId` (`StudentId`);
 
-ALTER TABLE `learnyears`
+ALTER TABLE `learnyear`
   ADD PRIMARY KEY (`Id`);
 
 ALTER TABLE `pointpractices`
   ADD PRIMARY KEY (`Id`),
-  ADD KEY `Student_Id` (`Student_Id`),
-  ADD KEY `Year_Id` (`Year_Id`);
+  ADD KEY `StudentId` (`StudentId`),
+  ADD KEY `YearId` (`YearId`);
 
-ALTER TABLE `pointstudents`
+ALTER TABLE `pointstudent`
   ADD PRIMARY KEY (`Id`),
-  ADD KEY `Student_Id` (`Student_Id`),
-  ADD KEY `Subject_Id` (`Subject_Id`);
+  ADD KEY `StudentId` (`StudentId`),
+  ADD KEY `SubjectId` (`SubjectId`);
 
-ALTER TABLE `positions`
+ALTER TABLE `position`
   ADD PRIMARY KEY (`Id`);
 
 ALTER TABLE `roles`
   ADD PRIMARY KEY (`Id`);
 
-ALTER TABLE `specializes`
+ALTER TABLE `specialized`
   ADD PRIMARY KEY (`Id`);
 
-ALTER TABLE `students`
+ALTER TABLE `student`
   ADD PRIMARY KEY (`Id`);
 
-ALTER TABLE `subjects`
+ALTER TABLE `subject`
   ADD PRIMARY KEY (`Id`);
 
 
-ALTER TABLE `accounts`
+ALTER TABLE `account`
   MODIFY `Id` bigint(20) NOT NULL AUTO_INCREMENT;
 
-ALTER TABLE `depratments`
+ALTER TABLE `depratment`
   MODIFY `Id` bigint(20) NOT NULL AUTO_INCREMENT;
 
-ALTER TABLE `learnclasses`
+ALTER TABLE `learnclass`
   MODIFY `Id` bigint(20) NOT NULL AUTO_INCREMENT;
 
-ALTER TABLE `learnschedules`
+ALTER TABLE `chedule`
   MODIFY `Id` bigint(20) NOT NULL AUTO_INCREMENT;
 
 ALTER TABLE `learnyear`
@@ -208,50 +208,50 @@ ALTER TABLE `learnyear`
 ALTER TABLE `pointpractices`
   MODIFY `Id` bigint(20) NOT NULL AUTO_INCREMENT;
 
-ALTER TABLE `pointstudents`
+ALTER TABLE `pointstudent`
   MODIFY `Id` bigint(20) NOT NULL AUTO_INCREMENT;
 
-ALTER TABLE `positions`
+ALTER TABLE `position`
   MODIFY `Id` bigint(20) NOT NULL AUTO_INCREMENT;
 
 ALTER TABLE `roles`
   MODIFY `Id` bigint(20) NOT NULL AUTO_INCREMENT;
 
-ALTER TABLE `specializes`
+ALTER TABLE `specialized`
   MODIFY `Id` bigint(20) NOT NULL AUTO_INCREMENT;
 
-ALTER TABLE `students`
+ALTER TABLE `student`
   MODIFY `Id` bigint(20) NOT NULL AUTO_INCREMENT;
 
-ALTER TABLE `subjects`
+ALTER TABLE `subject`
   MODIFY `Id` bigint(20) NOT NULL AUTO_INCREMENT;
 
 
-ALTER TABLE `accounts`
-  ADD CONSTRAINT `account_ibfk_1` FOREIGN KEY (`Department_Id`) REFERENCES `depratments` (`Id`),
-  ADD CONSTRAINT `account_ibfk_2` FOREIGN KEY (`Position_Id`) REFERENCES `positions` (`Id`);
+ALTER TABLE `account`
+  ADD CONSTRAINT `account_ibfk_1` FOREIGN KEY (`DepartmentId`) REFERENCES `depratment` (`Id`),
+  ADD CONSTRAINT `account_ibfk_2` FOREIGN KEY (`PositionId`) REFERENCES `position` (`Id`);
 
-ALTER TABLE `accountroles`
-  ADD CONSTRAINT `accountrole_ibfk_1` FOREIGN KEY (`Id_Acount`) REFERENCES `accounts` (`Id`),
-  ADD CONSTRAINT `accountrole_ibfk_2` FOREIGN KEY (`Id_Role`) REFERENCES `roles` (`Id`);
+ALTER TABLE `accountrole`
+  ADD CONSTRAINT `accountrole_ibfk_1` FOREIGN KEY (`AccountId`) REFERENCES `account` (`Id`),
+  ADD CONSTRAINT `accountrole_ibfk_2` FOREIGN KEY (`RoleId`) REFERENCES `roles` (`Id`);
 
-ALTER TABLE `learnclasses`
-  ADD CONSTRAINT `learnclasses_ibfk_1` FOREIGN KEY (`Specialize_Id`) REFERENCES `specializes` (`Id`);
+ALTER TABLE `learnclass`
+  ADD CONSTRAINT `learnclass_ibfk_1` FOREIGN KEY (`SpecializedId`) REFERENCES `specialized` (`Id`);
 
-ALTER TABLE `learnschedules`
-  ADD CONSTRAINT `learnschedule_ibfk_1` FOREIGN KEY (`Account_Id`) REFERENCES `accounts` (`Id`),
-  ADD CONSTRAINT `learnschedule_ibfk_2` FOREIGN KEY (`Class_Id`) REFERENCES `learnclasses` (`Id`),
-  ADD CONSTRAINT `learnschedule_ibfk_3` FOREIGN KEY (`Subject_Id`) REFERENCES `subjects` (`Id`),
-  ADD CONSTRAINT `learnschedule_ibfk_4` FOREIGN KEY (`Student_Id`) REFERENCES `students` (`Id`);
-   ADD CONSTRAINT `learnschedule_ibfk_5` FOREIGN KEY (`Year_Id`) REFERENCES `learnclasses` (`Id`);
+ALTER TABLE `chedule`
+  ADD CONSTRAINT `learnschedule_ibfk_1` FOREIGN KEY (`AccountId`) REFERENCES `account` (`Id`),
+  ADD CONSTRAINT `learnschedule_ibfk_2` FOREIGN KEY (`ClassId`) REFERENCES `learnclass` (`Id`),
+  ADD CONSTRAINT `learnschedule_ibfk_3` FOREIGN KEY (`SubjectId`) REFERENCES `subject` (`Id`),
+  ADD CONSTRAINT `learnschedule_ibfk_4` FOREIGN KEY (`StudentId`) REFERENCES `student` (`Id`);
+   ADD CONSTRAINT `learnschedule_ibfk_5` FOREIGN KEY (`YearId`) REFERENCES `learnyear` (`Id`);
 
 ALTER TABLE `pointpractices`
-  ADD CONSTRAINT `pointpractice_ibfk_1` FOREIGN KEY (`Student_Id`) REFERENCES `students` (`Id`),
-  ADD CONSTRAINT `pointpractice_ibfk_2` FOREIGN KEY (`Year_Id`) REFERENCES `learnyears` (`Id`);
+  ADD CONSTRAINT `pointpractice_ibfk_1` FOREIGN KEY (`YearId`) REFERENCES `student` (`Id`),
+  ADD CONSTRAINT `pointpractice_ibfk_2` FOREIGN KEY (`YearId`) REFERENCES `learnyear` (`Id`);
 
-ALTER TABLE `pointstudents`
-  ADD CONSTRAINT `pointstudent_ibfk_1` FOREIGN KEY (`Student_Id`) REFERENCES `students` (`Id`),
-  ADD CONSTRAINT `pointstudent_ibfk_2` FOREIGN KEY (`Subject_Id`) REFERENCES `subjects` (`Id`);
+ALTER TABLE `pointstudent`
+  ADD CONSTRAINT `pointstudent_ibfk_1` FOREIGN KEY (`StudentId`) REFERENCES `student` (`Id`),
+  ADD CONSTRAINT `pointstudent_ibfk_2` FOREIGN KEY (`SubjectId`) REFERENCES `subject` (`Id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -31,17 +31,55 @@ module.exports = {
 
     async getAll(req, res) {
         try {
-            let department;
+          
             if (req.body.page) {
-                department = await Department.findAll({
+                await Department.findAll({
                     offset: 15 * (req.body.page - 1),
                     limit: 15
-                });
+                })
+                res.json({ department: department, status: 200, success: true });
             }
             else {
-                department = await Department.findAll();
+              await Department.findAll(
+                    {
+                        include: [
+                            {
+                                model: Account,
+                                //where:{Department_Id}
+                            }
+                        ]
+                    }
+                ).then(department => {
+                    const departmentObj  = department.map(department => {
+              
+                        return Object.assign(
+                            {},
+                            {
+                                Id: department.Id,
+                                IdParmanet: department.IdParmanet,
+                                Title: department.Title,
+                                Note: department.Note,
+                                Accounts: department.accounts.map(account => {
+                                    return Object.assign(
+                                        {},
+                                        {
+                                          
+                                            Id: account.Id,
+                                            Account: account.Account,
+                                            Image: account.Image,
+                                            Mail: account.Mail,
+                                            Address: account.Address,
+                                            Department_Id: account.Department_Id,
+
+                                        }
+                                    )
+                                })
+                            })
+                    })
+                    res.json({ department: departmentObj, status: 200, success: true });
+                })                
             }
-            return res.json({ department: department, status: 200, success: true });
+            // return res.json({ department: department, status: 200, success: true });
             
         }
         catch (err) {
@@ -98,22 +136,7 @@ module.exports = {
         Department.findOne({
             where: { id: Id },
             include: [{
-                model: Account, as: 'Employees',
-                duplicating: false,
-                required: true,
-                attributes: ['UserName', 'Maill', 'Image', 'Adress',],
-                where: { Department_Id: db.Sequelize.col('departments.id') },
-                include: [
-                    {
-                        model: Position, as: 'postions',
-                        duplicating: false,
-                        required: true,
-                        where: {
-                            Position_Id: db.Sequelize.col('positions.id')
-                        },
-                        attributes: ['Title', 'Note'], 
-                    }
-                ]
+                model: Account, as: 'Employees'
             }]
         }).then(Department => {
             res.send(Department);

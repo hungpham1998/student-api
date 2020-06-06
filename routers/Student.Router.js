@@ -1,5 +1,4 @@
 "use strict";
-const authJwt = require('./verifyJwtToken');
 module.exports = function(router) {
 const student = require('../controllers/Student.Controller');
   router

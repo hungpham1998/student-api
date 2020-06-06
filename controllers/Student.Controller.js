@@ -1,4 +1,4 @@
-const db = require('../config/db.config.js');
+const db = require('../config/db.config')
 const Student = db.student;
 const Learnchedule = db.learnchedule;
 const Subject = db.subject;
@@ -55,97 +55,27 @@ module.exports = {
         }
     },
 
-    // async getById(req, res) {
-    //     const Id = req.params.id;
-    //     try {
-    //         let student;
-    //         if (req.params.id) {
-    //              student = await Student.findOne(
-    //                 {
-    //                     where: {
-    //                         id: Id
-    //                     },
-    //                     attributes: ['id','Title', 'Note', 'Department_Id'],
-	// 	                include: [{
-    //                         model: Learnchedule, as: 'learnchedule',
-    //                         duplicating: false,
-    //                         required: true,
-    //                         where: {
-    //                             Student_Id: Id
-    //                         },
-    //                         attributes: ['Semester', 'Title', 'ClassRoom', 'StartTime', 'DuaDate'],
-    //                         include: [
-    //                             {
-    //                             model: Account,as: 'teachers',
-    //                             duplicating: false,
-    //                             required: true,
-    //                             attributes: ['UserName','Maill','Image'],
-    //                             include: [
-    //                             {
-    //                                 model: Department,as:'despartments',
-    //                                 duplicating: false,
-    //                                 required: true,
-    //                                 where: {
-    //                                     Department_Id: db.Sequelize.col('departments.id')
-    //                                 },
-    //                                 attributes: ['Title','Note'],
-    //                             },
-    //                             {
-    //                                 model: Position, as: 'postions',
-    //                                 duplicating: false,
-    //                                 required: true,
-    //                                 where: {
-    //                                     Position_Id: db.Sequelize.col('positions.id')
-    //                                 },
-    //                                 attributes: ['Title','Note'],
-                                    
-    //                                 }
-    //                             ]
-    //                             },
-    //                             {
-    //                                 model: Subject, as: 'trainings',
-    //                                 duplicating: false,
-    //                                 required: true,
-    //                                 where:{Subject_Id : db.Sequelize.col('subjects.id')},
-    //                                 attributes: ['Title','Note','Code','CreaditNumber'],
-    //                                 include: [{
-    //                                     model: Pointstudent, as: 'tablepoints',
-    //                                     duplicating: false,
-    //                                     required: true,
-    //                                     where: { Subject_Id: db.Sequelize.col('pointstudents.id') },
-    //                                     attributes: ['PontCC','PointKT1','PointKT2','PointGK','PointT']
-    //                                 }]
-    //                             },
-    //                             {
-    //                                 model: Learnclass, as: 'classlearns',
-    //                                 duplicating: false,
-    //                                 required: true,
-    //                                 where: {
-    //                                     Class_Id: db.Sequelize.col('learnclasses.id')
-    //                                 },
-    //                                 attributes: ['Code', 'Title', 'Note'],
-    //                                 include:[{
-    //                                     model: Specailize, as: 'specailizes',
-    //                                     duplicating: false,
-    //                                     required: true,
-    //                                     where: {
-    //                                         Specailize_Id: db.Sequelize.col('specailizes.id')
-    //                                     },
-    //                                     attributes: ['Code', 'Title', 'Note'],
-    //                                 }]
-    //                         }]
-    //                     }
-    //                     ],
-    //                 }
-    //             )
-    //         }
-    //         return res.json({ student: student, status: 200, success: true });
-    //     }
-    //     catch (err) {
-    //         res.send('error  not data ' + Id + err);
-    //     }
+    async getById(req, res) {
+        const Id = req.params.id;
+        try {
+            let student;
+            if (req.params.id) {
+                 student = await Student.findOne(
+                    {
+                        where: {
+                            id: Id
+                        },
+                      
+                    }
+                )
+            }
+            return res.json({ student: student, status: 200, success: true });
+        }
+        catch (err) {
+            res.send('error  not data ' + Id + err);
+        }
    
-    // },
+    },
 
     update(req, res) {
         try {
