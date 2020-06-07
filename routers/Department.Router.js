@@ -8,7 +8,7 @@ const department = require('../controllers/Department.Controller');
     .delete(department.deleteAll)
   router
     .route("/depfindtitle/:title")
-    .get(department.getBiTitle)
+    .get(department.findByTitle)
   router
     .route("/department/:id")
     .get(department.getById)

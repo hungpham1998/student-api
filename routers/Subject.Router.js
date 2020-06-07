@@ -9,6 +9,9 @@ const subject = require('../controllers/Subject.Controller');
     .post(subject.store)
     // .post([authJwt.verifyToken, authJwt.isPmOrAdmin], subject.store)
     // .delete([authJwt.verifyToken, authJwt.isPmOrAdmin], subject.deleteAll)
+  // router
+  //   .router("/sybfindtitle/:title")
+  //   .get(subject.findByTitle)
   router
     .route('/subject/:id')
     .get(subject.getById)

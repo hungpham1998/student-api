@@ -7,6 +7,9 @@ const specailized = require('../controllers/Specailized.Controller');
     .post(specailized.store)
     .delete(specailized.deleteAll)
   router
+    .route("/spefindtitle/:title")
+    .get(specailized.findByTitle)
+  router
     .route("/specailized:id")
     .get(specailized.getById)
     .put(specailized.update)

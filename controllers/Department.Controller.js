@@ -138,7 +138,7 @@ module.exports = {
         })
     },
 
-    getBiTitle(req, res) {
+    findByTitle(req, res) {
         const title = req.params.title; 
         Department.findAll({
             where: {Title: title }

@@ -122,5 +122,15 @@ module.exports = {
         })
 
     },
+    findByTitle(req, res) {
+        const title = req.params.title; 
+        Subject.findAll({
+            where: {Title: title }
+        }).then(Subject => {
+            res.json({ Subject: Subject, status: 200, success: true });
+        }).catch(err => {
+            res.status(500).send("Error -> " + err);
+        })
+    }
 
 };

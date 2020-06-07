@@ -97,8 +97,33 @@ module.exports = {
             include: [{
                 model: Account
             }]
-        }).then(Specailize => {
-            res.send(Specailize);
+        }).then(Specailized => {
+            const specailized  = Specailized.map(department => {
+              
+                return Object.assign(
+                    {},
+                    {
+                        Id: department.Id,
+                        Title: department.Title,
+                        Note: department.Note,
+                        Accounts: department.accounts.map(account => {
+                            return Object.assign(
+                                {},
+                                {
+                                  
+                                    Id: account.Id,
+                                    Account: account.Account,
+                                    Image: account.Image,
+                                    Mail: account.Mail,
+                                    Address: account.Address,
+                                    Department_Id: account.Department_Id,
+
+                                }
+                            )
+                        })
+                    })
+            })
+            res.json({ specailized: specailized, status: 200, success: true });
         }).catch(err => {
             res.status(500).send("Error -> " + err);
         })

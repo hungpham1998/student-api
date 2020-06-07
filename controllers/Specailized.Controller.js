@@ -104,5 +104,15 @@ module.exports = {
         })
 
     },
+    findByTitle(req, res) {
+        const title = req.params.title; 
+        Specailized.findAll({
+            where: {Title: title }
+        }).then(Specailized => {
+            res.json({ Specailized: Specailized, status: 200, success: true });
+        }).catch(err => {
+            res.status(500).send("Error -> " + err);
+        })
+    }
 
 };
