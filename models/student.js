@@ -12,7 +12,14 @@ module.exports = (sequelize, DataTypes) => {
     Image: DataTypes.STRING,
     Address: DataTypes.STRING,
     Brithday: DataTypes.DATE,
-    Code: DataTypes.STRING
+    Code: DataTypes.STRING,
+    learnclassId:{
+      type: DataTypes.UUID,
+      references: {
+        model: 'learnclasses',
+        key: 'Id',
+      }
+    },
   }, {});
   student.associate = function(models) {
     // associations can be defined here

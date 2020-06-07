@@ -126,5 +126,6 @@ module.exports = {
             return res.send({ status: 500, "can not delete ": err });
         }
 
-    }
+    },
+    
 };

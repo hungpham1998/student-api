@@ -35,13 +35,13 @@ module.exports = {
         try {
             let subject;
             if (req.body.page) {
-                subject = await Subject.findAll({
+                subject = await Subject.findAndCountAll({
                     offset: 15 * (req.body.page - 1),
                     limit: 15
                 });
             }
             else {
-                subject = await Subject.findAll();
+                subject = await Subject.findAndCountAll();
             }
             return res.json({ subject: subject, status: 200, success: true });
             
@@ -122,15 +122,26 @@ module.exports = {
         })
 
     },
-    findByTitle(req, res) {
-        const title = req.params.title; 
-        Subject.findAll({
-            where: {Title: title }
-        }).then(Subject => {
-            res.json({ Subject: Subject, status: 200, success: true });
-        }).catch(err => {
+
+    async findByTitle(req, res) {
+        let data;
+        try {
+          const title = req.query.Title? req.query.Title: ''; 
+           data = await Subject.findAndCountAll({
+                where: {
+                    Title: {
+                        $like: title
+                    }
+                }
+              
+            })
+            return   res.json({ Subject: data, status: 200, success: true });
+            
+        }
+     
+        catch(err) {
             res.status(500).send("Error -> " + err);
-        })
+        }
     }
 
 };

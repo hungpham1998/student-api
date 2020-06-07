@@ -113,20 +113,24 @@ module.exports = {
 
     },
 
-    getBiTitle(req, res) {
-        const title = req.params.title; 
-        Learnclass.findAll({
-            where: {Title: title }
-        }).then(learnclass => {
-            res.json({ learnclass: learnclass, status: 200, success: true });
-        }).catch(err => {
+    async findByTitle(req, res) {
+        let data;
+        try {
+          const title = req.query.Title? req.query.Title: ''; 
+           data = await Learnclass.findAndCountAll({
+                where: {
+                    Title: {
+                        $like: title
+                    }
+                }
+              
+            })
+            return   res.json({ Learnclass: data, status: 200, success: true });
+            
+        }
+        catch(err) {
             res.status(500).send("Error -> " + err);
-        })
+        }
     }
-//    let data =  await Learnclass.findAndCountAll().then(Learnclass => {
-//         res.send(Learnclass);
-//     }).catch(err => {
-//         res.status(500).send("Error -> " + err);
-//     })
-   // }
+
 };

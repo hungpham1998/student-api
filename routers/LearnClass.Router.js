@@ -6,6 +6,9 @@ const learnclass = require('../controllers/LearnClass.Controller');
     .get(learnclass.getAll)
     .post(learnclass.store)
     .delete(learnclass.deleteAll)
+  router 
+    .route("/learnclass/find")
+    .get(learnclass.findByTitle)
   router
     .route("/learnclass/:id")
     .get(learnclass.getById)

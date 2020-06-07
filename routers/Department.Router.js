@@ -7,7 +7,7 @@ const department = require('../controllers/Department.Controller');
     .post(department.store)
     .delete(department.deleteAll)
   router
-    .route("/depfindtitle/:title")
+    .route("/department/find")
     .get(department.findByTitle)
   router
     .route("/department/:id")

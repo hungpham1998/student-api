@@ -138,16 +138,23 @@ module.exports = {
         })
     },
 
-    findByTitle(req, res) {
-        const title = req.params.title; 
-        Department.findAll({
-            where: {Title: title }
-        }).then(Department => {
+    async findByTitle(req, res) {
+        let data;
+        try {
+          const title = req.query.Title? req.query.Title: ''; 
+           data = await Department.findAndCountAll({
+                where: {
+                    Title: {
+                        $like: title
+                    }
+                }
+            })
+            return   res.json({ Department: data, status: 200, success: true });
             
-            res.json({ department: Department, status: 200, success: true });
-        }).catch(err => {
+        }
+        catch(err) {
             res.status(500).send("Error -> " + err);
-        })
+        }
     }
 
 };
