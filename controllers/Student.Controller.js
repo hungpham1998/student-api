@@ -20,7 +20,8 @@ module.exports = {
                 Adress: req.body.Adress,
                 Brithday: req.body.Brithday,
                 Note: req.body.Note,
-                Code: req.body.Code
+                Code: req.body.Code,
+                learnclassId: req.body.learnclassId
             }).then(newstudent => {
                 res.json({
                     newstudent,
@@ -88,7 +89,8 @@ module.exports = {
                     Adress: req.body.Adress,
                     Brithday: req.body.Brithday,
                     Note: req.body.Note,
-                    Code: req.body.Code
+                    Code: req.body.Code,
+                    learnclassId: req.body.learnclassId
                 },
                 { returning: true, where: { id: Id } }
             )

@@ -56,7 +56,7 @@ module.exports = {
                     Title: req.body.Title,
                     Note: req.body.Note
                 },
-                { returning: true, where: { id: Id } }
+                { returning: true, where: { Id: Id } }
             )
             return res.json({ LearnYear, staust: 200, "updated successfully a LearnYear with id = ": Id } ); 
         }
@@ -69,7 +69,7 @@ module.exports = {
     async delete(req, res) {
         try {
             
-            await LearnYear.destroy({ where: { id: req.params.id } })
+            await LearnYear.destroy({ where: { Id: req.params.id } })
             return res.json({ message: "delete LearnYear successfully!", status: 200 });
         }
         catch (err) {
@@ -93,7 +93,7 @@ module.exports = {
 
     getById(req, res) {
         LearnYear.findOne({
-            where: { id: req.params.id }
+            where: { Id: req.params.id }
         }).then(LearnYear => {
             res.send(LearnYear);
         }).catch(err => {

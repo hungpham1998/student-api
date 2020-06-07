@@ -1,6 +1,6 @@
 const db = require('../config/db.config.js');
 const Student = db.student;
-const Learnchedule = db.learnchedule;
+const Chedule = db.chedule;
 const Subject = db.subject;
 const Account = db.account;
 const Learnclass = db.learnclass;
@@ -8,6 +8,7 @@ const Pointstudent = db.pointstudent;
 const Department = db.department;
 const Position = db.position;
 const Specailize = db.specailize;
+const Learnyear = db.learnyear;
 const { Op } = require("sequelize");
 var moment = require('moment')
 module.exports = {
@@ -60,7 +61,7 @@ module.exports = {
                     Note: req.body.Note,
                     Code: req.body.Code
                 },
-                { returning: true, where: { id: Id } }
+                { returning: true, where: { Id: Id } }
             )
             return res.json({ Subject, staust: 200, "updated successfully a Student with id = ": Id } ); 
         }
@@ -73,7 +74,7 @@ module.exports = {
     async delete(req, res) {
         try {
             
-            await Subject.destroy({ where: { id: req.params.id } })
+            await Subject.destroy({ where: { Id: req.params.id } })
             return res.json({ message: "delete subject successfully!", status: 200 });
         }
         catch (err) {
@@ -96,8 +97,24 @@ module.exports = {
     },
 
     getById(req, res) {
-        Subject.findOne({
-            where: { id: req.params.id }
+        Subject.findAll({
+            where: { Id: req.params.id },
+            
+            include: [{
+                model: Chedule,
+                include: [{
+                    model: Student,
+                    attributes: ['id','Last_Name', 'Note', 'Frist_Name','Address','Brithday'],   
+                }, {
+                    model: Subject,
+                        attributes: ['id', 'Note', 'Title', 'Code'],
+                        include: [{ model: Learnyear, }]
+                    }, {
+                    model: Account,
+                    }, {
+                    model: Learnclass
+                }],
+            }],
         }).then(Subject => {
             res.send(Subject);
         }).catch(err => {

@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       defaultValue: DataTypes.UUIDV4
     },
-    LearnYear: DataTypes.STRING,
+    Title: DataTypes.STRING,
     Note: DataTypes.STRING
   }, {});
   learnyear.associate = function(models) {

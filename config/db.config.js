@@ -48,31 +48,28 @@ db.accountrole = require('../models/accountrole')(sequelize,Sequelize);
 // sequelize.sync()
 
 
-db.account.belongsTo(db.department, {
-  foreignKey: "Department_Id",
-  as: "department",
-});
+db.account.belongsTo(db.department);
 db.account.belongsTo(db.position);
-// db.account.belongsToMany(db.role, { as:'account', through: 'accountrole', foreignKey: 'AccoutId', otherKey: 'RoleId' });
-// db.account.belongsToMany(db.subject, { as: 'teachers', through: 'chedule', foreignKey: 'AccountId', otherKey: 'SubjectId' });
-// db.account.belongsToMany(db.subject, { as: 'rooms', through: 'chedule', foreignKey: 'AccountId', otherKey: 'ClassId' });
 db.department.hasMany(db.account);
 db.learnclass.belongsTo(db.specailized);
-// db.learnclass.belongsToMany(db.subject, {as:'bookrooms', through: 'chedule', otherKey: 'SubjectId', foreignKey: 'ClassId' });
-// db.learnclass.belongsToMany(db.student, { as: 'class', through: 'chedule', foreignKey: 'ClassId', otherKey: 'StudentId' });
+db.specailized.hasMany(db.learnclass);
 db.learnyear.hasMany(db.pointpractice);
 db.pointpractice.belongsTo(db.student);
-db.pointpractice.belongsTo(db.learnyear);
-db.pointstudent.belongsTo(db.subject);
-db.position.hasMany(db.account);
-
-// db.student.belongsToMany(db.learnclass, { as: 'students',through: 'chedule', foreignKey: 'StudentId', otherKey: 'ClassId' });
-// db.student.belongsToMany(db.subject, { as: 'subjects', through: 'chedule', otherKey: 'SubjectId', foreignKey: 'StudentId' });
-// db.subject.belongsToMany(db.student, { as: 'subjects', through: 'chedule', otherKey: 'StudentId', foreignKey: 'SubjectId' });
-// db.subject.belongsToMany(db.account, { as:'subjects',through: 'chedule', foreignKey: 'SubjectId', otherKey: 'AccountId' });
-// db.subject.belongsToMany(db.learnclass, { as: 'chedule',through: 'chedule', otherKey: 'ClassId', foreignKey: 'SubjectId' });
 db.subject.belongsTo(db.learnyear);
-db.subject.hasMany(db.pointstudent);
+db.subject.hasMany(db.pointstudent); 
+db.pointstudent.belongsTo(db.subject);
+db.learnclass.hasMany(db.chedule);
+db.chedule.belongsTo(db.learnclass);
+db.student.hasMany(db.chedule);
+db.chedule.belongsTo(db.student)
+db.account.hasMany(db.chedule);
+db.chedule.belongsTo(db.account)
+db.subject.hasMany(db.chedule);
+db.chedule.belongsTo(db.subject);
+db.learnclass.hasMany(db.student);
+db.student.belongsTo(db.learnclass);
+db.student.hasMany(db.pointstudent);
+db.pointstudent.belongsTo(db.student);
 
 
 

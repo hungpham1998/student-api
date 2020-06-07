@@ -30,56 +30,23 @@ module.exports = {
     },
 
     async getAll(req, res) {
+        let department;
         try {
           
             if (req.body.page) {
-                await Department.findAll({
+                department=  await Department.findAndCountAll({
                     offset: 15 * (req.body.page - 1),
                     limit: 15
                 })
                 res.json({ department: department, status: 200, success: true });
             }
             else {
-              await Department.findAll(
-                    {
-                        include: [
-                            {
-                                model: Account,
-                                //where:{Department_Id}
-                            }
-                        ]
-                    }
-                ).then(department => {
-                    const departmentObj  = department.map(department => {
-              
-                        return Object.assign(
-                            {},
-                            {
-                                Id: department.Id,
-                                IdParmanet: department.IdParmanet,
-                                Title: department.Title,
-                                Note: department.Note,
-                                Accounts: department.accounts.map(account => {
-                                    return Object.assign(
-                                        {},
-                                        {
-                                          
-                                            Id: account.Id,
-                                            Account: account.Account,
-                                            Image: account.Image,
-                                            Mail: account.Mail,
-                                            Address: account.Address,
-                                            Department_Id: account.Department_Id,
-
-                                        }
-                                    )
-                                })
-                            })
-                    })
-                    res.json({ department: departmentObj, status: 200, success: true });
-                })                
+                department= await Department.findAndCountAll()
+                // ).then(department => {
+                //     res.json({ department: department, status: 200, success: true });
+                // })                
             }
-            // return res.json({ department: department, status: 200, success: true });
+            return res.json({ department: department, status: 200, success: true });
             
         }
         catch (err) {
@@ -133,16 +100,54 @@ module.exports = {
 
     getById(req, res) {
         const Id = req.params.id
-        Department.findOne({
-            where: { id: Id },
+        Department.findAll({
+            where: { Id: Id },
             include: [{
-                model: Account, as: 'Employees'
+                model: Account
             }]
         }).then(Department => {
-            res.send(Department);
+            const departmentObj  = Department.map(department => {
+              
+                return Object.assign(
+                    {},
+                    {
+                        Id: department.Id,
+                        IdParmanet: department.IdParmanet,
+                        Title: department.Title,
+                        Note: department.Note,
+                        Accounts: department.accounts.map(account => {
+                            return Object.assign(
+                                {},
+                                {
+                                  
+                                    Id: account.Id,
+                                    Account: account.Account,
+                                    Image: account.Image,
+                                    Mail: account.Mail,
+                                    Address: account.Address,
+                                    Department_Id: account.Department_Id,
+
+                                }
+                            )
+                        })
+                    })
+            })
+            res.json({ department: departmentObj, status: 200, success: true });
         }).catch(err => {
             res.status(500).send("Error -> " + err);
         })
     },
+
+    getBiTitle(req, res) {
+        const title = req.params.title; 
+        Department.findAll({
+            where: {Title: title }
+        }).then(Department => {
+            
+            res.json({ department: Department, status: 200, success: true });
+        }).catch(err => {
+            res.status(500).send("Error -> " + err);
+        })
+    }
 
 };

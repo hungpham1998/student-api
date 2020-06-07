@@ -14,12 +14,8 @@ module.exports = (sequelize, DataTypes) => {
         key: 'Id',
       },},
     Note: DataTypes.STRING,
-    yearnId: {
+    yearId: {
       type: DataTypes.UUID,
-      references: {
-        model: 'learnyears',
-        key: 'Id',
-      },
     }
   }, {});
   pointpractice.associate = function(models) {

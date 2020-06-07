@@ -58,7 +58,7 @@ module.exports = {
                     Note: req.body.Note,
                     Code: req.body.Code
                 },
-                { returning: true, where: { id: Id } }
+                { returning: true, where: { Id: Id } }
             )
             return res.json({ Subject, staust: 200, "updated successfully a Specailize with id = ": Id } ); 
         }
@@ -71,7 +71,7 @@ module.exports = {
     async delete(req, res) {
         try {
             
-            await Specailized.destroy({ where: { id: req.params.id } })
+            await Specailized.destroy({ where: { Id: req.params.id } })
             return res.json({ message: "delete Specailize successfully!", status: 200 });
         }
         catch (err) {
@@ -94,8 +94,9 @@ module.exports = {
     },
 
     getById(req, res) {
-        Specailized.findOne({
-            where: { id: req.params.id }
+        Specailized.findAll({
+            where: { Id: req.params.id },
+
         }).then(Specailized=> {
             res.send(Specailized);
         }).catch(err => {

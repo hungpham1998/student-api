@@ -20,11 +20,10 @@ module.exports = {
                 ClassRoom: req.body.ClassRoom,
                 StartTime: req.body.StartTime,
                 DuaDate: req.body.DuaDate,
-                ClassId: req.body.ClassId,
-                SubjectId: req.body.SubjectId,
-                AcountId: req.body.AcountId,
-                StudentId: req.body.StudentId,
-                YearId: req.body.YearId,
+                learnclassId: req.body.learnclassId,
+                subjectId: req.body.subjectId,
+                accountId: req.body.accountId,
+                studentId: req.body.studentId,
                 Note: req.body.Note
             }).then(Learnchedule => {
                 res.json({ Learnchedule, status: 200 })
@@ -42,13 +41,13 @@ module.exports = {
         try {
             let Chedule;
             if (req.body.page) {
-                Chedule = await Chedule.findAll({
+                Chedule = await Chedule.findAndCountAll({
                     offset: 15 * (req.body.page - 1),
                     limit: 15
                 });
             }
             else {
-                Chedule = await Chedule.findAll();
+                Chedule = await Chedule.findAndCountAll();
             }
             return res.json({ Chedule: Chedule, status: 200, success: true });
             
@@ -68,14 +67,13 @@ module.exports = {
                     ClassRoom: req.body.ClassRoom,
                     StartTime: req.body.StartTime,
                     DuaDate: req.body.DuaDate,
-                    ClassId: req.body.ClassId,
-                    SubjectId: req.body.SubjectId,
-                    AcountId: req.body.AcountId,
-                    StudentId: req.body.StudentId,
-                    YearId: req.body.YearId,
+                    learnclassId: req.body.learnclassId,
+                    subjectId: req.body.subjectId,
+                    accountId: req.body.accountId,
+                    studentId: req.body.studentId,
                     Note: req.body.Note
                 },
-                { returning: true, where: { id: Id } }
+                { returning: true, where: { Id: Id } }
             )
             return res.json({ Chedule, staust: 200, "updated successfully a Chedule with id = ": Id } ); 
         }
@@ -111,8 +109,17 @@ module.exports = {
     },
 
     getById(req, res) {
-        Chedule.findOne({
-            where: { Id: req.params.Id }
+        Chedule.findAll({
+            where: { Id: req.params.Id },
+            include: [
+                {
+                    model: Student,
+                    attributes: ['id', 'Last_Name', 'Note', 'Frist_Name', 'Address', 'Brithday'],
+                }, {
+                    model: Subject,
+                    attributes: ['Title', 'Code','Note']
+                }],
+            
         }).then(Chedule => {
             res.send(Chedule);
         }).catch(err => {

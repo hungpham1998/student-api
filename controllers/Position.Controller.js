@@ -56,7 +56,7 @@ module.exports = {
                     Title: req.body.Title,
                     Note: req.body.Note
                 },
-                { returning: true, where: { id: Id } }
+                { returning: true, where: { Id: Id } }
             )
             return res.json({ Position, staust: 200, "updated successfully a Position with id = ": Id } ); 
         }
@@ -69,7 +69,7 @@ module.exports = {
     async delete(req, res) {
         try {
             
-            await Position.destroy({ where: { id: req.params.id } })
+            await Position.destroy({ where: { Id: req.params.id } })
             return res.json({ message: "delete Position successfully!", status: 200 });
         }
         catch (err) {
@@ -93,7 +93,10 @@ module.exports = {
 
     getById(req, res) {
         Specailize.findOne({
-            where: { id: req.params.id }
+            where: { Id: req.params.id },
+            include: [{
+                model: Account
+            }]
         }).then(Specailize => {
             res.send(Specailize);
         }).catch(err => {
@@ -101,5 +104,16 @@ module.exports = {
         })
 
     },
+    getBiTitle(req, res) {
+        const title = req.params.title; 
+        Specailize.findAll({
+            where: {Title: title }
+        }).then(Specailize => {
+            
+            res.json({ Specailize: Specailize, status: 200, success: true });
+        }).catch(err => {
+            res.status(500).send("Error -> " + err);
+        })
+    }
 
 };

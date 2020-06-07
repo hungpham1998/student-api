@@ -1,6 +1,6 @@
 const db = require('../config/db.config.js');
 const Student = db.student;
-const Learnchedule = db.learnchedule;
+const Chedule = db.chedule;
 const Subject = db.subject;
 const Account = db.account;
 const Learnclass = db.learnclass;
@@ -34,13 +34,14 @@ module.exports = {
         try {
             let learnclass;
             if (req.body.page) {
-                learnclass = await Learnclass.findAll({
+                learnclass = await Learnclass.findAndCountAll({
                     offset: 15 * (req.body.page - 1),
                     limit: 15
                 });
             }
             else {
-                learnclass = await Learnclass.findAll();
+                learnclass = await Learnclass.findAndCountAll(
+                );
             }
             return res.json({ Learnclass: learnclass, status: 200, success: true });
             
@@ -55,11 +56,11 @@ module.exports = {
            const Id = req.params.id;
           await Learnclass.update(
                 {
-                    Title: req.body.Title,
+                  Title: req.body.Title,
                   Note: req.body.Note,
                   Specailize_Id: req.body.SpecailizeId
                 },
-                { returning: true, where: { id: Id } }
+                { returning: true, where: { Id: Id } }
             )
             return res.json({ Learnclass, staust: 200, "updated successfully a Learnclass with id = ": Id } ); 
         }
@@ -72,7 +73,7 @@ module.exports = {
     async delete(req, res) {
         try {
             
-            await Learnclass.destroy({ where: { id: req.params.id } })
+            await Learnclass.destroy({ where: { Id: req.params.id } })
             return res.json({ message: "delete Learnclass successfully!", status: 200 });
         }
         catch (err) {
@@ -95,8 +96,15 @@ module.exports = {
     },
 
     getById(req, res) {
-        Learnclass.findOne({
-            where: { id: req.params.id }
+        Learnclass.findAll({
+            where: { Id: req.params.id },
+            attributes: ['id','Title', 'Note', 'specailizedId'], 
+            include: [
+            {
+                model: Student,
+                attributes: ['id','Last_Name', 'Note', 'Frist_Name','Address','Brithday'],   
+            }],
+                
         }).then(Learnclass => {
             res.send(Learnclass);
         }).catch(err => {
@@ -105,19 +113,16 @@ module.exports = {
 
     },
 
-
-//    async getByTitle(req, res) {
-//         const title = req.params.Title;
-//       await  Learnclass.findAndCountAll({
-//             where: 
-//                 {Title: {$like : title}},
-//         }).then(Learnclass => {
-//             //  Learnclass.rows = Learnclass.rows.map((o) => { return o.get() })
-//             res.send(Learnclass);
-//         }).catch(err => {
-//             res.status(500).send("Error -> " + err);
-//         })
-       
+    getBiTitle(req, res) {
+        const title = req.params.title; 
+        Learnclass.findAll({
+            where: {Title: title }
+        }).then(learnclass => {
+            res.json({ learnclass: learnclass, status: 200, success: true });
+        }).catch(err => {
+            res.status(500).send("Error -> " + err);
+        })
+    }
 //    let data =  await Learnclass.findAndCountAll().then(Learnclass => {
 //         res.send(Learnclass);
 //     }).catch(err => {

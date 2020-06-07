@@ -19,8 +19,8 @@ module.exports = {
                 PointKT2: req.body.PointKT2,
                 PointGK: req.body.PointGK,
                 PointT: req.body.PointT,
-                Subject_Id: req.body.Subject_Id,
-                Student_Id: req.body.Student_Id
+                subjectId: req.body.subjectId,
+                subjectId: req.body.subjectId
             }).then(Pointstudent => {
                 res.json({ Pointstudent, status: 200 })
             }).catch(err => {
@@ -63,10 +63,10 @@ module.exports = {
                     PointKT2: req.body.PointKT2,
                     PointGK: req.body.PointGK,
                     PointT: req.body.PointT,
-                    Subject_Id: req.body.Subject_Id,
-                    Student_Id: req.body.Student_Id
+                    subjectId: req.body.subjectId,
+                    studentId: req.body.subjectId
                 },
-                { returning: true, where: { id: Id } }
+                { returning: true, where: { Id: Id } }
             )
             return res.json({ Pointstudent, staust: 200, "updated successfully a LearnYear with id = ": Id } ); 
         }
@@ -79,7 +79,7 @@ module.exports = {
     async delete(req, res) {
         try {
             
-            await Pointstudent.destroy({ where: { id: req.params.id } })
+            await Pointstudent.destroy({ where: { Id: req.params.id } })
             return res.json({ message: "delete Pointstudent successfully!", status: 200 });
         }
         catch (err) {
@@ -102,8 +102,16 @@ module.exports = {
     },
 
     getById(req, res) {
-        Pointstudent.findOne({
-            where: { id: req.params.id }
+        Pointstudent.findAll({
+            where: { Id: req.params.id },
+            attributes: ['id','PontCC', 'PointKT1', 'PointKT2','PointGK','PointT'],
+            include: [
+                {
+                    model: Student,
+                    attributes: ['id','Last_Name', 'Note', 'Frist_Name','Address','Brithday'],   
+                }, {
+                    model: Subject,
+                }],
         }).then(Pointstudent => {
             res.send(Pointstudent);
         }).catch(err => {

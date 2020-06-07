@@ -16,8 +16,8 @@ module.exports = {
         try {
             await Pointpractice.create({
                 Peactice: req.body.Peactice,
-                Student_Id: req.body.Student_Id,
-                Yearn_Id: req.body.Yearn_Id,
+                studentId: req.body.studentId,
+                yearnId: req.body.yearnId,
                 Note: req.body.Note
             }).then(Pointstudent => {
                 res.json({ Pointstudent, status: 200 })
@@ -57,11 +57,11 @@ module.exports = {
           await Pointpractice.update(
                 {
                     Peactice: req.body.Peactice,
-                    Student_Id: req.body.Student_Id,
-                    Yearn_Id: req.body.Yearn_Id,
+                    studentId: req.body.studentId,
+                    yearnId: req.body.yearnId,
                     Note: req.body.Note
                 },
-                { returning: true, where: { id: Id } }
+                { returning: true, where: { Id: Id } }
             )
             return res.json({ Pointpractice, staust: 200, "updated successfully a Pointpractice with id = ": Id } ); 
         }
@@ -74,7 +74,7 @@ module.exports = {
     async delete(req, res) {
         try {
             
-            await Pointpractice.destroy({ where: { id: req.params.id } })
+            await Pointpractice.destroy({ where: { Id: req.params.id } })
             return res.json({ message: "delete Pointpractice successfully!", status: 200 });
         }
         catch (err) {
@@ -98,7 +98,7 @@ module.exports = {
 
     getById(req, res) {
         Pointpractice.findOne({
-            where: { id: req.params.id }
+            where: { Id: req.params.id }
         }).then(Pointpractice => {
             res.send(Pointpractice);
         }).catch(err => {
