@@ -7,7 +7,7 @@ const Learnclass = db.learnclass;
 const Pointstudent = db.pointstudent;
 const Department = db.department;
 const Position = db.position;
-const Specailize = db.specailize;
+const Specailized = db.specailized;
 const { Op } = require("sequelize");
 var moment = require('moment')
 module.exports = {
@@ -22,13 +22,18 @@ module.exports = {
                 Note: req.body.Note,
                 Code: req.body.Code,
                 learnclassId: req.body.learnclassId
-            }).then(newstudent => {
-                res.json({
-                    newstudent,
-                    status: 200})
-            }).catch(err => {
-                res.send({ status: 500, "Error -> ": err });
-            })
+            });
+            await Student.findAll({
+                include: [
+                    {
+                            model: Learnclass,
+                    
+                    }]
+                }).then((student) => {
+                    return res.send({
+                        student
+                    }); 
+                })
            
         }
         catch (err){
@@ -46,7 +51,17 @@ module.exports = {
                 });
             }
             else {
-                student = await Student.findAll();
+                student = await Student.findAll({
+                    include: [
+                        {
+                            model: Learnclass,
+                            include: [
+                                {
+                                    model: Specailized,
+                            
+                                }]
+                        }]
+                });
             }
             return res.json({ student: student, status: 200,success: true });
             
@@ -58,30 +73,25 @@ module.exports = {
 
     async getById(req, res) {
         const Id = req.params.id;
-        try {
-            let student;
-            if (req.params.id) {
-                 student = await Student.findOne(
-                    {
-                        where: {
-                            id: Id
-                        },
-                      
-                    }
-                )
-            }
-            return res.json({ student: student, status: 200, success: true });
-        }
-        catch (err) {
-            res.send('error  not data ' + Id + err);
-        }
+        await Student.findAll({
+            where: { Id: req.params.id },
+            include: [
+                {
+                    model: Learnclass,
+            
+                }]
+        }).then(Student => {
+            res.send(Student);
+        }).catch(err => {
+            res.status(500).send("Error -> " + err);
+        })
    
     },
 
-    update(req, res) {
+   async update(req, res) {
         try {
             const Id = req.params.id;
-            Student.update(
+          await Student.update(
                 {
                     Frist_Name: req.body.Frist_Name,
                     Last_Name: req.body.Last_Name,
@@ -92,9 +102,28 @@ module.exports = {
                     Code: req.body.Code,
                     learnclassId: req.body.learnclassId
                 },
-                { returning: true, where: { id: Id } }
+                {
+                    returning: true, where: { id: Id },
+                    include: [
+                    {
+                            model: Learnclass,
+                    
+                    }]
+                }
+                
             )
-            return res.json({status: 200,Student}); 
+            await Student.findAll({
+                include: [
+                    {
+                            model: Learnclass,
+                    
+                    }]
+                }).then((student) => {
+                return res.send({
+                    student
+                }); 
+                    })
+          
         }
         catch (err) {
             res.send("can not delete " + err);

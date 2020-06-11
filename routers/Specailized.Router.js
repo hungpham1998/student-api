@@ -10,7 +10,7 @@ const specailized = require('../controllers/Specailized.Controller');
     .route("/specailized/find")
     .get(specailized.findByTitle)
   router
-    .route("/specailized:id")
+    .route("/specailized/:id")
     .get(specailized.getById)
     .put(specailized.update)
     .delete(specailized.delete)

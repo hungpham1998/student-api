@@ -5,8 +5,6 @@ const Subject = db.subject;
 const Account = db.account;
 const Learnclass = db.learnclass;
 const Pointstudent = db.pointstudent;
-const Department = db.department;
-const Position = db.position;
 const Specailized = db.specailized;
 const { Op } = require("sequelize");
 var moment = require('moment')
@@ -41,7 +39,7 @@ module.exports = {
             else {
                 specailized = await Specailized.findAll();
             }
-            return res.json({ specailized: specailized, status: 200, success: true });
+            return res.json({ specailized, status: 200, success: true });
             
         }
         catch (err) {
@@ -60,7 +58,12 @@ module.exports = {
                 },
                 { returning: true, where: { Id: Id } }
             )
-            return res.json({ Subject, staust: 200, "updated successfully a Specailize with id = ": Id } ); 
+            await Specailized.findAll({
+                }).then((specailized) => {
+                return res.send({
+                    specailized
+                }); 
+                    })
         }
         catch (err) {
             res.send({status: 500, "can not update " : Specailize, "error": err });
@@ -108,17 +111,25 @@ module.exports = {
     async findByTitle(req, res) {
         let data;
         try {
-          const title = req.query.Title? req.query.Title: ''; 
-           data = await Specailized.findAndCountAll({
-                where: {
-                    Title: {
-                        $like: title
-                    }
-                }
-              
-            })
-            return   res.json({ Specailized: data, status: 200, success: true });
+            const title = req.query.Title; 
+            if (title.length === 0 || title === '' || title === null) {
             
+                    data = await Specailized.findAndCountAll({})
+            }
+            else {
+                data = await Specailized.findAndCountAll({
+                    where: {
+                        Title: {
+                            $like: title
+                        }
+                    }
+                })
+            }
+            
+         
+            return   res.json({ Specailized: data });
+            
+        
         }
         catch(err) {
             res.status(500).send("Error -> " + err);

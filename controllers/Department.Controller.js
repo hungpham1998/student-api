@@ -16,7 +16,7 @@ module.exports = {
             await Department.create({
                 Title: req.body.Title,
                 Note: req.body.Note,
-                IdParmanet: req.body.IdParmanet
+                IdPartment: req.body.IdPartment
             }).then(Department => {
                 res.json({ Department, status: 200 })
             }).catch(err => {
@@ -54,18 +54,19 @@ module.exports = {
         }
     },
    
-   async update(req, res) {
-       try {
+    async update(req, res) {
+        try {
+           let department = req.body;
            const Id = req.params.id;
-          await Department.update(
+            await Department.update(
                 {
                     Title: req.body.Title,
                     Note: req.body.Note,
-                    IdParmanet: req.body.IdParmanet
+                    IdPartment: req.body.IdPartment
                 },
                 { returning: true, where: { id: Id } }
-            )
-            return res.json({ Department, staust: 200, "updated successfully a Student with id = ": Id } ); 
+            );
+            return res.json({ department: department , staust: 200, "updated successfully a Student with id = ": Id } ); 
         }
         catch (err) {
             res.send({status: 500, "can not update " : Subject, "error": err });
@@ -98,7 +99,7 @@ module.exports = {
 
     },
 
-    getById(req, res) {
+    getAccountById(req, res) {
         const Id = req.params.id
         Department.findAll({
             where: { Id: Id },
@@ -141,20 +142,39 @@ module.exports = {
     async findByTitle(req, res) {
         let data;
         try {
-          const title = req.query.Title? req.query.Title: ''; 
-           data = await Department.findAndCountAll({
-                where: {
-                    Title: {
-                        $like: title
+            const title = req.query.Title; 
+            if (title.length === 0 || title === '' || title === null) {
+            
+                    data = await Department.findAndCountAll({})
+            }
+            else {
+                data = await Department.findAndCountAll({
+                    where: {
+                        Title: {
+                            $like: title
+                        }
                     }
-                }
-            })
+                })
+            }
+            
+         
             return   res.json({ Department: data, status: 200, success: true });
             
         }
         catch(err) {
             res.status(500).send("Error -> " + err);
         }
-    }
+    },
+
+    getById(req, res) {
+        Department.findAll({
+            where: { Id: req.params.id }
+        }).then(Department => {
+            res.send(Department);
+        }).catch(err => {
+            res.status(500).send("Error -> " + err);
+        })
+
+    },
 
 };

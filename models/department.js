@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     Title: DataTypes.STRING,
     Note: DataTypes.STRING,
-    IdParmanet:  {
+    IdPartment:  {
       type: DataTypes.UUID
     }
   }, {});

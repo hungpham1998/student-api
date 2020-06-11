@@ -14,7 +14,7 @@ module.exports = {
             Account: req.body.Account,
             UserName: req.body.UserName,
             Mail: req.body.Mail,
-            PassWord: bcrypt.hashSync(req.body.PassWord, 8)
+            PassWord: bcrypt.hashSync(req.body.PassWord, 8),
         }).then(user => {
             role.findAll({
             where: {
@@ -224,4 +224,33 @@ module.exports = {
         }
 
     },
+
+
+    async store(req, res) {
+          await  account.create({
+                Account: req.body.Account,
+                UserName: req.body.UserName,
+                Mail: req.body.Mail,
+                PassWord: bcrypt.hashSync(req.body.PassWord, 8),
+                departmentId: req.body.departmentId,
+                positionId: req.body.positionId
+            }).then(user => {
+                role.findAll({
+                    where: {
+                        Title: {
+                            [Op.or]: req.body.roles
+                        }
+                    }
+                }).then(roles => {
+                    user.setRoles(roles).then(() => {
+                        res.send("User registered successfully!");
+                    });
+                }).catch(err => {
+                    res.status(500).send("Error -> " + err);
+                });
+            }).catch(err => {
+                res.status(500).send("Fail! Error -> " + err);
+            })
+    }
+
 };

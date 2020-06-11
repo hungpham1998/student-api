@@ -7,7 +7,7 @@ const Learnclass = db.learnclass;
 const Pointstudent = db.pointstudent;
 const Department = db.department;
 const Position = db.position;
-const Specailize = db.specailize;
+const Specailized = db.specailized;
 const { Op } = require("sequelize");
 // const sqs = require('sequelize-querystring')
 var moment = require('moment')
@@ -17,9 +17,9 @@ module.exports = {
             await Learnclass.create({
                 Title: req.body.Title,
                 Note: req.body.Note,
-                Specailize_Id: req.body.SpecailizeId
+                SpecailizedId: req.body.SpecailizedId
             }).then(Learnclass => {
-                res.json({ Learnclass, status: 200 })
+                res.json({ learnclass:Learnclass, status: 200 })
             }).catch(err => {
                 res.send({ status: 500, "Error -> ": err });
             })
@@ -40,10 +40,16 @@ module.exports = {
                 });
             }
             else {
-                learnclass = await Learnclass.findAndCountAll(
+                learnclass = await Learnclass.findAndCountAll({
+                    include: [
+                        {
+                            model: Specailized,
+                           
+                        }],
+                }
                 );
             }
-            return res.json({ Learnclass: learnclass, status: 200, success: true });
+            return res.json({ learnclass: learnclass, status: 200, success: true });
             
         }
         catch (err) {
@@ -53,6 +59,7 @@ module.exports = {
    
    async update(req, res) {
        try {
+           let learnclass = req.body;
            const Id = req.params.id;
           await Learnclass.update(
                 {
@@ -62,10 +69,10 @@ module.exports = {
                 },
                 { returning: true, where: { Id: Id } }
             )
-            return res.json({ Learnclass, staust: 200, "updated successfully a Learnclass with id = ": Id } ); 
+            return res.json({ learnclass: learnclass} ); 
         }
         catch (err) {
-            res.send({status: 500, "can not update " : Learnclass, "error": err });
+            res.send({status: 500, "can not update " : learnclass, "error": err });
         }
     
     },
@@ -95,7 +102,7 @@ module.exports = {
 
     },
 
-    getById(req, res) {
+    getstudentById(req, res) {
         Learnclass.findAll({
             where: { Id: req.params.id },
             attributes: ['id','Title', 'Note', 'specailizedId'], 
@@ -116,21 +123,36 @@ module.exports = {
     async findByTitle(req, res) {
         let data;
         try {
-          const title = req.query.Title? req.query.Title: ''; 
-           data = await Learnclass.findAndCountAll({
-                where: {
-                    Title: {
-                        $like: title
+            const title = req.query.Title; 
+            if (title.length === 0 || title === '' || title === null) {
+            
+                    data = await Learnclass.findAndCountAll({})
+            }
+            else {
+                data = await Learnclass.findAndCountAll({
+                    where: {
+                        Title: {
+                            $like: title
+                        }
                     }
-                }
-              
-            })
+                })
+            }
             return   res.json({ Learnclass: data, status: 200, success: true });
             
         }
         catch(err) {
             res.status(500).send("Error -> " + err);
         }
-    }
+    },
 
+   getById(req, res) {
+        Learnclass.findAll({
+            where: { Id: req.params.id }
+        }).then(Department => {
+            res.send(Department);
+        }).catch(err => {
+            res.status(500).send("Error -> " + err);
+        })
+
+    },
 };
