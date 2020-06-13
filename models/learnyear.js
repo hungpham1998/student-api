@@ -1,6 +1,6 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-  const learnyear = sequelize.define('learnyear', {
+  const learnyear = sequelize.define('learnyears', {
     Id: {
       type: DataTypes.UUID,
       primaryKey: true,

@@ -6,6 +6,9 @@ const learnyear = require('../controllers/LearnYear.Controller');
     .get(learnyear.getAll)
     .post(learnyear.store)
     .delete(learnyear.deleteAll)
+  router 
+    .route("/learnyear/find")
+    .get(learnyear.findByTitle)
   router
     .route("/learnyear/:id")
     .get(learnyear.getById)
