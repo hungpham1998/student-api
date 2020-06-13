@@ -18,7 +18,7 @@ module.exports = {
                 Note: req.body.Note,
                 IdPartment: req.body.IdPartment
             }).then(Department => {
-                res.json({ Department, status: 200 })
+                res.json({ Department })
             }).catch(err => {
                 res.send({ status: 500, "Error -> ": err });
             })
@@ -66,7 +66,13 @@ module.exports = {
                 },
                 { returning: true, where: { id: Id } }
             );
-            return res.json({ department: department , staust: 200, "updated successfully a Student with id = ": Id } ); 
+            await Department.findAll({
+                order: [
+                    ['updatedAt', 'DESC'],
+                ],
+            }).then((department) => {
+                return res.json({ department: department } ); 
+            })
         }
         catch (err) {
             res.send({status: 500, "can not update " : Subject, "error": err });

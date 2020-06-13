@@ -4,6 +4,7 @@ const account = require('../controllers/Account.Controller');
   router
     .route("/account")
     .get(account.getAll)
+    .post(account.store)
 
   router
     .route("/account/:id")

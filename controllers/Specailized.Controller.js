@@ -15,8 +15,9 @@ module.exports = {
                 Title: req.body.Title,
                 Code: req.body.Code,
                 Note: req.body.Note,
-            }).then(Specailized => {
-                res.json({ Specailized, status: 200 })
+            });
+            await Specailized.getAll({}).then(Specailized => {
+                res.json({ Specailized })
             }).catch(err => {
                 res.send({ status: 500, "Error -> ": err });
             })

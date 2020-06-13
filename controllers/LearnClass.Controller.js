@@ -17,14 +17,24 @@ module.exports = {
             await Learnclass.create({
                 Title: req.body.Title,
                 Note: req.body.Note,
-                SpecailizedId: req.body.SpecailizedId
-            }).then(Learnclass => {
-                res.json({ learnclass:Learnclass, status: 200 })
-            }).catch(err => {
-                res.send({ status: 500, "Error -> ": err });
+                specailizedId: req.body.specailizedId
             })
-            
+            await Learnclass.findAll({
+                order: [
+                    ['createdAt', 'DESC'],
+                ],
+                include: [
+                    {
+                        model: Specailized,
+                    
+                    }]
+                }).then((learnclass) => {
+                    return res.send({
+                        learnclass
+                    }); 
+                })
         }
+            
         catch (err) {
             res.status(500).send("Error -> " + err);
         }
@@ -43,13 +53,11 @@ module.exports = {
                 learnclass = await Learnclass.findAndCountAll({
                     include: [
                         {
-                            model: Specailized,
-                           
+                            model: Specailized,      
                         }],
-                }
-                );
+                });
             }
-            return res.json({ learnclass: learnclass, status: 200, success: true });
+            return res.json({ learnclass:learnclass });
             
         }
         catch (err) {
@@ -58,23 +66,41 @@ module.exports = {
     },
    
    async update(req, res) {
-       try {
-           let learnclass = req.body;
-           const Id = req.params.id;
+        try {
+            const Id = req.params.id;
           await Learnclass.update(
-                {
-                  Title: req.body.Title,
-                  Note: req.body.Note,
-                  Specailize_Id: req.body.SpecailizeId
+                {  Title: req.body.Title,
+                    Note: req.body.Note,
+                    specailizedId: req.body.specailizedId
                 },
-                { returning: true, where: { Id: Id } }
+                {
+                    returning: true, where: { id: Id },
+                    include: [
+                    {
+                            model: Specailized,
+                    
+                    }]
+                }
+                
             )
-            return res.json({ learnclass: learnclass} ); 
+            await Learnclass.findAll({
+                order: [
+                    ['updatedAt', 'DESC'],
+                ],
+                include: [
+                    {
+                        model: Specailized,
+                    
+                    }]
+                }).then((learnclass) => {
+                        return res.send({
+                            learnclass
+                        }); 
+                    })
         }
         catch (err) {
-            res.send({status: 500, "can not update " : learnclass, "error": err });
+            res.send("can not delete " + err);
         }
-    
     },
      
     async delete(req, res) {
@@ -147,7 +173,12 @@ module.exports = {
 
    getById(req, res) {
         Learnclass.findAll({
-            where: { Id: req.params.id }
+            where: { Id: req.params.id },
+            include: [
+                {
+                    model: Student,
+                    attributes: ['id','Last_Name', 'Note', 'Frist_Name','Address','Brithday'],   
+                }],
         }).then(Department => {
             res.send(Department);
         }).catch(err => {

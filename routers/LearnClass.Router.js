@@ -14,8 +14,5 @@ const learnclass = require('../controllers/LearnClass.Controller');
     .get(learnclass.getById)
     .put(learnclass.update)
     .delete(learnclass.delete)
-//   router
-//     .route("/learnclass/findbytitle")
-//     .get(learnclass.getByTitle)
     
 };

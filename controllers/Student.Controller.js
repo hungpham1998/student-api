@@ -96,7 +96,7 @@ module.exports = {
                     Frist_Name: req.body.Frist_Name,
                     Last_Name: req.body.Last_Name,
                     Image: req.body.Image,
-                    Adress: req.body.Adress,
+                    Address: req.body.Address,
                     Brithday: req.body.Brithday,
                     Note: req.body.Note,
                     Code: req.body.Code,
@@ -113,17 +113,19 @@ module.exports = {
                 
             )
             await Student.findAll({
+                order: [
+                    ['updatedAt', 'DESC'],
+                ],
                 include: [
                     {
                             model: Learnclass,
                     
                     }]
                 }).then((student) => {
-                return res.send({
-                    student
-                }); 
+                        return res.send({
+                            student
+                        }); 
                     })
-          
         }
         catch (err) {
             res.send("can not delete " + err);

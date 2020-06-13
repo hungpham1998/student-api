@@ -12,6 +12,4 @@ const student = require('../controllers/Student.Controller');
     .get(student.getById)
     .put(student.update)
     .delete(student.delete)
-    // .put([authJwt.verifyToken], student.update)
-    // .delete([authJwt.verifyToken, authJwt.isPmOrAdmin], student.delete)
 };
