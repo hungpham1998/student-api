@@ -23,7 +23,10 @@ module.exports = {
                 Code: req.body.Code,
                 learnclassId: req.body.learnclassId
             });
-            await Student.findAll({
+             Student.findAll({
+                order: [
+                    ['createdAt', 'DESC'],
+                   ],
                 include: [
                     {
                             model: Learnclass,

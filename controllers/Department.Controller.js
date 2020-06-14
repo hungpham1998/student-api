@@ -17,6 +17,11 @@ module.exports = {
                 Title: req.body.Title,
                 Note: req.body.Note,
                 IdPartment: req.body.IdPartment
+            });
+            await Department.findAll({
+                order: [
+                    ['createdAt', 'DESC'],
+                ],
             }).then(Department => {
                 res.json({ Department })
             }).catch(err => {

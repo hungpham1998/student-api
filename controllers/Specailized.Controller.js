@@ -16,8 +16,12 @@ module.exports = {
                 Code: req.body.Code,
                 Note: req.body.Note,
             });
-            await Specailized.getAll({}).then(Specailized => {
-                res.json({ Specailized })
+             Specailized.findAll({
+                order: [
+                    ['createdAt', 'DESC'],
+                ],
+            }).then(specailized => {
+                res.json({ specailized })
             }).catch(err => {
                 res.send({ status: 500, "Error -> ": err });
             })
@@ -38,7 +42,11 @@ module.exports = {
                 });
             }
             else {
-                specailized = await Specailized.findAll();
+                specailized = await Specailized.findAll({
+                    order: [
+                        ['createdAt', 'DESC'],
+                    ],
+                });
             }
             return res.json({ specailized, status: 200, success: true });
             
@@ -126,11 +134,7 @@ module.exports = {
                     }
                 })
             }
-            
-         
-            return   res.json({ Specailized: data });
-            
-        
+                return   res.json({ Specailized: data });
         }
         catch(err) {
             res.status(500).send("Error -> " + err);

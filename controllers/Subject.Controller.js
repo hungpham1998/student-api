@@ -11,7 +11,11 @@ module.exports = {
                 Code: req.body.Code,
                 Note: req.body.Note,
             });
-            await Subject.findAll().then(subject => {
+            await Subject.findAll({
+                order: [
+                    ['createdAt', 'DESC'],
+                   ],
+            }).then(subject => {
                 res.json({ subject })
             }).catch(err => {
                 res.send({ status: 500, "Error -> ": err });

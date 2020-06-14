@@ -9,8 +9,13 @@ module.exports = {
             await LearnYear.create({
                 Title: req.body.Title,
                 Note: req.body.Note
-            }).then(LearnYear => {
-                res.json({ LearnYear})
+            });
+            LearnYear.findAll({
+                order: [
+                    ['createdAt', 'DESC'],
+                ],
+            }).then(learnyear => {
+                res.json({ learnyear})
             }).catch(err => {
                 res.send({ status: 500, "Error -> ": err });
             })
