@@ -9,15 +9,21 @@ const Department = db.department;
 const Position = db.position;
 const Specailize = db.specailize;
 const { Op } = require("sequelize");
-var moment = require('moment')
+var moment = require('moment');
+const position = require('../models/position.js');
 module.exports = {
     async store(req, res) {
         try {
             await Position.create({
                 Title: req.body.Title,
                 Note: req.body.Note
-            }).then(Position => {
-                res.json({ Position, status: 200 })
+            });
+            Position.findAll({
+                order: [
+                    ['createdAt', 'DESC'],
+                ],
+            }).then(position => {
+                res.json({ position })
             }).catch(err => {
                 res.send({ status: 500, "Error -> ": err });
             })
@@ -30,17 +36,21 @@ module.exports = {
 
     async getAll(req, res) {
         try {
-            let Position;
+            let position;
             if (req.body.page) {
-                Position = await Position.findAll({
+                position = await Position.findAll({
                     offset: 15 * (req.body.page - 1),
                     limit: 15
                 });
             }
             else {
-                Position = await Position.findAll();
+                position = await Position.findAll({
+                    order: [
+                        ['createdAt', 'DESC'],
+                       ],
+                });
             }
-            return res.json({ Position: Position, status: 200, success: true });
+            return res.json({ position });
             
         }
         catch (err) {
@@ -51,14 +61,25 @@ module.exports = {
    async update(req, res) {
        try {
            const Id = req.params.id;
-          await Position.update(
-                {
-                    Title: req.body.Title,
-                    Note: req.body.Note
-                },
-                { returning: true, where: { Id: Id } }
-            )
-            return res.json({ Position, staust: 200, "updated successfully a Position with id = ": Id } ); 
+           await Position.update(
+               {
+                   Title: req.body.Title,
+                   Note: req.body.Note
+               },
+               { returning: true, where: { Id: Id } }
+           );
+           Position.findAll({
+            order: [
+                ['updatedAt', 'DESC'],
+               ],
+           }).then((position) => {
+               return res.json({ position });
+           })
+            .catch((err) => {
+                res.send({
+                err
+            })
+           })
         }
         catch (err) {
             res.send({status: 500, "can not update " : Position, "error": err });
@@ -92,38 +113,13 @@ module.exports = {
     },
 
     getById(req, res) {
-        Specailize.findOne({
-            where: { Id: req.params.id },
-            include: [{
-                model: Account
-            }]
-        }).then(Specailized => {
-            const specailized  = Specailized.map(department => {
-              
-                return Object.assign(
-                    {},
-                    {
-                        Id: department.Id,
-                        Title: department.Title,
-                        Note: department.Note,
-                        Accounts: department.accounts.map(account => {
-                            return Object.assign(
-                                {},
-                                {
-                                  
-                                    Id: account.Id,
-                                    Account: account.Account,
-                                    Image: account.Image,
-                                    Mail: account.Mail,
-                                    Address: account.Address,
-                                    Department_Id: account.Department_Id,
-
-                                }
-                            )
-                        })
-                    })
-            })
-            res.json({ specailized: specailized, status: 200, success: true });
+        Position.findOne({
+            where: { Id: req.params.id }
+            // include: [{
+            //     model: Account
+            // }]
+        }).then(Position => {
+            res.send(Position);
         }).catch(err => {
             res.status(500).send("Error -> " + err);
         })
@@ -131,11 +127,11 @@ module.exports = {
     },
     getBiTitle(req, res) {
         const title = req.params.title; 
-        Specailize.findAll({
+        Position.findAll({
             where: {Title: title }
-        }).then(Specailize => {
+        }).then(Position => {
             
-            res.json({ Specailize: Specailize, status: 200, success: true });
+            res.json({ Position});
         }).catch(err => {
             res.status(500).send("Error -> " + err);
         })
