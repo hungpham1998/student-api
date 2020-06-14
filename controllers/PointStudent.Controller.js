@@ -20,7 +20,8 @@ module.exports = {
                 PointGK: req.body.PointGK,
                 PointT: req.body.PointT,
                 subjectId: req.body.subjectId,
-                subjectId: req.body.subjectId
+                studentId: req.body.studentId,
+                learnyearId: req.body.learnyearId
             }).then(Pointstudent => {
                 res.json({ Pointstudent, status: 200 })
             }).catch(err => {
@@ -64,11 +65,12 @@ module.exports = {
                     PointGK: req.body.PointGK,
                     PointT: req.body.PointT,
                     subjectId: req.body.subjectId,
-                    studentId: req.body.subjectId
+                    studentId: req.body.subjectId,
+                    learnyearId: req.body.learnyearId
                 },
                 { returning: true, where: { Id: Id } }
             )
-            return res.json({ Pointstudent, staust: 200, "updated successfully a LearnYear with id = ": Id } ); 
+            return res.json({ Pointstudent } ); 
         }
         catch (err) {
             res.send({status: 500, "can not update " : LearnYear, "error": err });

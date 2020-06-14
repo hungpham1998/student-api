@@ -10,8 +10,7 @@ module.exports = (sequelize, DataTypes) => {
     Note: DataTypes.STRING
   }, {});
   learnyear.associate = function(models) {
-    // associations can be defined here
-  
+   
   };
   return learnyear;
 };

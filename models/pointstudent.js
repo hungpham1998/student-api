@@ -24,10 +24,16 @@ module.exports = (sequelize, DataTypes) => {
         model: 'students',
         key: 'Id',
       }
+    },
+    learnyearId: {
+      type: DataTypes.UUID,
+      references: {
+        model: 'learnyears',
+        key: 'Id',
+      }
     }
   }, {});
   pointstudent.associate = function(models) {
-    // associations can be defined here
 
   };
   return pointstudent;

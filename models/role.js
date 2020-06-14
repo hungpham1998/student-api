@@ -1,6 +1,6 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-  const role = sequelize.define('role', {
+  const role = sequelize.define('roles', {
     Id: {
       type: DataTypes.UUID,
       primaryKey: true,

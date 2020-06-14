@@ -11,10 +11,10 @@ module.exports = (sequelize, DataTypes) => {
     Note: DataTypes.STRING,
     specailizedId: {
       type: DataTypes.UUID,
-      references: {
-        model: 'specailizeds',
-        key: 'Id',
-      },
+      // references: {
+      //   model: 'specailizeds',
+      //   key: 'Id',
+      // },
     }
   }, {});
   learnclass.associate = function(models) {

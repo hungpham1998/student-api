@@ -1,14 +1,5 @@
 const db = require('../config/db.config.js');
-const Student = db.student;
-const Chedule = db.chedule;
 const Subject = db.subject;
-const Account = db.account;
-const Learnclass = db.learnclass;
-const Pointstudent = db.pointstudent;
-const Department = db.department;
-const Position = db.position;
-const Specailize = db.specailize;
-const Learnyear = db.learnyear;
 const { Op } = require("sequelize");
 var moment = require('moment')
 module.exports = {
@@ -19,8 +10,9 @@ module.exports = {
                 CreaditNumber: req.body.CreaditNumber,
                 Code: req.body.Code,
                 Note: req.body.Note,
-            }).then(subject => {
-                res.json({ subject, status: 200 })
+            });
+            await Subject.findAll().then(subject => {
+                res.json({ subject })
             }).catch(err => {
                 res.send({ status: 500, "Error -> ": err });
             })
@@ -54,19 +46,24 @@ module.exports = {
    async update(req, res) {
        try {
            const Id = req.params.id;
-          await Subject.update(
-                {
-                    Title: req.body.Title,
-                    CreaditNumber: req.body.CreaditNumber,
-                    Note: req.body.Note,
-                    Code: req.body.Code
-                },
-                { returning: true, where: { Id: Id } }
-            )
-            return res.json({ Subject, staust: 200, "updated successfully a Student with id = ": Id } ); 
+           await Subject.update(
+               {
+                   Title: req.body.Title,
+                   CreaditNumber: req.body.CreaditNumber,
+                   Note: req.body.Note,
+                   Code: req.body.Code
+               },
+               { returning: true, where: { Id: Id } }
+           );
+           await Subject.findAll({ order: [
+            ['updatedAt', 'DESC'],
+           ],
+           }).then((subject) => {
+               return res.json({ subject });
+           })
         }
         catch (err) {
-            res.send({status: 500, "can not update " : Subject, "error": err });
+            res.send({status: 500,  "error": err });
         }
     
     },
@@ -100,21 +97,21 @@ module.exports = {
         Subject.findAll({
             where: { Id: req.params.id },
             
-            include: [{
-                model: Chedule,
-                include: [{
-                    model: Student,
-                    attributes: ['id','Last_Name', 'Note', 'Frist_Name','Address','Brithday'],   
-                }, {
-                    model: Subject,
-                        attributes: ['id', 'Note', 'Title', 'Code'],
-                        include: [{ model: Learnyear, }]
-                    }, {
-                    model: Account,
-                    }, {
-                    model: Learnclass
-                }],
-            }],
+            // include: [{
+            //     model: Learnclass,
+            //     include: [{
+            //         model: Student,
+            //         attributes: ['id','Last_Name', 'Note', 'Frist_Name','Address','Brithday'],   
+            //     }, {
+            //         model: Subject,
+            //             attributes: ['id', 'Note', 'Title', 'Code'],
+            //             include: [{ model: Learnyear, }]
+            //         }, {
+            //         model: Account,
+            //         }, {
+            //         model: Learnclass
+            //     }],
+            // }],
         }).then(Subject => {
             res.send(Subject);
         }).catch(err => {
@@ -125,20 +122,23 @@ module.exports = {
 
     async findByTitle(req, res) {
         let data;
+        const title = req.query.Title; 
         try {
-          const title = req.query.Title? req.query.Title: ''; 
-           data = await Subject.findAndCountAll({
-                where: {
-                    Title: {
-                        $like: title
-                    }
-                }
-              
-            })
-            return   res.json({ Subject: data, status: 200, success: true });
+            if (title.length === 0 || title === '' || title === null) {
             
+                data = await Subject.findAndCountAll({})
+            }
+            else {
+                data = await Subject.findAndCountAll({
+                    where: {
+                        Title: {
+                            $like: title
+                        }
+                    }
+                })
+            }
+              return   res.json({ Subject: data });
         }
-     
         catch(err) {
             res.status(500).send("Error -> " + err);
         }

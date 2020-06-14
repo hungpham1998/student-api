@@ -12,10 +12,15 @@ module.exports = (sequelize, DataTypes) => {
       references: {
         model: 'students',
         key: 'Id',
-      },},
+      },
+    },
     Note: DataTypes.STRING,
-    yearId: {
+    learnyearId: {
       type: DataTypes.UUID,
+      references: {
+        model: 'learnyears',
+        key: 'Id',
+      },
     }
   }, {});
   pointpractice.associate = function(models) {
