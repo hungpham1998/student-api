@@ -4,12 +4,14 @@ const Learnchedule = db.learnchedule;
 const Subject = db.subject;
 const Account = db.account;
 const Learnclass = db.learnclass;
+const Learnyear = db.learnyear;
 const Pointstudent = db.pointstudent;
 const Department = db.department;
 const Position = db.position;
 const Specailized = db.specailized;
 const { Op } = require("sequelize");
-var moment = require('moment')
+var moment = require('moment');
+
 module.exports = {
     async store(req, res) {
         try {     
@@ -17,7 +19,7 @@ module.exports = {
                 Frist_Name: req.body.Frist_Name,
                 Last_Name: req.body.Last_Name,
                 Image: req.body.Image,
-                Adress: req.body.Adress,
+                Address: req.body.Address,
                 Brithday: req.body.Brithday,
                 Note: req.body.Note,
                 Code: req.body.Code,
@@ -27,7 +29,7 @@ module.exports = {
                 order: [
                     ['createdAt', 'DESC'],
                    ],
-                include: [
+                 include: [
                     {
                             model: Learnclass,
                     
@@ -77,12 +79,7 @@ module.exports = {
     async getById(req, res) {
         const Id = req.params.id;
         await Student.findAll({
-            where: { Id: req.params.id },
-            include: [
-                {
-                    model: Learnclass,
-            
-                }]
+            where: { Id: req.params.id }
         }).then(Student => {
             res.send(Student);
         }).catch(err => {
@@ -161,5 +158,29 @@ module.exports = {
         }
 
     },
+
+    async  getPointstudent(req, res)  {
+        const Id = req.params.id;
+        await Student.findAll({
+            where: {
+                Id: req.params.id,
+            },
+            include: [
+                {
+                    where:{studentId:Id},
+                    model: Pointstudent,
+                    include: [
+                        {
+                            model: Subject,
+                        }, {
+                            model: Learnyear,
+                        }]
+                }]
+        }).then(Student => {
+            res.send(Student);
+        }).catch(err => {
+            res.status(500).send("Error -> " + err);
+        })
+    }
     
 };

@@ -125,16 +125,28 @@ module.exports = {
         })
 
     },
-    getBiTitle(req, res) {
-        const title = req.params.title; 
-        Position.findAll({
-            where: {Title: title }
-        }).then(Position => {
-            
-            res.json({ Position});
-        }).catch(err => {
-            res.status(500).send("Error -> " + err);
-        })
-    }
 
+    async findByTitle(req, res) {
+        let data;
+        const title = req.query.Title; 
+        try {
+            if (title.length === 0 || title === '' || title === null) {
+            
+                data = await Position.findAndCountAll({})
+            }
+            else {
+                data = await Position.findAndCountAll({
+                    where: {
+                        Title: {
+                            $like: title
+                        }
+                    }
+                })
+            }
+              return   res.json({ Position: data });
+        }
+        catch(err) {
+            res.status(500).send("Error -> " + err);
+        }
+    }
 };

@@ -7,6 +7,9 @@ const position = require('../controllers/Position.Controller');
     .post(position.store)
     .delete(position.deleteAll)
   router
+    .route("/position/find")
+    .get(position.findByTitle)
+  router
     .route("/position/:id")
     .get(position.getById)
     .put(position.update)

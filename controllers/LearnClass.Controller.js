@@ -177,7 +177,7 @@ module.exports = {
             include: [
                 {
                     model: Student,
-                    attributes: ['id','Last_Name', 'Note', 'Frist_Name','Address','Brithday'],   
+                    attributes: ['Id','Last_Name', 'Code', 'Frist_Name','Address','Brithday'],   
                 }],
         }).then(Department => {
             res.send(Department);

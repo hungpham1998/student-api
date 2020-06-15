@@ -14,7 +14,7 @@ module.exports = {
     async store(req, res) {
         try {
             await Pointstudent.create({
-                PontCC: req.body.PontCC,
+                PointCC: req.body.PointCC,
                 PointKT1: req.body.PointKT1,
                 PointKT2: req.body.PointKT2,
                 PointGK: req.body.PointGK,
@@ -22,8 +22,21 @@ module.exports = {
                 subjectId: req.body.subjectId,
                 studentId: req.body.studentId,
                 learnyearId: req.body.learnyearId
+            });
+            Pointstudent.findAll({
+                order: [
+                    ['createdAt', 'DESC'],
+                ],
+                include: [{
+                    model: Student
+                 },{
+                     model: Subject
+                 }, 
+                  {
+                     model: LearnYear
+                 }]
             }).then(Pointstudent => {
-                res.json({ Pointstudent, status: 200 })
+                res.json({ Pointstudent})
             }).catch(err => {
                 res.send({ status: 500, "Error -> ": err });
             })
@@ -44,7 +57,19 @@ module.exports = {
                 });
             }
             else {
-                pointstudent = await Pointstudent.findAll();
+                pointstudent = await Pointstudent.findAll({
+                    order: [
+                        ['createdAt', 'DESC'],
+                    ],
+                    include: [{
+                           model: Student
+                        },{
+                         model: Subject
+                        }, 
+                         {
+                                model: LearnYear
+                        }]
+                });
             }
             return res.json({ pointstudent: pointstudent, status: 200, success: true });
             
@@ -59,18 +84,44 @@ module.exports = {
            const Id = req.params.id;
           await Pointstudent.update(
                 {
-                    PontCC: req.body.PontCC,
+                    PointCC: req.body.PointCC,
                     PointKT1: req.body.PointKT1,
                     PointKT2: req.body.PointKT2,
                     PointGK: req.body.PointGK,
                     PointT: req.body.PointT,
                     subjectId: req.body.subjectId,
-                    studentId: req.body.subjectId,
+                    studentId: req.body.studentId,
                     learnyearId: req.body.learnyearId
                 },
-                { returning: true, where: { Id: Id } }
-            )
-            return res.json({ Pointstudent } ); 
+              {
+                  returning: true, where: { Id: Id },
+                    include: [{
+                        model: Student
+                    },{
+                         model: Subject
+                    },{
+                            model: LearnYear
+                      }]
+              }
+           )
+           Pointstudent.findAll({
+            order: [
+                ['updatedAt', 'DESC'],
+            ],
+            include: [{
+                   model: Student
+                },{
+                 model: Subject
+                }, 
+                 {
+                        model: LearnYear
+                }]
+           }).then((pointstudent) => {
+              return res.json({ pointstudent } ); 
+           })
+            .catch((err) => {
+               res.send({err})
+           })
         }
         catch (err) {
             res.send({status: 500, "can not update " : LearnYear, "error": err });
@@ -106,14 +157,14 @@ module.exports = {
     getById(req, res) {
         Pointstudent.findAll({
             where: { Id: req.params.id },
-            attributes: ['id','PontCC', 'PointKT1', 'PointKT2','PointGK','PointT'],
             include: [
                 {
-                    model: Student,
-                    attributes: ['id','Last_Name', 'Note', 'Frist_Name','Address','Brithday'],   
+                    model: Student
                 }, {
                     model: Subject,
-                }],
+                },{
+                    model: LearnYear
+            }],
         }).then(Pointstudent => {
             res.send(Pointstudent);
         }).catch(err => {

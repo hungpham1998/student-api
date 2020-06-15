@@ -108,7 +108,6 @@ module.exports = {
     getById(req, res) {
         Specailized.findAll({
             where: { Id: req.params.id },
-
         }).then(Specailized=> {
             res.send(Specailized);
         }).catch(err => {

@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       defaultValue: DataTypes.UUIDV4
     },
-    PontCC: DataTypes.INTEGER,
+    PointCC: DataTypes.INTEGER,
     PointKT1: DataTypes.INTEGER,
     PointKT2: DataTypes.INTEGER,
     PointGK: DataTypes.INTEGER,
