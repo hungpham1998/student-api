@@ -165,7 +165,7 @@ module.exports = {
             where: {
                 Id: req.params.id,
             },
-            include: [
+            include: [{ model: Learnclass},
                 {
                     where:{studentId:Id},
                     model: Pointstudent,
