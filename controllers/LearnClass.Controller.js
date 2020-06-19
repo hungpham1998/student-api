@@ -43,10 +43,14 @@ module.exports = {
     async getAll(req, res) {
         try {
             let learnclass;
-            if (req.body.page) {
+            if (req.query.page) {
                 learnclass = await Learnclass.findAndCountAll({
-                    offset: 15 * (req.body.page - 1),
-                    limit: 15
+                    offset: 15 * (req.query.page - 1),
+                    limit:  15,  
+                    include: [
+                        {
+                            model: Specailized,      
+                        }],
                 });
             }
             else {

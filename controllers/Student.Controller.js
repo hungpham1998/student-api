@@ -1,13 +1,9 @@
 const db = require('../config/db.config')
 const Student = db.student;
-const Learnchedule = db.learnchedule;
 const Subject = db.subject;
-const Account = db.account;
 const Learnclass = db.learnclass;
 const Learnyear = db.learnyear;
 const Pointstudent = db.pointstudent;
-const Department = db.department;
-const Position = db.position;
 const Specailized = db.specailized;
 const { Op } = require("sequelize");
 var moment = require('moment');

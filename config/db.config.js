@@ -44,8 +44,6 @@ db.learnyear = require('../models/learnyear')(sequelize, Sequelize);
 db.chedule = require('../models/chedule')(sequelize, Sequelize);
 db.pointstudent = require('../models/pointstudent')(sequelize, Sequelize);
 db.pointpractice = require('../models/pointpractice')(sequelize, Sequelize);
-db.accountrole = require('../models/accountrole')(sequelize,Sequelize);
-// sequelize.sync()
 
 
 db.account.belongsTo(db.department);
@@ -71,6 +69,17 @@ db.student.belongsTo(db.learnclass);
 db.student.hasMany(db.pointstudent);
 db.pointstudent.belongsTo(db.student);
 
+
+db.role.belongsToMany(db.account, {
+  through: "accountroles",
+  foreignKey: "roleId",
+  otherKey: "accountId"
+});
+db.account.belongsToMany(db.role, {
+  through: "accountroles",
+  foreignKey: "accountId",
+  otherKey: "roleId"
+});
 
 
 

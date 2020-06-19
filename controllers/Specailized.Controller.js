@@ -83,7 +83,9 @@ module.exports = {
     async delete(req, res) {
         try {
             
-            await Specailized.destroy({ where: { Id: req.params.id } })
+            await Specailized.destroy({
+                where: { Id: req.params.id }
+            })
             return res.json({ message: "delete Specailize successfully!", status: 200 });
         }
         catch (err) {

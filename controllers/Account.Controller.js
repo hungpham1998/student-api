@@ -2,6 +2,7 @@ const db = require('../config/db.config');
 const config = require('../config/config.js');
 const account = db.account;
 const role = db.role;
+const accountrole = db.accountrole;
 
 const Op = db.Sequelize.Op;
 
@@ -16,45 +17,48 @@ module.exports = {
             Mail: req.body.Mail,
             PassWord: bcrypt.hashSync(req.body.PassWord, 8),
         }).then(user => {
-            role.findAll({
-            where: {
-                Title: {
-                [Op.or]: req.body.roles 
-                }
-            }
-            }).then(roles => {
-                user.setRoles(roles).then(() => {
-                    res.send("User registered successfully!");
-                });
-            }).catch(err => {
-                res.status(500).send("Error -> " + err);
-            });
+            res.send(user)
         }).catch(err => {
             res.status(500).send("Fail! Error -> " + err);
         })
     },
 
-    signin(req, res){
+  async signin(req, res){
 	
-        account.findOne({
+        await account.findOne({
             where: {
-                UserName: req.body.UserName
-            }
+                Account: req.body.Account
+            },
         }).then(user => {
             if (!user) {
                 return res.status(404).send('User Not Found.');
             }
 
-            var passwordIsValid = bcrypt.compareSync(req.body.PassWord, account.PassWord);
+            var passwordIsValid = bcrypt.compareSync(req.body.PassWord, user.PassWord);
+            console.log(passwordIsValid)
             if (!passwordIsValid) {
                 return res.status(401).send({ auth: false, accessToken: null, reason: "Invalid Password!" });
             }
-            
-            var token = jwt.sign({ id: account.Id }, config.secret, {
-                expiresIn: 86400 // expires in 24 hours
-            });
-            
-            res.status(200).send({ auth: true, user, accessToken: token });
+            let authorities = [];
+            let User = {};
+            user.getRoles().then(roles => {
+              for (let i = 0; i < roles.length; i++) {
+                authorities.push(roles[i].Title);
+                }
+                User = {
+                    Id: user.Id,
+                    UserName: user.UserName,
+                    Account: user.Account,
+                    Mail: user.Mail,
+                    roles: authorities,
+                    Image: user.Image,
+                    Address: user.Address
+                }
+                var token = jwt.sign({ user: User }, config.secret, {
+                    expiresIn: 86400 
+                });
+              res.status(200).send({ auth: true, accessToken: token });
+            })
             
         }).catch(err => {
             res.status(500).send('Error -> ' + err);
@@ -67,7 +71,7 @@ module.exports = {
             attributes: ['Account', 'UserName', 'Mail'],
             include: [{
                 model: role,
-                attributes: ['id', 'Title'],
+                attributes: ['Id', 'Title'],
                 through: {
                     attributes: ['accountId', 'roleId'],
                 }
@@ -166,14 +170,12 @@ module.exports = {
 
   async  getById(req, res) {
         const id = req.params.id;
-       await account.findOne({
+       await account.findAll({
             where: {Id: id},
-            attributes: ['Account', 'UserName', 'Mail','Image','Note'],
             include: [{
                 model: role,
-                attributes: ['Id', 'Title'],
                 through: {
-                    attributes: ['acountId', 'roleId'],
+                    attributes: ['accountId', 'roleId'],
                 }
             }]
         }).then(account => {
@@ -215,7 +217,13 @@ module.exports = {
         try {
              await Account.destroy({
                 where: {id: Id },
-                truncate: true
+                 truncate: true,
+                 include: [{
+                    model: role,
+                    through: {
+                        attributes: ['accountId', 'roleId'],
+                    }
+                }]
             })
             return res.send({  success: true,    stauts: 200,});
         }
