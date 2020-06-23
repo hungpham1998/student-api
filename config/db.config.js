@@ -44,6 +44,7 @@ db.learnyear = require('../models/learnyear')(sequelize, Sequelize);
 db.chedule = require('../models/chedule')(sequelize, Sequelize);
 db.pointstudent = require('../models/pointstudent')(sequelize, Sequelize);
 db.pointpractice = require('../models/pointpractice')(sequelize, Sequelize);
+db.attendancesheet = require('../models/attendancesheet')(sequelize, Sequelize);
 
 
 db.account.belongsTo(db.department);
@@ -58,8 +59,6 @@ db.subject.hasMany(db.pointstudent);
 db.pointstudent.belongsTo(db.subject);
 db.learnclass.hasMany(db.chedule);
 db.chedule.belongsTo(db.learnclass);
-db.student.hasMany(db.chedule);
-db.chedule.belongsTo(db.student)
 db.account.hasMany(db.chedule);
 db.chedule.belongsTo(db.account)
 db.subject.hasMany(db.chedule);
@@ -68,6 +67,13 @@ db.learnclass.hasMany(db.student);
 db.student.belongsTo(db.learnclass);
 db.student.hasMany(db.pointstudent);
 db.pointstudent.belongsTo(db.student);
+
+db.attendancesheet.belongsTo(db.student);
+db.student.hasMany(db.attendancesheet);
+db.subject.hasMany(db.attendancesheet);
+db.attendancesheet.belongsTo(db.subject);
+db.account.hasMany(db.attendancesheet);
+db.attendancesheet.belongsTo(db.account);
 
 
 db.role.belongsToMany(db.account, {
@@ -81,6 +87,17 @@ db.account.belongsToMany(db.role, {
   otherKey: "roleId"
 });
 
+db.student.belongsToMany(db.chedule, {
+  through: "studentchedule",
+  foreignKey: "studentId",
+  otherKey: "cheduleId"
+});
+
+db.chedule.belongsTo(db.student,{
+  through: "studentchedule",
+  foreignKey: "cheduleId",
+  otherKey: "studentId"
+})
 
 
 module.exports = db;

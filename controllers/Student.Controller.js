@@ -5,6 +5,8 @@ const Learnclass = db.learnclass;
 const Learnyear = db.learnyear;
 const Pointstudent = db.pointstudent;
 const Specailized = db.specailized;
+const Account = db.account;
+const Attendancesheet = db.attendancesheet;
 const { Op } = require("sequelize");
 var moment = require('moment');
 
@@ -170,6 +172,30 @@ module.exports = {
                             model: Subject,
                         }, {
                             model: Learnyear,
+                        }]
+                }]
+        }).then(Student => {
+            res.send(Student);
+        }).catch(err => {
+            res.status(500).send("Error -> " + err);
+        })
+    },
+
+   async getAttendancesheet(req, res) {
+        const Id = req.params.id;
+        await Student.findAll({
+            where: {
+                Id: req.params.id,
+            },
+            include: [
+                {
+                    where:{studentId:Id},
+                    model: Attendancesheet,
+                    include: [
+                        {
+                            model: Subject,
+                        }, {
+                            model: Account,
                         }]
                 }]
         }).then(Student => {

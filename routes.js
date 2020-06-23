@@ -14,6 +14,8 @@ function eRoutes() {
   const pointpractice = require('./routers/PointPractice.Router')(router);
   const chedule = require('./routers/Chedule.Router')(router);
   const login = require('./routers/Login.Router')(router);
+  const role = require('./routers/Role.Router')(router);
+  const attendencesheet = require('./routers/Attendancesheet.Router')(router);
   return router;
 }
 

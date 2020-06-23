@@ -8,7 +8,8 @@ module.exports = (sequelize, DataTypes) => {
 
     },
       Times: DataTypes.INTEGER,
-      TimesDate: DataTypes.Date,
+      TimesDate: DataTypes.DATE,
+      Note: DataTypes.STRING,
       accountId: {
         type: DataTypes.UUID,
         references: {
@@ -16,13 +17,20 @@ module.exports = (sequelize, DataTypes) => {
           key: 'Id',
         },
       },
-    learnclassId: {
+    subjectId: {
       type: DataTypes.UUID,
       references: {
-        model: 'learnclasses',
+        model: 'subjects',
         key: 'Id',
       },
-    }
+    },
+    studentId: {
+      type: DataTypes.UUID,
+      references: {
+        model: 'students',
+        key: 'Id',
+      },
+    },
   }, {});
   attendancesheet.associate = function(models) {
     // associations can be defined here

@@ -8,6 +8,9 @@ const student = require('../controllers/Student.Controller');
     // .post([authJwt.verifyToken, authJwt.isPmOrAdmin], student.store)
     // .delete([authJwt.verifyToken, authJwt.isAdmin], student.deleteAll)
   router
+    .route("/student/:id/attendancesheet")
+    .get(student.getAttendancesheet)
+  router
     .route("/student/:id/point")
     .get(student.getPointstudent)
   router

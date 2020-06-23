@@ -32,13 +32,7 @@ module.exports = (sequelize, DataTypes) => {
         key: 'Id',
       }
     },
-    studentId:{
-      type: DataTypes.UUID,
-      references: {
-        model: 'students',
-        key: 'Id',
-      }
-    }
+
   }, {});
   chedule.associate = function(models) {
 

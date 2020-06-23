@@ -13,12 +13,13 @@ const subject = require('../controllers/Subject.Controller');
     .route("/subject/find")
     .get(subject.findByTitle)
   router
+    .route("/subject/:id/chedule")
+    .get(subject.getByChedule)
+
+  router
     .route('/subject/:id')
     .get(subject.getById)
     .put(subject.update)
     .delete(subject.delete)
-    // .put([authJwt.verifyToken, authJwt.isTeacher], subject.update)
-    // .delete([authJwt.verifyToken, authJwt.isPmOrAdmin], subject.delete)
-
   
 };

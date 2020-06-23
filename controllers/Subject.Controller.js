@@ -1,5 +1,7 @@
 const db = require('../config/db.config.js');
 const Subject = db.subject;
+const Chelude = db.chedule;
+const Student = db.student;
 const { Op } = require("sequelize");
 var moment = require('moment')
 module.exports = {
@@ -146,6 +148,22 @@ module.exports = {
         catch(err) {
             res.status(500).send("Error -> " + err);
         }
-    }
+    },
+
+    getByChedule(req, res) {
+        Subject.findAll({
+            where: { Id: req.params.id },
+            
+            include: [{
+                model: Chelude,
+            }],
+        }).then(Subject => {
+            res.send(Subject);
+        }).catch(err => {
+            res.status(500).send("Error -> " + err);
+        })
+
+    },
+
 
 };

@@ -23,7 +23,6 @@ module.exports = {
                 learnclassId: req.body.learnclassId,
                 subjectId: req.body.subjectId,
                 accountId: req.body.accountId,
-                studentId: req.body.studentId,
                 Note: req.body.Note
             }).then(Learnchedule => {
                 res.json({ Learnchedule, status: 200 })
@@ -39,17 +38,17 @@ module.exports = {
 
     async getAll(req, res) {
         try {
-            let Chedule;
+            let chedule;
             if (req.body.page) {
-                Chedule = await Chedule.findAndCountAll({
+                chedule = await Chedule.findAndCountAll({
                     offset: 15 * (req.body.page - 1),
                     limit: 15
                 });
             }
             else {
-                Chedule = await Chedule.findAndCountAll();
+                chedule = await Chedule.findAndCountAll();
             }
-            return res.json({ Chedule: Chedule, status: 200, success: true });
+            return res.json({ chedule});
             
         }
         catch (err) {
@@ -70,7 +69,6 @@ module.exports = {
                     learnclassId: req.body.learnclassId,
                     subjectId: req.body.subjectId,
                     accountId: req.body.accountId,
-                    studentId: req.body.studentId,
                     Note: req.body.Note
                 },
                 { returning: true, where: { Id: Id } }
@@ -113,11 +111,9 @@ module.exports = {
             where: { Id: req.params.Id },
             include: [
                 {
-                    model: Student,
-                    attributes: ['id', 'Last_Name', 'Note', 'Frist_Name', 'Address', 'Brithday'],
+                    model: Student, 
                 }, {
                     model: Subject,
-                    attributes: ['Title', 'Code','Note']
                 }],
             
         }).then(Chedule => {

@@ -2,12 +2,14 @@ const db = require('../config/db.config');
 const config = require('../config/config.js');
 const account = db.account;
 const role = db.role;
-const accountrole = db.accountrole;
+const Department = db.department;
+const position = db.position;
 
 const Op = db.Sequelize.Op;
 
 var jwt = require('jsonwebtoken');
 var bcrypt = require('bcryptjs');
+
 module.exports = {
 
     signup(req, res){
@@ -138,7 +140,7 @@ module.exports = {
     },
 
     async update(req, res) {
-        const id = req.pramas.id;
+        const Id = req.pramas.id;
        await account.update(
             {
                 Account: req.body.Account,
@@ -148,7 +150,7 @@ module.exports = {
                 Image: req.body.Image,
                 Note: req.body.Note,
             },
-            { returning: true, where: { id:id } }
+            { returning: true, where: { Id: Id } }
         ).then(account => {
             role.findAll({
             where: {
@@ -198,6 +200,10 @@ module.exports = {
                 through: {
                     attributes: ['accountId', 'roleId'],
                 }
+            },{
+                model: Department,
+            },{
+                model: position,
             }]
         }).then(account => {
             res.status(200).json({
@@ -214,15 +220,21 @@ module.exports = {
     
     async delete(req, res) {
         const Id = req.params.id;
+        console.log(Id)
         try {
-             await Account.destroy({
-                where: {id: Id },
+             await account.destroy({
+                where: {Id: Id },
                  truncate: true,
                  include: [{
                     model: role,
-                    through: {
+                     through: {
+                        where:{ accountId: Id},
                         attributes: ['accountId', 'roleId'],
                     }
+                },{ 
+                    model: Department,
+                },{
+                    model: position,
                 }]
             })
             return res.send({  success: true,    stauts: 200,});
@@ -241,17 +253,31 @@ module.exports = {
                 Mail: req.body.Mail,
                 PassWord: bcrypt.hashSync(req.body.PassWord, 8),
                 departmentId: req.body.departmentId,
-                positionId: req.body.positionId
+                positionId: req.body.positionId,
+                Address: req.body.Address,
+                Image: req.body.Image
+                
             }).then(user => {
                 role.findAll({
                     where: {
-                        Title: {
-                            [Op.or]: req.body.roles
-                        }
+                        Title: req.body.Role.length > 0 ? req.body.Role.length: null
                     }
                 }).then(roles => {
                     user.setRoles(roles).then(() => {
-                        res.send("User registered successfully!");
+                        account.findAll({
+                            include: [{
+                                model: role,
+                                through: {
+                                    attributes: ['accountId', 'roleId'],
+                                }
+                            },{
+                                model: Department,
+                            },{
+                                model: position,
+                            }]
+                        }).then((user) => {
+                            res.send({user})
+                        })
                     });
                 }).catch(err => {
                     res.status(500).send("Error -> " + err);
