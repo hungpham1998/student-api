@@ -10,6 +10,8 @@ app.use(bodyParser.json());
 app.use(express.json());
 
 app.use(cors())
+
+
 let router = require('./routes')();
 app.use("/api", router);
 app.use(function(req, res) {

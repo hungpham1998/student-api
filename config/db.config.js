@@ -57,12 +57,12 @@ db.pointstudent.belongsTo(db.learnyear);
 db.pointpractice.belongsTo(db.student);
 db.subject.hasMany(db.pointstudent); 
 db.pointstudent.belongsTo(db.subject);
-db.learnclass.hasMany(db.chedule);
-db.chedule.belongsTo(db.learnclass);
-db.account.hasMany(db.chedule);
-db.chedule.belongsTo(db.account)
-db.subject.hasMany(db.chedule);
-db.chedule.belongsTo(db.subject);
+// db.learnclass.hasMany(db.chedule);
+// db.chedule.belongsTo(db.learnclass);
+// db.account.hasMany(db.chedule);
+// db.chedule.belongsTo(db.account)
+// db.subject.hasMany(db.chedule);
+// db.chedule.belongsTo(db.subject);
 db.learnclass.hasMany(db.student);
 db.student.belongsTo(db.learnclass);
 db.student.hasMany(db.pointstudent);

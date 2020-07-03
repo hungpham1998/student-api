@@ -10,6 +10,9 @@ const specailized = require('../controllers/Specailized.Controller');
     .route("/specailized/find")
     .get(specailized.findByTitle)
   router
+    .route("/specailized/:id/learnclass")
+    .get(specailized.findByLearnclass)
+  router
     .route("/specailized/:id")
     .get(specailized.getById)
     .put(specailized.update)

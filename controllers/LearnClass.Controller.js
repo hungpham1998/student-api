@@ -45,8 +45,8 @@ module.exports = {
             let learnclass;
             if (req.query.page) {
                 learnclass = await Learnclass.findAndCountAll({
-                    offset: 15 * (req.query.page - 1),
-                    limit:  15,  
+                    offset: 10 * (req.query.page - 1),
+                    limit:  10,  
                     include: [
                         {
                             model: Specailized,      
@@ -54,14 +54,14 @@ module.exports = {
                 });
             }
             else {
-                learnclass = await Learnclass.findAndCountAll({
+                learnclass = await Learnclass.findAll({
                     include: [
                         {
                             model: Specailized,      
                         }],
                 });
             }
-            return res.json({ learnclass:learnclass });
+            return res.json({ learnclass });
             
         }
         catch (err) {
@@ -135,11 +135,11 @@ module.exports = {
     getstudentById(req, res) {
         Learnclass.findAll({
             where: { Id: req.params.id },
-            attributes: ['id','Title', 'Note', 'specailizedId'], 
+            attributes: ['Id','Title', 'Note', 'specailizedId'], 
             include: [
             {
                 model: Student,
-                attributes: ['id','Last_Name', 'Note', 'Frist_Name','Address','Brithday'],   
+                attributes: ['Id','Last_Name','Note', 'Frist_Name','Address','Brithday','Image'],   
             }],
                 
         }).then(Learnclass => {

@@ -4,7 +4,7 @@ const account = db.account;
 const role = db.role;
 const Department = db.department;
 const position = db.position;
-
+const fs = require('fs');
 const Op = db.Sequelize.Op;
 
 var jwt = require('jsonwebtoken');
@@ -247,6 +247,9 @@ module.exports = {
 
 
     async store(req, res) {
+        // fs.writeFileSync('/uploads/',req.body.Image);		
+        // let imageData = fs.readFileSync('/uploads/' + req.body.Image);
+      
           await  account.create({
                 Account: req.body.Account,
                 UserName: req.body.UserName,
@@ -255,12 +258,12 @@ module.exports = {
                 departmentId: req.body.departmentId,
                 positionId: req.body.positionId,
                 Address: req.body.Address,
-                Image: req.body.Image
+                // Image: imageData
                 
             }).then(user => {
                 role.findAll({
                     where: {
-                        Title: req.body.Role.length > 0 ? req.body.Role.length: null
+                        Title: req.body.Role.length > 0 ? req.body.Role: null
                     }
                 }).then(roles => {
                     user.setRoles(roles).then(() => {

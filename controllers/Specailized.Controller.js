@@ -117,6 +117,22 @@ module.exports = {
         })
 
     },
+    async findByLearnclass(req, res) {
+        Specailized.findAll({
+            where: { Id: req.params.id },
+            attributes: ['Id','Title'], 
+            include: [
+            {
+                model: Learnclass,
+                attributes: ['Id','Title','Note'],   
+            }],
+        }).then(Specailized=> {
+            res.json(Specailized);
+        }).catch(err => {
+            res.status(500).send("Error -> " + err);
+        })
+
+    },
     
     async findByTitle(req, res) {
         let data;

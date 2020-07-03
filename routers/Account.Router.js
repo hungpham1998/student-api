@@ -1,5 +1,6 @@
 "use strict";
-module.exports = function(router) {
+module.exports = function (router) {
+  
 const account = require('../controllers/Account.Controller');
   router
     .route("/account")
