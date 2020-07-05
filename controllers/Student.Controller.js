@@ -16,7 +16,7 @@ module.exports = {
             await Student.create({
                 Frist_Name: req.body.Frist_Name,
                 Last_Name: req.body.Last_Name,
-                Image: req.body.Image,
+                Image: req.file.filename,
                 Address: req.body.Address,
                 Brithday: req.body.Brithday,
                 Note: req.body.Note,
@@ -77,9 +77,16 @@ module.exports = {
     async getById(req, res) {
         const Id = req.params.id;
         await Student.findAll({
-            where: { Id: req.params.id }
-        }).then(Student => {
-            res.send(Student);
+            where: { Id: Id }
+        }).then(student => {
+            let Student = [];
+            student.forEach((element) => {
+                Student.push({
+                    ...element,
+                    ...element.Image = '/uploads/'+ element.Image
+                })
+            });
+            res.json({student});
         }).catch(err => {
             res.status(500).send("Error -> " + err);
         })
@@ -93,7 +100,7 @@ module.exports = {
                 {
                     Frist_Name: req.body.Frist_Name,
                     Last_Name: req.body.Last_Name,
-                    Image: req.body.Image,
+                    Image: req.file.filename,
                     Address: req.body.Address,
                     Brithday: req.body.Brithday,
                     Note: req.body.Note,
@@ -203,6 +210,58 @@ module.exports = {
         }).catch(err => {
             res.status(500).send("Error -> " + err);
         })
-    }
+    },
+   
+    async findBy(req, res) {
+        const Frist_Name = req.query.Frist_Name;
+        const Last_Name = req.query.Last_Name;
+        const Title = req.query.Title;
+        const Address = req.query.Address;
+        const Code = req.query.Code;
+        let student;
+
+        const where = {}
+        const where_join = {}
+        // if (!Title) {
+        //     where.Title = Title;
+        // }
+        if (Last_Name) {
+            where.Last_Name = Last_Name;
+        }
+        try {
+            // if (Title.length === 0 || Title === '' || Title === null ||
+            //     Last_Name.length === 0 || Last_Name === '' || Last_Name === null ||
+            //     Frist_Name.length === 0 || Frist_Name === '' || Frist_Name === null ||
+            //     Address.length === 0 || Address === '' || Address === null ||
+            //     Code.length === 0 || Code === '' || Code === null ) {
+            
+            //     student = await Student.findAndCountAll({
+            //         include: [
+            //         {
+            //             model: Learnclass,
+            //         }]})
+            // }
+            // else {
+                
+            // }
+       console.log(Last_Name)
+            student =   await Student.findAndCountAll({
+                where,
+                returning: true,
+                // include: [
+                //     {
+                //         where: {
+                //             $or: [{ Title: { $like: Title } },
+                //                   { Title: { $like: null } }]
+                //         },
+                //         model: Learnclass,
+                //     }]
+            })
+            return res.json({ student });
+        }
+        catch(err) {
+            res.status(500).send("Error -> " + err);
+        }
+   }
     
 };

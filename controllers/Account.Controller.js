@@ -53,7 +53,7 @@ module.exports = {
                     Account: user.Account,
                     Mail: user.Mail,
                     roles: authorities,
-                    Image: user.Image,
+                    Image: '/uploads/'+user.Image,
                     Address: user.Address
                 }
                 var token = jwt.sign({ user: User }, config.secret, {
@@ -140,17 +140,22 @@ module.exports = {
     },
 
     async update(req, res) {
-        const Id = req.pramas.id;
+        const id = req.params.id;
+        console.log(id)
+       let oldAccount=  await account.findOne({
+            where: { Id: id }, returning: true,
+       });
+        console.log(oldAccount)
        await account.update(
             {
                 Account: req.body.Account,
                 UserName: req.body.UserName,
                 Mail: req.body.Mail,
-                PassWord: bcrypt.hashSync(req.body.PassWord, 8),
+                PassWord: req.body.PassWord!== undefined ||req.body.PassWord!== null  ? bcrypt.hashSync(req.body.PassWord, 8): oldAccount.PassWord ,
                 Image: req.body.Image,
                 Note: req.body.Note,
             },
-            { returning: true, where: { Id: Id } }
+            {  where: { Id: id },returning: true, }
         ).then(account => {
             role.findAll({
             where: {
@@ -165,6 +170,7 @@ module.exports = {
             }).catch(err => {
                 res.status(500).send("Error -> " + err);
             });
+            res.json({ status: 200})
         }).catch(err => {
             res.status(500).send("Fail! Error -> " + err);
         })  
@@ -180,11 +186,17 @@ module.exports = {
                     attributes: ['accountId', 'roleId'],
                 }
             }]
-        }).then(account => {
-            res.status(200).json({
-                "description": "account",
-                "account": account
-            });
+       }).then(Account => {
+           let account = [];
+
+           Account.forEach((item) =>
+               account.push({
+                   ...item,
+                   ...item.Image = '/uploads/'+ item.Image
+           }))
+
+           console.log(Account)
+            res.status(200).json({ Account});
         }).catch(err => {
             res.status(500).json({
                 "description": "Can not access",
@@ -206,10 +218,7 @@ module.exports = {
                 model: position,
             }]
         }).then(account => {
-            res.status(200).json({
-                "description": "account",
-                "account": account
-            });
+            res.json({ account });
         }).catch(err => {
             res.status(500).json({
                 "description": "Can not access",
@@ -220,15 +229,13 @@ module.exports = {
     
     async delete(req, res) {
         const Id = req.params.id;
-        console.log(Id)
         try {
              await account.destroy({
                 where: {Id: Id },
-                 truncate: true,
                  include: [{
-                    model: role,
+                     model: role,
                      through: {
-                        where:{ accountId: Id},
+                        where: { accountId: { [Op.or]: Id }, roleId:{ [Op.or]: role.Id || db.sequelize.col("Id") } },
                         attributes: ['accountId', 'roleId'],
                     }
                 },{ 
@@ -249,8 +256,8 @@ module.exports = {
     async store(req, res) {
         // fs.writeFileSync('/uploads/',req.body.Image);		
         // let imageData = fs.readFileSync('/uploads/' + req.body.Image);
-      
-          await  account.create({
+        try {
+            const user = await account.create({
                 Account: req.body.Account,
                 UserName: req.body.UserName,
                 Mail: req.body.Mail,
@@ -258,36 +265,35 @@ module.exports = {
                 departmentId: req.body.departmentId,
                 positionId: req.body.positionId,
                 Address: req.body.Address,
-                // Image: imageData
+                Image: req.file.filename
                 
-            }).then(user => {
-                role.findAll({
-                    where: {
-                        Title: req.body.Role.length > 0 ? req.body.Role: null
-                    }
-                }).then(roles => {
-                    user.setRoles(roles).then(() => {
-                        account.findAll({
-                            include: [{
-                                model: role,
-                                through: {
-                                    attributes: ['accountId', 'roleId'],
-                                }
-                            },{
-                                model: Department,
-                            },{
-                                model: position,
-                            }]
-                        }).then((user) => {
-                            res.send({user})
-                        })
-                    });
-                }).catch(err => {
-                    res.status(500).send("Error -> " + err);
-                });
-            }).catch(err => {
-                res.status(500).send("Fail! Error -> " + err);
             })
+            const roles = role.findAll({
+                where: {
+                    Title: req.body.Role.length > 0 ? req.body.Role : null
+                }
+            })
+            
+            await user.setRoles(roles).then(() => {
+                account.findAll({
+                    include: [{
+                        model: role,
+                        through: {
+                            attributes: ['accountId', 'roleId'],
+                        }
+                    }, {
+                        model: Department,
+                    }, {
+                        model: position,
+                    }]
+                }).then((user) => {
+                    res.send({ user })
+                })
+            });
+        }
+        catch (err) {
+                res.status(500).send("Fail! Error -> " + err);
+        }
     }
 
 };

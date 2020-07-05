@@ -124,7 +124,7 @@ module.exports = {
                 where: {},
                 truncate: true
             })
-            return res.send({  success: true,    stauts: 200,});
+            return res.send({stauts: 200,});
         }
         catch (err) {
            return  res.status(500).send("can not delete " + err);
