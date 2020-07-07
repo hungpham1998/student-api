@@ -6,11 +6,12 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       defaultValue: DataTypes.UUIDV4
     },
-    PointCC: DataTypes.INTEGER,
-    PointKT1: DataTypes.INTEGER,
-    PointKT2: DataTypes.INTEGER,
-    PointGK: DataTypes.INTEGER,
-    PointT: DataTypes.INTEGER,
+    PointCC: DataTypes.FLOAT,
+    PointKT1: DataTypes.FLOAT,
+    PointKT2: DataTypes.FLOAT,
+    PointGK: DataTypes.FLOAT,
+    PointT: DataTypes.FLOAT,
+    PointTK: DataTypes.FLOAT,
     subjectId: {
       type: DataTypes.UUID,
       references: {
@@ -25,13 +26,13 @@ module.exports = (sequelize, DataTypes) => {
         key: 'Id',
       }
     },
-    learnyearId: {
-      type: DataTypes.UUID,
-      references: {
-        model: 'learnyears',
-        key: 'Id',
-      }
-    }
+    // semesterId: {
+    //   type: DataTypes.UUID,
+    //   references: {
+    //     model: 'semesters',
+    //     key: 'Id',
+    //   }
+    // }
   }, {});
   pointstudent.associate = function(models) {
 

@@ -15,10 +15,10 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     Note: DataTypes.STRING,
-    learnyearId: {
+    semesterId: {
       type: DataTypes.UUID,
       references: {
-        model: 'learnyears',
+        model: 'semesters',
         key: 'Id',
       },
     }

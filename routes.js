@@ -16,6 +16,7 @@ function eRoutes() {
   const login = require('./routers/Login.Router')(router);
   const role = require('./routers/Role.Router')(router);
   const attendencesheet = require('./routers/Attendancesheet.Router')(router);
+  const semester = require('./routers/Semester.Router')(router);
   return router;
 }
 

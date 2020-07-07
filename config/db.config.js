@@ -45,15 +45,15 @@ db.chedule = require('../models/chedule')(sequelize, Sequelize);
 db.pointstudent = require('../models/pointstudent')(sequelize, Sequelize);
 db.pointpractice = require('../models/pointpractice')(sequelize, Sequelize);
 db.attendancesheet = require('../models/attendancesheet')(sequelize, Sequelize);
-
+db.semester = require('../models/Semester')(sequelize, Sequelize);
 
 db.account.belongsTo(db.department);
 db.account.belongsTo(db.position);
 db.department.hasMany(db.account);
 db.learnclass.belongsTo(db.specailized);
 db.specailized.hasMany(db.learnclass);
-db.learnyear.hasMany(db.pointpractice);
-db.pointstudent.belongsTo(db.learnyear);
+db.semester.hasMany(db.pointpractice);
+// db.pointstudent.belongsTo(db.semester);
 db.pointpractice.belongsTo(db.student);
 db.subject.hasMany(db.pointstudent); 
 db.pointstudent.belongsTo(db.subject);
@@ -61,8 +61,8 @@ db.pointstudent.belongsTo(db.subject);
 // db.chedule.belongsTo(db.learnclass);
 // db.account.hasMany(db.chedule);
 // db.chedule.belongsTo(db.account)
-// db.subject.hasMany(db.chedule);
-// db.chedule.belongsTo(db.subject);
+db.semester.hasMany(db.subject);
+db.subject.belongsTo(db.semester);
 db.learnclass.hasMany(db.student);
 db.student.belongsTo(db.learnclass);
 db.student.hasMany(db.pointstudent);
@@ -75,6 +75,8 @@ db.attendancesheet.belongsTo(db.subject);
 db.account.hasMany(db.attendancesheet);
 db.attendancesheet.belongsTo(db.account);
 
+db.learnyear.hasMany(db.semester);
+db.semester.belongsTo(db.learnyear);
 
 db.role.belongsToMany(db.account, {
   through: "accountroles",

@@ -35,11 +35,9 @@ module.exports = {
             if (!user) {
                 return res.status(404).send('User Not Found.');
             }
-
             var passwordIsValid = bcrypt.compareSync(req.body.PassWord, user.PassWord);
-            console.log(passwordIsValid)
             if (!passwordIsValid) {
-                return res.status(401).send({ auth: false, accessToken: null, reason: "Invalid Password!" });
+                return res.send({ auth: false, accessToken: null, reason: "Invalid Password!" });
             }
             let authorities = [];
             let User = {};
@@ -254,46 +252,44 @@ module.exports = {
 
 
     async store(req, res) {
-        // fs.writeFileSync('/uploads/',req.body.Image);		
-        // let imageData = fs.readFileSync('/uploads/' + req.body.Image);
-        try {
-            const user = await account.create({
-                Account: req.body.Account,
-                UserName: req.body.UserName,
-                Mail: req.body.Mail,
-                PassWord: bcrypt.hashSync(req.body.PassWord, 8),
-                departmentId: req.body.departmentId,
-                positionId: req.body.positionId,
-                Address: req.body.Address,
-                Image: req.file.filename
-                
-            })
-            const roles = role.findAll({
+        const user = await account.create({
+            Account: req.body.Account,
+            UserName: req.body.UserName,
+            Mail: req.body.Mail,
+            PassWord: bcrypt.hashSync(req.body.PassWord, 8),
+            departmentId: req.body.departmentId,
+            positionId: req.body.positionId,
+            Address: req.body.Address,
+            Image: req.file.filename            
+        }).then(user => {
+            role.findAll({
                 where: {
-                    Title: req.body.Role.length > 0 ? req.body.Role : null
+                    Title: req.body.Role.length > 0 ? req.body.Role: null
                 }
-            })
-            
-            await user.setRoles(roles).then(() => {
-                account.findAll({
-                    include: [{
-                        model: role,
-                        through: {
-                            attributes: ['accountId', 'roleId'],
-                        }
-                    }, {
-                        model: Department,
-                    }, {
-                        model: position,
-                    }]
-                }).then((user) => {
-                    res.send({ user })
-                })
+            }).then(roles => {
+                user.setRoles(roles).then(() => {
+                    account.findAll({
+                        include: [{
+                            model: role,
+                            through: {
+                                attributes: ['accountId', 'roleId'],
+                            }
+                        },{
+                            model: Department,
+                        },{
+                            model: position,
+                        }]
+                    }).then((user) => {
+                        res.send({user})
+                    })
+                });
+            }).catch(err => {
+                res.status(500).send("Error -> " + err);
             });
-        }
-        catch (err) {
-                res.status(500).send("Fail! Error -> " + err);
-        }
+        })
+        .catch(err => {
+            res.status(500).send("Fail! Error -> " + err);
+        })
     }
 
 };

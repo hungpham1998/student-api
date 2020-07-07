@@ -9,7 +9,14 @@ module.exports = (sequelize, DataTypes) => {
     Note: DataTypes.STRING,
     Title: DataTypes.STRING,
     Code: DataTypes.STRING,
-    CreaditNumber: DataTypes.INTEGER
+    CreaditNumber: DataTypes.INTEGER,
+    semesterId: {
+      type: DataTypes.UUID,
+      references: {
+        model: 'semesters',
+        key: 'Id',
+      }
+    }
   }, {});
   subject.associate = function(models) {
 

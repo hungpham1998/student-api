@@ -2,8 +2,9 @@ const db = require('../config/db.config.js');
 const Subject = db.subject;
 const Chelude = db.chedule;
 const Student = db.student;
+const Semester = db.semester;
 const { Op } = require("sequelize");
-var moment = require('moment')
+var moment = require('moment');
 module.exports = {
     async store(req, res) {
         try {
@@ -12,11 +13,15 @@ module.exports = {
                 CreaditNumber: req.body.CreaditNumber,
                 Code: req.body.Code,
                 Note: req.body.Note,
+                semesterId: req.body.semesterId
             });
             await Subject.findAll({
                 order: [
                     ['createdAt', 'DESC'],
-                   ],
+                ],
+                include: [{
+                      model: Semester
+                   }]
             }).then(subject => {
                 res.json({ subject })
             }).catch(err => {
@@ -57,13 +62,18 @@ module.exports = {
                    Title: req.body.Title,
                    CreaditNumber: req.body.CreaditNumber,
                    Note: req.body.Note,
-                   Code: req.body.Code
+                   Code: req.body.Code,
+                   semesterId: req.body.semesterId
                },
                { returning: true, where: { Id: Id } }
            );
            await Subject.findAll({ order: [
-            ['updatedAt', 'DESC'],
+               ['updatedAt', 'DESC'],
+               
            ],
+           include: [{
+            model: Semester
+         }]
            }).then((subject) => {
                return res.json({ subject });
            })
@@ -140,7 +150,10 @@ module.exports = {
                         Title: {
                             $like: title
                         }
-                    }
+                    },
+                    include: [{
+                        model: Semester,
+                    }]
                 })
             }
               return   res.json({ Subject: data });
@@ -153,7 +166,6 @@ module.exports = {
     getByChedule(req, res) {
         Subject.findAll({
             where: { Id: req.params.id },
-            
             include: [{
                 model: Chelude,
             }],

@@ -1,18 +1,15 @@
 const db = require('../config/db.config.js');
 const Student = db.student;
-const Learnchedule = db.learnchedule;
 const Subject = db.subject;
-const Account = db.account;
-const LearnYear = db.learnyear;
 const Pointstudent = db.pointstudent;
-const Department = db.department;
-const Position = db.position;
-const Specailize = db.specailize;
+const Semester = db.semester;
 const { Op } = require("sequelize");
 var moment = require('moment')
 module.exports = {
     async store(req, res) {
         try {
+            let pointtp = req.body.PointKT1 + req.body.PointKT2 + req.body.PointGK + req.body.PointCC;
+            let PointTK = (pointtp / 4.0) * 0.3 + (req.body.PointT *0.7);
             await Pointstudent.create({
                 PointCC: req.body.PointCC,
                 PointKT1: req.body.PointKT1,
@@ -21,7 +18,7 @@ module.exports = {
                 PointT: req.body.PointT,
                 subjectId: req.body.subjectId,
                 studentId: req.body.studentId,
-                learnyearId: req.body.learnyearId
+                PointTK: PointTK.toFixed(1),
             });
             Pointstudent.findAll({
                 order: [
@@ -29,13 +26,11 @@ module.exports = {
                 ],
                 include: [{
                     model: Student
-                 },{
-                     model: Subject
-                 }, 
-                  {
-                     model: LearnYear
-                 }]
+               }, {
+                   model: Subject
+               }]
             }).then(Pointstudent => {
+                console.log(Pointstudent)
                 res.json({ Pointstudent})
             }).catch(err => {
                 res.send({ status: 500, "Error -> ": err });
@@ -62,13 +57,16 @@ module.exports = {
                         ['createdAt', 'DESC'],
                     ],
                     include: [{
-                           model: Student
-                        },{
-                         model: Subject
-                        }, 
-                         {
-                                model: LearnYear
-                        }]
+                         model: Student
+                    }, {
+                        model: Subject
+                    }]
+                        //{
+                    //      model: Subject
+                    //     }, 
+                    //      {
+                    //      //   model: Semester
+                    //     }]
                 });
             }
             return res.json({ pointstudent: pointstudent, status: 200, success: true });
@@ -82,26 +80,28 @@ module.exports = {
    async update(req, res) {
        try {
            const Id = req.params.id;
+           let pointtp = req.body.PointKT1 + req.body.PointKT2 + req.body.PointGK + req.body.PointCC;
+           let PointTK = (pointtp / 4.0) * 0.3 + (req.body.PointT * 0.7);
+           console.log(PointTK.toFixed(1))
           await Pointstudent.update(
                 {
                     PointCC: req.body.PointCC,
                     PointKT1: req.body.PointKT1,
                     PointKT2: req.body.PointKT2,
                     PointGK: req.body.PointGK,
-                    PointT: req.body.PointT,
+                    PointT:req.body.PointT,
                     subjectId: req.body.subjectId,
                     studentId: req.body.studentId,
-                    learnyearId: req.body.learnyearId
+                    PointTK: PointTK.toFixed(1),
+                    // semesterId: req.body.semesterId
                 },
               {
                   returning: true, where: { Id: Id },
-                    include: [{
-                        model: Student
-                    },{
-                         model: Subject
-                    },{
-                            model: LearnYear
-                      }]
+                  include: [{
+                    model: Student
+               }, {
+                   model: Subject
+               }]
               }
            )
            Pointstudent.findAll({
@@ -112,9 +112,6 @@ module.exports = {
                    model: Student
                 },{
                  model: Subject
-                }, 
-                 {
-                        model: LearnYear
                 }]
            }).then((pointstudent) => {
               return res.json({ pointstudent } ); 
@@ -124,7 +121,7 @@ module.exports = {
            })
         }
         catch (err) {
-            res.send({status: 500, "can not update " : LearnYear, "error": err });
+            res.send({status: 500, "can not update " : Pointstudent, "error": err });
         }
     
     },
@@ -162,9 +159,7 @@ module.exports = {
                     model: Student
                 }, {
                     model: Subject,
-                },{
-                    model: LearnYear
-            }],
+                }],
         }).then(Pointstudent => {
             res.send(Pointstudent);
         }).catch(err => {
@@ -172,5 +167,22 @@ module.exports = {
         })
 
     },
+
+
+    // getpointStudent(req, res) {
+    //     Pointstudent.findAll({
+    //         where: { Id: req.params.id },
+    //         include: [
+    //             {
+    //                 model: Student
+    //             }, {
+    //                 model: Subject,
+    //             }],
+    //     }).then(Pointstudent => {
+    //         res.send(Pointstudent);
+    //     }).catch(err => {
+    //         res.status(500).send("Error -> " + err);
+    //     })
+    // }
 
 };

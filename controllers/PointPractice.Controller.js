@@ -17,7 +17,7 @@ module.exports = {
             await Pointpractice.create({
                 Peactice: req.body.Peactice,
                 studentId: req.body.studentId,
-                yearnId: req.body.yearnId,
+                semesterId: req.body.semesterId,
                 Note: req.body.Note
             }).then(Pointstudent => {
                 res.json({ Pointstudent, status: 200 })
@@ -58,7 +58,7 @@ module.exports = {
                 {
                     Peactice: req.body.Peactice,
                     studentId: req.body.studentId,
-                    yearnId: req.body.yearnId,
+                    semesterId: req.body.semesterId,
                     Note: req.body.Note
                 },
                 { returning: true, where: { Id: Id } }

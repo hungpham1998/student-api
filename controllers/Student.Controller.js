@@ -7,6 +7,7 @@ const Pointstudent = db.pointstudent;
 const Specailized = db.specailized;
 const Account = db.account;
 const Attendancesheet = db.attendancesheet;
+const Semester = db.semester;
 const { Op } = require("sequelize");
 var moment = require('moment');
 
@@ -166,6 +167,9 @@ module.exports = {
 
     async  getPointstudent(req, res)  {
         const Id = req.params.id;
+        let pointtb;
+        let countPoint = 0;
+        let countCreaditNumber = 0;
         await Student.findAll({
             where: {
                 Id: req.params.id,
@@ -177,12 +181,50 @@ module.exports = {
                     include: [
                         {
                             model: Subject,
-                        }, {
-                            model: Learnyear,
+                            include: [
+                                {
+                                    model: Semester,
+                                }
+                            ]
+                            
                         }]
                 }]
-        }).then(Student => {
-            res.send(Student);
+        }).then(student => {
+            let Student;
+            student[0].pointstudents.forEach((item) => {
+                if (item.PointTK < 4) {
+                    pointtb = item.subject.CreaditNumber * 0;
+                }
+                if (4.0 <= item.PointTK.toFixed(1) && item.PointTK.toFixed(1) < 5.0) {
+                    pointtb = item.subject.CreaditNumber.toFixed(1) * 1.0;
+                }
+                if (5.0 <= item.PointTK.toFixed(1) && item.PointTK.toFixed(1) < 5.5) {
+                    pointtb = item.subject.CreaditNumber.toFixed(1) * 1.5;
+                }
+                if (5.5 <= item.PointTK.toFixed(1) && item.PointTK.toFixed(1) < 6.5) {
+                    pointtb = item.subject.CreaditNumber.toFixed(1) * 2.0;
+                }
+                if (6.5 <= item.PointTK.toFixed(1) && item.PointTK.toFixed(1) < 7.0) {
+                    pointtb = item.subject.CreaditNumber.toFixed(1) * 2.5;
+                }
+                if (7.0 <= item.PointTK.toFixed(1) && item.PointTK.toFixed(1) < 8.0) {
+                    pointtb = item.subject.CreaditNumber.toFixed(1) * 3.0;
+                }
+                if (8.0 <= item.PointTK.toFixed(1) && item.PointTK.toFixed(1) < 8.5) {
+                    pointtb = item.subject.CreaditNumber.toFixed(1) * 3.5;
+                }
+                if (8.5 <= item.PointTK.toFixed(1)) {
+                    pointtb = item.subject.CreaditNumber.toFixed(1) * 4.0;
+                }
+                return countPoint = countPoint + pointtb, countCreaditNumber = item.subject.CreaditNumber + countCreaditNumber;
+            });
+            let accumulation = (countPoint / countCreaditNumber).toFixed(2);
+            Student = {
+                student,
+                countCreaditNumber: countCreaditNumber,
+                accumulation: accumulation
+            }
+            res.send({Student});
         }).catch(err => {
             res.status(500).send("Error -> " + err);
         })
@@ -229,21 +271,7 @@ module.exports = {
             where.Last_Name = Last_Name;
         }
         try {
-            // if (Title.length === 0 || Title === '' || Title === null ||
-            //     Last_Name.length === 0 || Last_Name === '' || Last_Name === null ||
-            //     Frist_Name.length === 0 || Frist_Name === '' || Frist_Name === null ||
-            //     Address.length === 0 || Address === '' || Address === null ||
-            //     Code.length === 0 || Code === '' || Code === null ) {
-            
-            //     student = await Student.findAndCountAll({
-            //         include: [
-            //         {
-            //             model: Learnclass,
-            //         }]})
-            // }
-            // else {
-                
-            // }
+          
        console.log(Last_Name)
             student =   await Student.findAndCountAll({
                 where,
