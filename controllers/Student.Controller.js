@@ -264,26 +264,30 @@ module.exports = {
 
         const where = {}
         const where_join = {}
-        // if (!Title) {
-        //     where.Title = Title;
-        // }
+        if (!Frist_Name) {
+            where.Frist_Name = Frist_Name;
+        }
         if (Last_Name) {
             where.Last_Name = Last_Name;
         }
+        if (Address) {
+            where.Address = Address;
+        }
+        if (Code) {
+            where.Code = Code;
+        }
+        if (Title) {
+            where_join.Code = Code;
+        }
         try {
-          
-       console.log(Last_Name)
             student =   await Student.findAndCountAll({
                 where,
                 returning: true,
-                // include: [
-                //     {
-                //         where: {
-                //             $or: [{ Title: { $like: Title } },
-                //                   { Title: { $like: null } }]
-                //         },
-                //         model: Learnclass,
-                //     }]
+                include: [
+                    {
+                        where: where_join,
+                        model: Learnclass,
+                    }]
             })
             return res.json({ student });
         }

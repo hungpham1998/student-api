@@ -169,21 +169,22 @@ module.exports = {
                 {
                     model: Subject,
                     include: [{
-                    model: Pointstudent,
-                            // include: [{
-                            //     where: { studentId: studentId },
-                            // }]
-                    },
-                    {
-                        model: Attendancesheet,
-                        // include: [{
-                        //     model: Student,
-                        // }]
+                        model: Pointstudent,
+                        where: { studentId: studentId },
+                        include: [{
+                            model: Subject,
+                        }]
                     }]
-                    // }]
+
                 }]
-            }).then(semester => {
-                res.send(semester);
+            }).then(Semester => {
+                let pointstudents=[]
+                Semester.forEach(item => {
+                    item.subjects.forEach(point => {
+                        pointstudents.push(point.pointstudents[0])
+                    })
+                }) 
+                res.send({"pointstudents": pointstudents });
             }).catch(err => {
                 res.status(500).send("Error -> " + err);
             })

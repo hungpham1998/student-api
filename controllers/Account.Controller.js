@@ -3,7 +3,7 @@ const config = require('../config/config.js');
 const account = db.account;
 const role = db.role;
 const Department = db.department;
-const position = db.position;
+const Position = db.position;
 const fs = require('fs');
 const Op = db.Sequelize.Op;
 
@@ -33,11 +33,11 @@ module.exports = {
             },
         }).then(user => {
             if (!user) {
-                return res.status(404).send('User Not Found.');
+                return res.send({status: 401});
             }
             var passwordIsValid = bcrypt.compareSync(req.body.PassWord, user.PassWord);
             if (!passwordIsValid) {
-                return res.send({ auth: false, accessToken: null, reason: "Invalid Password!" });
+                return res.send({ auth: false, accessToken: null, status: 401 });
             }
             let authorities = [];
             let User = {};
@@ -57,7 +57,7 @@ module.exports = {
                 var token = jwt.sign({ user: User }, config.secret, {
                     expiresIn: 86400 
                 });
-              res.status(200).send({ auth: true, accessToken: token });
+              res.send({ auth: true, accessToken: token });
             })
             
         }).catch(err => {
@@ -139,17 +139,12 @@ module.exports = {
 
     async update(req, res) {
         const id = req.params.id;
-        console.log(id)
-       let oldAccount=  await account.findOne({
-            where: { Id: id }, returning: true,
-       });
-        console.log(oldAccount)
        await account.update(
             {
                 Account: req.body.Account,
                 UserName: req.body.UserName,
                 Mail: req.body.Mail,
-                PassWord: req.body.PassWord!== undefined ||req.body.PassWord!== null  ? bcrypt.hashSync(req.body.PassWord, 8): oldAccount.PassWord ,
+                PassWord:  bcrypt.hashSync(req.body.PassWord, 8),
                 Image: req.body.Image,
                 Note: req.body.Note,
             },
@@ -183,6 +178,10 @@ module.exports = {
                 through: {
                     attributes: ['accountId', 'roleId'],
                 }
+            },{
+                model: Department
+                },{
+                model: Position
             }]
        }).then(Account => {
            let account = [];
@@ -190,10 +189,10 @@ module.exports = {
            Account.forEach((item) =>
                account.push({
                    ...item,
+                   ...item.PassWord = bcrypt.compare(item.PassWord),
                    ...item.Image = '/uploads/'+ item.Image
            }))
 
-           console.log(Account)
             res.status(200).json({ Account});
         }).catch(err => {
             res.status(500).json({
@@ -213,7 +212,7 @@ module.exports = {
             },{
                 model: Department,
             },{
-                model: position,
+                model: Position,
             }]
         }).then(account => {
             res.json({ account });
@@ -239,7 +238,7 @@ module.exports = {
                 },{ 
                     model: Department,
                 },{
-                    model: position,
+                    model: Position,
                 }]
             })
             return res.send({  success: true,    stauts: 200,});
@@ -277,7 +276,7 @@ module.exports = {
                         },{
                             model: Department,
                         },{
-                            model: position,
+                            model: Position,
                         }]
                     }).then((user) => {
                         res.send({user})

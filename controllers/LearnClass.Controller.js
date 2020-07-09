@@ -136,13 +136,16 @@ module.exports = {
         Learnclass.findAll({
             where: { Id: req.params.id },
             attributes: ['Id','Title', 'Note', 'specailizedId'], 
-            include: [
-            {
-                model: Student,
-                attributes: ['Id','Last_Name','Note', 'Frist_Name','Address','Brithday','Image'],   
-            }],
+           include: [
+                {
+                    model: Student,
+                    attributes: ['Id','Last_Name', 'Code', 'Frist_Name','Address','Brithday','Image'],   
+                }],
                 
         }).then(Learnclass => {
+            Learnclass[0].students.map(item => {
+                item.Image = '/uploads/' + item.Image;
+            })
             res.send(Learnclass);
         }).catch(err => {
             res.status(500).send("Error -> " + err);
@@ -178,13 +181,13 @@ module.exports = {
    getById(req, res) {
         Learnclass.findAll({
             where: { Id: req.params.id },
-            include: [
-                {
-                    model: Student,
-                    attributes: ['Id','Last_Name', 'Code', 'Frist_Name','Address','Brithday'],   
-                }],
-        }).then(Department => {
-            res.send(Department);
+            // include: [
+            //     {
+            //         model: Student,
+            //         attributes: ['Id','Last_Name', 'Code', 'Frist_Name','Address','Brithday'],   
+            //     }],
+        }).then(Learnclass => {
+            res.send(Learnclass);
         }).catch(err => {
             res.status(500).send("Error -> " + err);
         })

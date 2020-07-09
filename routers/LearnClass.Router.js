@@ -9,6 +9,9 @@ const learnclass = require('../controllers/LearnClass.Controller');
   router 
     .route("/learnclass/find")
     .get(learnclass.findByTitle)
+    router
+    .route("/learnclass/:id/student")
+    .get(learnclass.getstudentById)
   router
     .route("/learnclass/:id")
     .get(learnclass.getById)

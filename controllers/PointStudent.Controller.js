@@ -9,7 +9,10 @@ module.exports = {
     async store(req, res) {
         try {
             let pointtp = req.body.PointKT1 + req.body.PointKT2 + req.body.PointGK + req.body.PointCC;
-            let PointTK = (pointtp / 4.0) * 0.3 + (req.body.PointT *0.7);
+            let pointtb = pointtp / 4.0;
+            console.log(pointtb)
+            let PointTK = ( pointtb * 3 + req.body.PointT *7 ) / 10.0;
+            console.log(PointTK)
             await Pointstudent.create({
                 PointCC: req.body.PointCC,
                 PointKT1: req.body.PointKT1,
@@ -18,9 +21,9 @@ module.exports = {
                 PointT: req.body.PointT,
                 subjectId: req.body.subjectId,
                 studentId: req.body.studentId,
-                PointTK: PointTK.toFixed(1),
+                PointTK: PointTK,
             });
-            Pointstudent.findAll({
+             Pointstudent.findAll({
                 order: [
                     ['createdAt', 'DESC'],
                 ],
@@ -30,7 +33,6 @@ module.exports = {
                    model: Subject
                }]
             }).then(Pointstudent => {
-                console.log(Pointstudent)
                 res.json({ Pointstudent})
             }).catch(err => {
                 res.send({ status: 500, "Error -> ": err });
@@ -82,7 +84,6 @@ module.exports = {
            const Id = req.params.id;
            let pointtp = req.body.PointKT1 + req.body.PointKT2 + req.body.PointGK + req.body.PointCC;
            let PointTK = (pointtp / 4.0) * 0.3 + (req.body.PointT * 0.7);
-           console.log(PointTK.toFixed(1))
           await Pointstudent.update(
                 {
                     PointCC: req.body.PointCC,

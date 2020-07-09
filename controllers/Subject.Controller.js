@@ -44,7 +44,11 @@ module.exports = {
                 });
             }
             else {
-                subject = await Subject.findAndCountAll();
+                subject = await Subject.findAndCountAll(
+                   { include: [{
+                        model: Semester
+                     }]}
+                );
             }
             return res.json({ subject: subject, status: 200, success: true });
             
@@ -176,6 +180,5 @@ module.exports = {
         })
 
     },
-
 
 };
