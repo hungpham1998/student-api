@@ -18,6 +18,9 @@ const student = require('../controllers/Student.Controller');
     .route("/student/find")
     .get(student.findBy)
   router
+    .route("/student/:id/detail")
+    .get(student.getByIdDetail)
+  router
     .route("/student/:id/attendancesheet")
     .get(student.getAttendancesheet)
   router

@@ -193,4 +193,19 @@ module.exports = {
         })
 
     },
+   
+    getStudentByClass(req, res) {
+        Learnclass.findAll({
+            where: { Id: req.params.id },
+            include: [
+                {
+                    model: Student,
+                    attributes: ['Id','Last_Name', 'Code', 'Frist_Name','Address','Brithday'],   
+                }],
+        }).then(Learnclass => {
+            res.send(Learnclass);
+        }).catch(err => {
+            res.status(500).send("Error -> " + err);
+        })
+   }
 };

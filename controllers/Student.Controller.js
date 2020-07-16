@@ -2,7 +2,7 @@ const db = require('../config/db.config')
 const Student = db.student;
 const Subject = db.subject;
 const Learnclass = db.learnclass;
-const Learnyear = db.learnyear;
+const Position = db.position;
 const Pointstudent = db.pointstudent;
 const Specailized = db.specailized;
 const Account = db.account;
@@ -79,6 +79,30 @@ module.exports = {
         const Id = req.params.id;
         await Student.findAll({
             where: { Id: Id }
+        }).then(student => {
+            let Student = [];
+            student.forEach((element) => {
+                Student.push({
+                    ...element,
+                    ...element.Image = '/uploads/'+ element.Image
+                })
+            });
+            res.json({student});
+        }).catch(err => {
+            res.status(500).send("Error -> " + err);
+        })
+   
+    },
+    async getByIdDetail(req, res) {
+        const Id = req.params.id;
+        await Student.findAll({
+            where: { Id: Id },
+            include: [{
+                model: Learnclass,
+                include: [{
+                    model: Specailized
+                }]
+            }]
         }).then(student => {
             let Student = [];
             student.forEach((element) => {
@@ -238,16 +262,23 @@ module.exports = {
             },
             include: [
                 {
-                    where:{studentId:Id},
                     model: Attendancesheet,
+                    where:{studentId: Id},
                     include: [
                         {
+                           // where:{studentId: Id},
                             model: Subject,
+                            include: [{ model: Semester}]
                         }, {
                             model: Account,
                         }]
                 }]
         }).then(Student => {
+            let  attendancesheets =[]
+            // Student.forEach((item) => {
+            //     attendancesheets.push(item.attendancesheets)
+            // })
+            console.log(attendancesheets)
             res.send(Student);
         }).catch(err => {
             res.status(500).send("Error -> " + err);

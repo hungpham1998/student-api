@@ -5,6 +5,7 @@ const Subject = db.subject;
 const Pointstudent = db.pointstudent;
 const Attendancesheet = db.attendancesheet;
 const Student = db.student;
+const Account = db.account;
 const { Op } = require("sequelize");
 var moment = require('moment');
 
@@ -157,34 +158,44 @@ module.exports = {
     },
 
     async getBySubject(req, res) {
-        const Id = req.params.id;
+        //const Id = req.params.id;
         let studentId = req.query.studentid;
         let semester;
         try {
             semester = await Semester.findAll({
-                where: { Id: Id },
+                // where: { Id: Id },
                 include: [{
                     model: LearnYear
-                },
-                {
-                    model: Subject,
-                    include: [{
-                        model: Pointstudent,
-                        where: { studentId: studentId },
+                }, {
+                        model: Subject,
                         include: [{
-                            model: Subject,
+                            model: Pointstudent,
+                            where: {studentId:studentId }
+                            // include: [{
+                            //     model: Semester,
+                            // }]
                         }]
-                    }]
-
-                }]
+                }
+              ]
             }).then(Semester => {
-                let pointstudents=[]
+                let pointstudent=0;
+                let semester = {};
                 Semester.forEach(item => {
                     item.subjects.forEach(point => {
-                        pointstudents.push(point.pointstudents[0])
+                        pointstudent = pointstudent + point.pointstudents[0].PointTK
                     })
+                    
                 }) 
-                res.send({"pointstudents": pointstudents });
+                semester = {
+                    Semester,
+                    pointstudent
+                }
+                res.send({ Semester });
+                // res.send({
+                //     "Student": {
+                //         "student": [
+                    
+                // ]} });
             }).catch(err => {
                 res.status(500).send("Error -> " + err);
             })
@@ -193,5 +204,75 @@ module.exports = {
         catch (err) {
             res.send(err);
         }
-    }
+    },
+    async getByIdIdSubject(req, res) {
+        const Id = req.params.id;
+        let studentId = req.query.studentid;
+        let semester;
+        try {
+            semester = await Semester.findAll({
+                where: { Id: Id },
+                include: [{
+                    model: LearnYear
+                }, {
+                        model: Subject,
+                        include: [{
+                            model: Pointstudent,
+                            where: {studentId:studentId },
+                            include: [{
+                                model: Subject,
+                            }]
+                        }]
+                }
+              ]
+            }).then(semester => {
+                let pointstudent=0;
+                let Semester = [];
+                semester.forEach(item => {
+                    item.subjects.forEach(point => {
+                        point.pointstudents.map(data => {
+                            Semester.push(data)
+                        })
+                    })
+                    
+                }) 
+                semester = {
+                    Semester,
+                    pointstudent
+                }
+                res.send({ Semester });
+            }).catch(err => {
+                res.status(500).send("Error -> " + err);
+            })
+
+         }
+        catch (err) {
+            res.send(err);
+        }
+    },
+
+    async getAttendancesheet(req, res) {
+        const Id = req.query.studentId;
+        await Semester.findAll({
+            include: [
+                {
+                    model: Subject,
+                    include: [
+                        {
+                            where:{studentId: Id},
+                            model: Attendancesheet,
+                            include: [{ model: Account}]
+                        }]
+                }]
+        }).then(Semester => {
+            let  attendancesheets =[]
+            // Student.forEach((item) => {
+            //     attendancesheets.push(item.attendancesheets)
+            // })
+            console.log(Semester)
+            res.send(Semester);
+        }).catch(err => {
+            res.status(500).send("Error -> " + err);
+        })
+    },
 };
